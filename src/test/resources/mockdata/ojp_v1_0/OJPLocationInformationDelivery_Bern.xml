@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siri:OJP xmlns:siri="http://www.siri.org.uk/siri" xmlns:ojp="http://www.vdv.de/ojp" version="1.0">
+    <siri:OJPResponse>
+        <siri:ServiceDelivery>
+            <siri:ResponseTimestamp>2023-11-13T09:17:50Z</siri:ResponseTimestamp>
+            <siri:ProducerRef>EFAController10.5.24.14-OJP-EFA01-P</siri:ProducerRef>
+            <siri:Status>true</siri:Status>
+            <ojp:OJPLocationInformationDelivery>
+                <siri:ResponseTimestamp>2023-11-13T09:17:50Z</siri:ResponseTimestamp>
+                <siri:Status>true</siri:Status>
+                <ojp:CalcTime>90</ojp:CalcTime>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8507000</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.43913</siri:Longitude>
+                            <siri:Latitude>46.94883</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>1</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8577001</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Zent</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Zent (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.47534</siri:Longitude>
+                            <siri:Latitude>46.95745</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.949999988</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8589007</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Wyler</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Wyler (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.46368</siri:Longitude>
+                            <siri:Latitude>46.96532</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.947000027</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8589002</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Saali</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Saali (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.48558</siri:Longitude>
+                            <siri:Latitude>46.93774</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.947000027</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8587483</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Salem</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Salem (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.45441</siri:Longitude>
+                            <siri:Latitude>46.95390</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.947000027</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8500249</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern Matte</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern Matte (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.45251</siri:Longitude>
+                            <siri:Latitude>46.94657</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.947000027</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8574131</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Berneck, Taa</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23016233:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Berneck, Taa (Berneck (SG))</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>9.59573</siri:Longitude>
+                            <siri:Latitude>47.42461</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.944000006</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590033</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Nydegg</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Nydegg (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.45635</siri:Longitude>
+                            <siri:Latitude>46.94862</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.944000006</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590015</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Hasler</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Hasler (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.43253</siri:Longitude>
+                            <siri:Latitude>46.94427</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.944000006</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8589993</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Wander</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Wander (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.43633</siri:Longitude>
+                            <siri:Latitude>46.93693</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.944000006</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8509354</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bernina Suot</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23011784:3</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bernina Suot (Pontresina)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>9.96939</siri:Longitude>
+                            <siri:Latitude>46.44485</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8592663</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bernex, Saule</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23009607:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bernex, Saule (Bernex (CH))</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>6.06480</siri:Longitude>
+                            <siri:Latitude>46.17369</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8592660</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bernex, P+R</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23009607:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bernex, P+R (Bernex (CH))</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>6.08202</siri:Longitude>
+                            <siri:Latitude>46.17937</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8587034</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bernex, place</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23009607:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bernex, place (Bernex (CH))</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>6.07637</siri:Longitude>
+                            <siri:Latitude>46.17709</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590063</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Elfenau</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Elfenau (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.47278</siri:Longitude>
+                            <siri:Latitude>46.93264</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590036</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Seminar</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Seminar (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.46130</siri:Longitude>
+                            <siri:Latitude>46.94478</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590035</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Liebegg</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Liebegg (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.45895</siri:Longitude>
+                            <siri:Latitude>46.94468</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590032</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Rathaus</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Rathaus (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.45266</siri:Longitude>
+                            <siri:Latitude>46.94805</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590024</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Jaunweg</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Jaunweg (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.44826</siri:Longitude>
+                            <siri:Latitude>46.96797</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8590020</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Kursaal</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Kursaal (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.44961</siri:Longitude>
+                            <siri:Latitude>46.95289</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8587480</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Ostring</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Ostring (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.47147</siri:Longitude>
+                            <siri:Latitude>46.94513</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8576646</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Bahnhof</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Bahnhof (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.44021</siri:Longitude>
+                            <siri:Latitude>46.94811</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8530258</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern Marzili</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern Marzili (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.44310</siri:Longitude>
+                            <siri:Latitude>46.94520</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8502904</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bern, Moosweg</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bern, Moosweg (Bern)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.37262</siri:Longitude>
+                            <siri:Latitude>46.93400</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>8571708</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Thun, Berntor</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>23006942:9</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Thun, Berntor (Thun)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>7.62956</siri:Longitude>
+                            <siri:Latitude>46.76173</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+                <ojp:Location>
+                    <ojp:Location>
+                        <ojp:StopPlace>
+                            <ojp:StopPlaceRef>1103073</ojp:StopPlaceRef>
+                            <ojp:StopPlaceName>
+                                <ojp:Text xml:lang="de">Bernried, Ort</ojp:Text>
+                            </ojp:StopPlaceName>
+                            <ojp:TopographicPlaceRef>32000000:1</ojp:TopographicPlaceRef>
+                        </ojp:StopPlace>
+                        <ojp:LocationName>
+                            <ojp:Text xml:lang="de">Bernried, Ort (Unbekannt)</ojp:Text>
+                        </ojp:LocationName>
+                        <ojp:GeoPosition>
+                            <siri:Longitude>9.68698</siri:Longitude>
+                            <siri:Latitude>47.65742</siri:Latitude>
+                        </ojp:GeoPosition>
+                    </ojp:Location>
+                    <ojp:Complete>true</ojp:Complete>
+                    <ojp:Probability>0.941999972</ojp:Probability>
+                </ojp:Location>
+            </ojp:OJPLocationInformationDelivery>
+        </siri:ServiceDelivery>
+    </siri:OJPResponse>
+</siri:OJP>
