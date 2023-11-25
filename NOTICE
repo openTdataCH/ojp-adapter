@@ -1,0 +1,9 @@
+Copyright 2023 Peter Hirzel
+
+This software is hosted at: https://github.com/openTdataCH/opj-adapter
+
+Includes software developed at:
+* The Apache Software Foundation (https://opensource.org/license/apache-2-0/)
+* Spring https://github.com/spring-projects/
+* Lombok https://github.com/projectlombok/lombok/blob/master/LICENSE
+* https://github.com/bliksemlabs/ojp-java-model (European Union Public License 1.2)

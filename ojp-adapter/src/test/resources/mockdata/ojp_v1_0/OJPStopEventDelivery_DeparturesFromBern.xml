@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siri:OJP xmlns:siri="http://www.siri.org.uk/siri" xmlns:ojp="http://www.vdv.de/ojp" version="1.0">
+    <siri:OJPResponse>
+        <siri:ServiceDelivery>
+            <siri:ResponseTimestamp>2022-11-26T14:58:03Z</siri:ResponseTimestamp>
+            <siri:ProducerRef>EFAController10.5.17.10-OJP-EFA02-P</siri:ProducerRef>
+            <siri:Status>true</siri:Status>
+            <ojp:OJPStopEventDelivery>
+                <siri:ResponseTimestamp>2022-11-26T14:58:02Z</siri:ResponseTimestamp>
+                <siri:Status>true</siri:Status>
+                <ojp:CalcTime>80</ojp:CalcTime>
+                <ojp:StopEventResponseContext>
+                    <ojp:Places>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507000</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111055:0:13</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.43913</siri:Longitude>
+                                <siri:Latitude>46.94883</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006351:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>0.0</siri:Longitude>
+                                <siri:Latitude>0.0</siri:Latitude>
+                                <siri:Precision>20000000</siri:Precision>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8516161</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Wankdorf</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>112702:0:7</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern Wankdorf</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.46548</siri:Longitude>
+                                <siri:Latitude>46.96783</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507079</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Weissenbühl</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111087:0:1</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern Weissenbühl</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.43002</siri:Longitude>
+                                <siri:Latitude>46.93578</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8504410</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>109262:0:1</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006361:5</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.46291</siri:Longitude>
+                                <siri:Latitude>47.00183</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006361:5</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.46291</siri:Longitude>
+                                <siri:Latitude>47.00183</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507002</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Ostermundigen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111056:0:2</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006363:2</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Ostermundigen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.48149</siri:Longitude>
+                                <siri:Latitude>46.95680</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006363:2</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Ostermundigen</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Ostermundigen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.48149</siri:Longitude>
+                                <siri:Latitude>46.95680</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507003</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Gümligen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111057:0:2</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006356:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Gümligen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.50551</siri:Longitude>
+                                <siri:Latitude>46.93432</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006356:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Gümligen</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Gümligen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.50551</siri:Longitude>
+                                <siri:Latitude>46.93432</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507005</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Rubigen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111058:0:2</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006623:3</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Rubigen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.54537</siri:Longitude>
+                                <siri:Latitude>46.89917</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006623:3</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Rubigen</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Rubigen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.54537</siri:Longitude>
+                                <siri:Latitude>46.89917</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507006</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Münsingen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111059:0:1</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006616:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Münsingen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.55944</siri:Longitude>
+                                <siri:Latitude>46.87336</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006616:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Münsingen (CH)</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Münsingen (CH)</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.55944</siri:Longitude>
+                                <siri:Latitude>46.87336</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507007</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Wichtrach</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111060:0:2</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006632:3</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Wichtrach</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.56885</siri:Longitude>
+                                <siri:Latitude>46.84161</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006632:3</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Wichtrach</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Wichtrach</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.56885</siri:Longitude>
+                                <siri:Latitude>46.84161</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507008</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Kiesen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111061:0:1</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006611:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Kiesen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.57550</siri:Longitude>
+                                <siri:Latitude>46.81894</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006611:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Kiesen</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Kiesen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.57550</siri:Longitude>
+                                <siri:Latitude>46.81894</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507009</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Uttigen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111062:0:3</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006885:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Uttigen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.58263</siri:Longitude>
+                                <siri:Latitude>46.79431</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006885:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Uttigen</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Uttigen</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.58263</siri:Longitude>
+                                <siri:Latitude>46.79431</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8504100</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Fribourg/Freiburg</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>109019:0:1</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23008196:4</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Fribourg/Freiburg</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.15105</siri:Longitude>
+                                <siri:Latitude>46.80315</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23008196:4</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Fribourg</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Fribourg</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.15105</siri:Longitude>
+                                <siri:Latitude>46.80315</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507100</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Thun</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111104:0:4</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006942:9</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Thun</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.62961</siri:Longitude>
+                                <siri:Latitude>46.75485</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006942:9</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Thun</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Thun</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.62961</siri:Longitude>
+                                <siri:Latitude>46.75485</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507082</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Europaplatz</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111088:0:1</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern Europaplatz</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.40747</siri:Longitude>
+                                <siri:Latitude>46.94345</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                    </ojp:Places>
+                </ojp:StopEventResponseContext>
+                <ojp:StopEventResult>
+                    <ojp:ResultId>ID-F53B8353-645F-4616-A85C-9ED8D0E1616F</ojp:ResultId>
+                    <ojp:StopEvent>
+                        <ojp:ThisCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507000</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">13</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:46:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>3</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:ThisCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8516161</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Wankdorf</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">7</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:49:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:49:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>2</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8504410</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">1</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:53:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:Order>3</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:Service>
+                            <ojp:OperatingDayRef>2022-11-26</ojp:OperatingDayRef>
+                            <ojp:JourneyRef>ojp:91031::R:j22:209:31555</ojp:JourneyRef>
+                            <siri:LineRef>ojp:91031:</siri:LineRef>
+                            <siri:DirectionRef>R</siri:DirectionRef>
+                            <ojp:Mode>
+                                <ojp:PtMode>rail</ojp:PtMode>
+                                <siri:RailSubmode>regionalRail</siri:RailSubmode>
+                                <ojp:Name>
+                                    <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                </ojp:Name>
+                                <ojp:ShortName>
+                                    <ojp:Text xml:lang="de">S</ojp:Text>
+                                </ojp:ShortName>
+                            </ojp:Mode>
+                            <ojp:PublishedLineName>
+                                <ojp:Text xml:lang="de">S31</ojp:Text>
+                            </ojp:PublishedLineName>
+                            <ojp:OperatorRef>ojp:33</ojp:OperatorRef>
+                            <ojp:OriginStopPointRef>8507079</ojp:OriginStopPointRef>
+                            <ojp:OriginText>
+                                <ojp:Text xml:lang="de">Bern Weissenbühl</ojp:Text>
+                            </ojp:OriginText>
+                            <ojp:DestinationStopPointRef>8504410</ojp:DestinationStopPointRef>
+                            <ojp:DestinationText>
+                                <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                            </ojp:DestinationText>
+                        </ojp:Service>
+                        <ojp:Extension>
+                            <ojp:TransportTypeName>
+                                <ojp:Text xml:lang="de">S-Bahn</ojp:Text>
+                            </ojp:TransportTypeName>
+                            <ojp:PublishedJourneyNumber>
+                                <ojp:Text xml:lang="de">31555</ojp:Text>
+                            </ojp:PublishedJourneyNumber>
+                            <ojp:OperatorName>
+                                <ojp:Text xml:lang="de">BLS AG (bls)</ojp:Text>
+                            </ojp:OperatorName>
+                        </ojp:Extension>
+                    </ojp:StopEvent>
+                </ojp:StopEventResult>
+                <ojp:StopEventResult>
+                    <ojp:ResultId>ID-2F01E117-1E7C-42CB-A276-FE865B25DF88</ojp:ResultId>
+                    <ojp:StopEvent>
+                        <ojp:ThisCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507000</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">10</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:46:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>11</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:ThisCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8516161</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Wankdorf</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">3</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:49:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:49:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>2</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507002</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Ostermundigen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">2</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:51:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:51:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>3</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507003</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Gümligen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">2</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:55:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:55:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>4</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507005</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Rubigen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">2</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:58:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:58:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>5</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507006</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Münsingen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">1</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T14:02:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T14:02:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>6</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507007</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Wichtrach</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">2</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T14:05:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T14:05:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>7</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507008</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Kiesen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">1</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T14:07:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T14:07:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>8</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507009</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Uttigen</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">3</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T14:09:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T14:09:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>9</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507100</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Thun</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">4</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T14:16:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:Order>10</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:Service>
+                            <ojp:OperatingDayRef>2022-11-26</ojp:OperatingDayRef>
+                            <ojp:JourneyRef>ojp:91001:H:R:j22:153:15153</ojp:JourneyRef>
+                            <siri:LineRef>ojp:91001:H</siri:LineRef>
+                            <siri:DirectionRef>R</siri:DirectionRef>
+                            <ojp:Mode>
+                                <ojp:PtMode>rail</ojp:PtMode>
+                                <siri:RailSubmode>regionalRail</siri:RailSubmode>
+                                <ojp:Name>
+                                    <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                </ojp:Name>
+                                <ojp:ShortName>
+                                    <ojp:Text xml:lang="de">S</ojp:Text>
+                                </ojp:ShortName>
+                            </ojp:Mode>
+                            <ojp:PublishedLineName>
+                                <ojp:Text xml:lang="de">S1</ojp:Text>
+                            </ojp:PublishedLineName>
+                            <ojp:OperatorRef>ojp:33</ojp:OperatorRef>
+                            <ojp:OriginStopPointRef>8504100</ojp:OriginStopPointRef>
+                            <ojp:OriginText>
+                                <ojp:Text xml:lang="de">Fribourg/Freiburg</ojp:Text>
+                            </ojp:OriginText>
+                            <ojp:DestinationStopPointRef>8507100</ojp:DestinationStopPointRef>
+                            <ojp:DestinationText>
+                                <ojp:Text xml:lang="de">Thun</ojp:Text>
+                            </ojp:DestinationText>
+                        </ojp:Service>
+                        <ojp:Extension>
+                            <ojp:TransportTypeName>
+                                <ojp:Text xml:lang="de">S-Bahn</ojp:Text>
+                            </ojp:TransportTypeName>
+                            <ojp:PublishedJourneyNumber>
+                                <ojp:Text xml:lang="de">15153</ojp:Text>
+                            </ojp:PublishedJourneyNumber>
+                            <ojp:OperatorName>
+                                <ojp:Text xml:lang="de">BLS AG (bls)</ojp:Text>
+                            </ojp:OperatorName>
+                        </ojp:Extension>
+                    </ojp:StopEvent>
+                </ojp:StopEventResult>
+                <ojp:StopEventResult>
+                    <ojp:ResultId>ID-52613F88-A938-4F05-A4EA-DBC2843ED31F</ojp:ResultId>
+                    <ojp:StopEvent>
+                        <ojp:ThisCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507000</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">4</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:47:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>3</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:ThisCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507082</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Europaplatz</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">1</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:51:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:ServiceDeparture>
+                                    <ojp:TimetabledTime>2022-11-26T13:51:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceDeparture>
+                                <ojp:Order>2</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:OnwardCall>
+                            <ojp:CallAtStop>
+                                <siri:StopPointRef>8507079</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern Weissenbühl</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PlannedQuay>
+                                    <ojp:Text xml:lang="de">1</ojp:Text>
+                                </ojp:PlannedQuay>
+                                <ojp:ServiceArrival>
+                                    <ojp:TimetabledTime>2022-11-26T13:53:00Z</ojp:TimetabledTime>
+                                </ojp:ServiceArrival>
+                                <ojp:Order>3</ojp:Order>
+                            </ojp:CallAtStop>
+                        </ojp:OnwardCall>
+                        <ojp:Service>
+                            <ojp:OperatingDayRef>2022-11-26</ojp:OperatingDayRef>
+                            <ojp:JourneyRef>ojp:91031::H:j22:111:31552</ojp:JourneyRef>
+                            <siri:LineRef>ojp:91031:</siri:LineRef>
+                            <siri:DirectionRef>H</siri:DirectionRef>
+                            <ojp:Mode>
+                                <ojp:PtMode>rail</ojp:PtMode>
+                                <siri:RailSubmode>regionalRail</siri:RailSubmode>
+                                <ojp:Name>
+                                    <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                </ojp:Name>
+                                <ojp:ShortName>
+                                    <ojp:Text xml:lang="de">S</ojp:Text>
+                                </ojp:ShortName>
+                            </ojp:Mode>
+                            <ojp:PublishedLineName>
+                                <ojp:Text xml:lang="de">S31</ojp:Text>
+                            </ojp:PublishedLineName>
+                            <ojp:OperatorRef>ojp:33</ojp:OperatorRef>
+                            <ojp:OriginStopPointRef>8504410</ojp:OriginStopPointRef>
+                            <ojp:OriginText>
+                                <ojp:Text xml:lang="de">Zollikofen</ojp:Text>
+                            </ojp:OriginText>
+                            <ojp:DestinationStopPointRef>8507079</ojp:DestinationStopPointRef>
+                            <ojp:DestinationText>
+                                <ojp:Text xml:lang="de">Bern Weissenbühl</ojp:Text>
+                            </ojp:DestinationText>
+                        </ojp:Service>
+                        <ojp:Extension>
+                            <ojp:TransportTypeName>
+                                <ojp:Text xml:lang="de">S-Bahn</ojp:Text>
+                            </ojp:TransportTypeName>
+                            <ojp:PublishedJourneyNumber>
+                                <ojp:Text xml:lang="de">31552</ojp:Text>
+                            </ojp:PublishedJourneyNumber>
+                            <ojp:OperatorName>
+                                <ojp:Text xml:lang="de">BLS AG (bls)</ojp:Text>
+                            </ojp:OperatorName>
+                        </ojp:Extension>
+                    </ojp:StopEvent>
+                </ojp:StopEventResult>
+            </ojp:OJPStopEventDelivery>
+        </siri:ServiceDelivery>
+    </siri:OJPResponse>
+</siri:OJP>

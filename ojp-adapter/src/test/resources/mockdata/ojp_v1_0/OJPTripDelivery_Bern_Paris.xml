@@ -1,0 +1,1306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siri:OJP xmlns:siri="http://www.siri.org.uk/siri" xmlns:ojp="http://www.vdv.de/ojp" version="1.0">
+    <siri:OJPResponse>
+        <siri:ServiceDelivery>
+            <siri:ResponseTimestamp>2022-11-19T08:12:49Z</siri:ResponseTimestamp>
+            <siri:ProducerRef>EFAController10.5.16.20-OJP-EFA02-P</siri:ProducerRef>
+            <siri:Status>true</siri:Status>
+            <ojp:OJPTripDelivery>
+                <siri:ResponseTimestamp>2022-11-19T08:12:49Z</siri:ResponseTimestamp>
+                <siri:Status>true</siri:Status>
+                <ojp:CalcTime>625</ojp:CalcTime>
+                <ojp:TripResponseContext>
+                    <ojp:Places>
+                        <ojp:Location>
+                            <ojp:StopPoint>
+                                <siri:StopPointRef>8507000</siri:StopPointRef>
+                                <ojp:StopPointName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:StopPointName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>111055:0:7</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23006351:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPoint>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.43913</siri:Longitude>
+                                <siri:Latitude>46.94883</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23006351:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Bern</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.43913</siri:Longitude>
+                                <siri:Latitude>46.94883</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPlace>
+                                <ojp:StopPlaceRef>8500010</ojp:StopPlaceRef>
+                                <ojp:StopPlaceName>
+                                    <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                </ojp:StopPlaceName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>106514</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23005701:2</ojp:TopographicPlaceRef>
+                            </ojp:StopPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.58956</siri:Longitude>
+                                <siri:Latitude>47.54741</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>23005701:2</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Basel</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Basel</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.58956</siri:Longitude>
+                                <siri:Latitude>47.54741</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPlace>
+                                <ojp:StopPlaceRef>8500090</ojp:StopPlaceRef>
+                                <ojp:StopPlaceName>
+                                    <ojp:Text xml:lang="de">Basel Bad Bf</ojp:Text>
+                                </ojp:StopPlaceName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>106562</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>23005701:2</ojp:TopographicPlaceRef>
+                            </ojp:StopPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Basel Bad Bf</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.60692</siri:Longitude>
+                                <siri:Latitude>47.56731</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPlace>
+                                <ojp:StopPlaceRef>8718206</ojp:StopPlaceRef>
+                                <ojp:StopPlaceName>
+                                    <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                </ojp:StopPlaceName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>132780</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>24068224:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.34304</siri:Longitude>
+                                <siri:Latitude>47.74195</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>24068224:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.34304</siri:Longitude>
+                                <siri:Latitude>47.74195</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPlace>
+                                <ojp:StopPlaceRef>8768600</ojp:StopPlaceRef>
+                                <ojp:StopPlaceName>
+                                    <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                </ojp:StopPlaceName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>133922</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>24075056:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>2.37407</siri:Longitude>
+                                <siri:Latitude>48.84484</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>24075056:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Paris</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Paris</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>2.37407</siri:Longitude>
+                                <siri:Latitude>48.84484</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:StopPlace>
+                                <ojp:StopPlaceRef>8721202</ojp:StopPlaceRef>
+                                <ojp:StopPlaceName>
+                                    <ojp:Text xml:lang="de">Strasbourg</ojp:Text>
+                                </ojp:StopPlaceName>
+                                <ojp:PrivateCode>
+                                    <ojp:System>EFA</ojp:System>
+                                    <ojp:Value>132946</ojp:Value>
+                                </ojp:PrivateCode>
+                                <ojp:TopographicPlaceRef>24067482:1</ojp:TopographicPlaceRef>
+                            </ojp:StopPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Strasbourg</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.73406</siri:Longitude>
+                                <siri:Latitude>48.58534</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                        <ojp:Location>
+                            <ojp:TopographicPlace>
+                                <ojp:TopographicPlaceCode>24067482:1</ojp:TopographicPlaceCode>
+                                <ojp:TopographicPlaceName>
+                                    <ojp:Text xml:lang="de">Strasbourg</ojp:Text>
+                                </ojp:TopographicPlaceName>
+                            </ojp:TopographicPlace>
+                            <ojp:LocationName>
+                                <ojp:Text xml:lang="de">Strasbourg</ojp:Text>
+                            </ojp:LocationName>
+                            <ojp:GeoPosition>
+                                <siri:Longitude>7.73406</siri:Longitude>
+                                <siri:Latitude>48.58534</siri:Latitude>
+                            </ojp:GeoPosition>
+                        </ojp:Location>
+                    </ojp:Places>
+                </ojp:TripResponseContext>
+                <ojp:TripResult>
+                    <ojp:ResultId>ID-60416B20-DC7E-4BF6-BF3B-3569DFCA57DB</ojp:ResultId>
+                    <ojp:Trip>
+                        <ojp:TripId>ID-60416B20-DC7E-4BF6-BF3B-3569DFCA57DB</ojp:TripId>
+                        <ojp:Duration>PT4H34M</ojp:Duration>
+                        <ojp:StartTime>2022-11-19T06:04:00Z</ojp:StartTime>
+                        <ojp:EndTime>2022-11-19T10:38:00Z</ojp:EndTime>
+                        <ojp:Transfers>1</ojp:Transfers>
+                        <ojp:Distance>33875</ojp:Distance>
+                        <ojp:TripLeg>
+                            <ojp:LegId>1</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8507000</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">7</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T06:04:00Z</ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T06:04:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">11</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T07:01:00Z</ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T07:01:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>4</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:9105F:Y:H:j22:3:372</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:9105F:Y</siri:LineRef>
+                                    <siri:DirectionRef>H</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>highSpeedRailService</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">ICE</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">ICE</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:11</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung moeglich
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A___R</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">VELOS: Reservierung am Billettschalter oder sbb.ch/velo-reservation</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__VS</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">VELOS: Reservierung obligatorisch</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__VR</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Restaurant</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__WR</ojp:Code>
+                                        <siri:RefreshmentFacility>restaurantService
+                                        </siri:RefreshmentFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Aussteigeseite: Rechts
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>ojp9105FYH_InfoCall3_111055_1</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Aussteigeseite: Links</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>ojp9105FYH_InfoCall3_106514_1</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8500090
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Basel Bad Bf</ojp:Text>
+                                    </ojp:DestinationText>
+                                    <ojp:Deviation>true</ojp:Deviation>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">InterCityExpress</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">372</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">Schweizerische Bundesbahnen SBB
+                                        </ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>2</ojp:LegId>
+                            <ojp:TransferLeg>
+                                <ojp:TransferMode>walk</ojp:TransferMode>
+                                <ojp:LegStart>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegStart>
+                                <ojp:LegEnd>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegEnd>
+                                <ojp:TimeWindowStart>2022-11-19T07:01:00Z</ojp:TimeWindowStart>
+                                <ojp:TimeWindowEnd>2022-11-19T07:34:00Z</ojp:TimeWindowEnd>
+                                <ojp:Duration>PT33M</ojp:Duration>
+                                <ojp:WalkDuration>PT5M</ojp:WalkDuration>
+                                <ojp:BufferTime>PT28M</ojp:BufferTime>
+                            </ojp:TransferLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>3</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">9</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T07:34:00Z
+                                        </ojp:TimetabledTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T07:53:00Z
+                                        </ojp:TimetabledTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>2</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:91036:Y:H:j22:1:9206</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:91036:Y</siri:LineRef>
+                                    <siri:DirectionRef>H</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>highSpeedRailService</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:11</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung
+                                                obligatorisch
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RR</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Globalpreis</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__GP</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">VELOS: Keine Beförderung
+                                                möglich
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__VN</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8718206
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:DestinationText>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">Train a grande vit.</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">9206</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">Schweizerische Bundesbahnen SBB
+                                        </ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>4</ojp:LegId>
+                            <ojp:TransferLeg>
+                                <ojp:TransferMode>remainInVehicle</ojp:TransferMode>
+                                <ojp:LegStart>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegStart>
+                                <ojp:LegEnd>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegEnd>
+                                <ojp:TimeWindowStart>2022-11-19T07:53:00Z</ojp:TimeWindowStart>
+                                <ojp:TimeWindowEnd>2022-11-19T07:56:00Z</ojp:TimeWindowEnd>
+                                <ojp:Duration>PT3M</ojp:Duration>
+                            </ojp:TransferLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>5</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T07:56:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T07:56:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8768600</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T10:38:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T10:38:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>3</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:9100R:Y:R:j22:81:9206</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:9100R:Y</siri:LineRef>
+                                    <siri:DirectionRef>R</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>highSpeedRailService</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:87_LEX</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Türen schliessen zwei Minuten
+                                                vor Abfahrt
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__TA</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">WLAN Hotspot verfügbar
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__WV</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Bar</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A___B</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung
+                                                obligatorisch
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RR</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Globalpreis</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__GP</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8768600
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                    </ojp:DestinationText>
+                                    <ojp:Deviation>true</ojp:Deviation>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">Train a grande vit.</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">9206</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">LEX</ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                    </ojp:Trip>
+                </ojp:TripResult>
+                <ojp:TripResult>
+                    <ojp:ResultId>ID-67721DD4-22BB-48E2-AF54-3BEEEBEACA4B</ojp:ResultId>
+                    <ojp:Trip>
+                        <ojp:TripId>ID-67721DD4-22BB-48E2-AF54-3BEEEBEACA4B</ojp:TripId>
+                        <ojp:Duration>PT4H34M</ojp:Duration>
+                        <ojp:StartTime>2022-11-19T08:04:00Z</ojp:StartTime>
+                        <ojp:EndTime>2022-11-19T12:38:00Z</ojp:EndTime>
+                        <ojp:Transfers>1</ojp:Transfers>
+                        <ojp:Distance>135498</ojp:Distance>
+                        <ojp:TripLeg>
+                            <ojp:LegId>1</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8507000</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">7</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T08:04:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T08:04:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">10</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T09:01:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T09:01:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>4</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:91061::R:j22:139:962</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:91061:</siri:LineRef>
+                                    <siri:DirectionRef>R</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>interRegionalRailService
+                                        </siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">IC</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">IC61</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:11</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung moeglich
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A___R</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Ruhezone in 1. Klasse</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RZ</ojp:Code>
+                                        <siri:NuisanceFacility>mobilePhoneFreeZone
+                                        </siri:NuisanceFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Familienzone ohne Spielplatz
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__FZ</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Businesszone in 1. Klasse
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__BZ</ojp:Code>
+                                        <siri:FareClassFacility>firstClass</siri:FareClassFacility>
+                                        <siri:PassengerCommsFacility>businessServices
+                                        </siri:PassengerCommsFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Gratis-Internet mit der App SBB
+                                                FreeSurf
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__FS</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Restaurant</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__WR</ojp:Code>
+                                        <siri:RefreshmentFacility>restaurantService
+                                        </siri:RefreshmentFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Aussteigeseite: Rechts
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>ojp91061_R_InfoCall139_111055_1</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8500010
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:DestinationText>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">InterCity</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">962</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">Schweizerische Bundesbahnen SBB
+                                        </ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>2</ojp:LegId>
+                            <ojp:TransferLeg>
+                                <ojp:TransferMode>walk</ojp:TransferMode>
+                                <ojp:LegStart>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegStart>
+                                <ojp:LegEnd>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegEnd>
+                                <ojp:TimeWindowStart>2022-11-19T09:01:00Z</ojp:TimeWindowStart>
+                                <ojp:TimeWindowEnd>2022-11-19T09:34:00Z</ojp:TimeWindowEnd>
+                                <ojp:Duration>PT33M</ojp:Duration>
+                                <ojp:WalkDuration>PT5M</ojp:WalkDuration>
+                                <ojp:BufferTime>PT28M</ojp:BufferTime>
+                            </ojp:TransferLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>3</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">5</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T09:34:00Z
+                                        </ojp:TimetabledTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T09:53:00Z
+                                        </ojp:TimetabledTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>2</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:91036:Y:H:j22:5:9210</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:91036:Y</siri:LineRef>
+                                    <siri:DirectionRef>H</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>highSpeedRailService</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:11</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung
+                                                obligatorisch
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RR</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Globalpreis</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__GP</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">VELOS: Keine Beförderung
+                                                möglich
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__VN</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8718206
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:DestinationText>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">Train a grande vit.</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">9210</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">Schweizerische Bundesbahnen SBB
+                                        </ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>4</ojp:LegId>
+                            <ojp:TransferLeg>
+                                <ojp:TransferMode>remainInVehicle</ojp:TransferMode>
+                                <ojp:LegStart>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegStart>
+                                <ojp:LegEnd>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegEnd>
+                                <ojp:TimeWindowStart>2022-11-19T09:53:00Z</ojp:TimeWindowStart>
+                                <ojp:TimeWindowEnd>2022-11-19T09:56:00Z</ojp:TimeWindowEnd>
+                                <ojp:Duration>PT3M</ojp:Duration>
+                            </ojp:TransferLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>5</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T09:56:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T09:56:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8768600</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T12:38:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T12:38:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>3</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:9100R:Y:R:j22:82:9210</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:9100R:Y</siri:LineRef>
+                                    <siri:DirectionRef>R</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>highSpeedRailService</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:87_LEX</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Türen schliessen zwei Minuten
+                                                vor Abfahrt
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__TA</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">WLAN Hotspot verfügbar
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__WV</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Bar</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A___B</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung
+                                                obligatorisch
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RR</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Globalpreis</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__GP</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8768600
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                    </ojp:DestinationText>
+                                    <ojp:Deviation>true</ojp:Deviation>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">Train a grande vit.</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">9210</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">LEX</ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                    </ojp:Trip>
+                </ojp:TripResult>
+                <ojp:TripResult>
+                    <ojp:ResultId>ID-2EA3B7DA-C09E-482B-9CAF-D4439F71AA9D</ojp:ResultId>
+                    <ojp:Trip>
+                        <ojp:TripId>ID-2EA3B7DA-C09E-482B-9CAF-D4439F71AA9D</ojp:TripId>
+                        <ojp:Duration>PT5H0M</ojp:Duration>
+                        <ojp:StartTime>2022-11-19T09:04:00Z</ojp:StartTime>
+                        <ojp:EndTime>2022-11-19T14:04:00Z</ojp:EndTime>
+                        <ojp:Transfers>2</ojp:Transfers>
+                        <ojp:Distance>101623</ojp:Distance>
+                        <ojp:TripLeg>
+                            <ojp:LegId>1</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8507000</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Bern</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">7</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T09:04:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T09:04:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:PlannedQuay>
+                                        <ojp:Text xml:lang="de">9</ojp:Text>
+                                    </ojp:PlannedQuay>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T10:01:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T10:01:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>4</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:91061::R:j22:141:964</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:91061:</siri:LineRef>
+                                    <siri:DirectionRef>R</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>interRegionalRailService
+                                        </siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">IC</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">IC61</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:11</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung moeglich
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A___R</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Ruhezone in 1. Klasse</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RZ</ojp:Code>
+                                        <siri:NuisanceFacility>mobilePhoneFreeZone
+                                        </siri:NuisanceFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Familienzone ohne Spielplatz
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__FZ</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Businesszone in 1. Klasse
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__BZ</ojp:Code>
+                                        <siri:FareClassFacility>firstClass</siri:FareClassFacility>
+                                        <siri:PassengerCommsFacility>businessServices
+                                        </siri:PassengerCommsFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Gratis-Internet mit der App SBB
+                                                FreeSurf
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__FS</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Restaurant</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__WR</ojp:Code>
+                                        <siri:RefreshmentFacility>restaurantService
+                                        </siri:RefreshmentFacility>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Aussteigeseite: Rechts
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>ojp91061_R_InfoCall141_111055_1</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Aussteigeseite: Links</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>ojp91061_R_InfoCall141_106514_1</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8500010
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:DestinationText>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">InterCity</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">964</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">Schweizerische Bundesbahnen SBB
+                                        </ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>2</ojp:LegId>
+                            <ojp:TransferLeg>
+                                <ojp:TransferMode>walk</ojp:TransferMode>
+                                <ojp:LegStart>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegStart>
+                                <ojp:LegEnd>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegEnd>
+                                <ojp:TimeWindowStart>2022-11-19T10:01:00Z</ojp:TimeWindowStart>
+                                <ojp:TimeWindowEnd>2022-11-19T10:21:00Z</ojp:TimeWindowEnd>
+                                <ojp:Duration>PT20M</ojp:Duration>
+                                <ojp:WalkDuration>PT5M</ojp:WalkDuration>
+                                <ojp:BufferTime>PT15M</ojp:BufferTime>
+                            </ojp:TransferLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>3</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8500010</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Basel SBB</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T10:21:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T10:21:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                    <ojp:UnplannedStop>true</ojp:UnplannedStop>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T10:29:00Z
+                                        </ojp:TimetabledTime>
+                                        <ojp:EstimatedTime>2022-11-19T10:29:00Z</ojp:EstimatedTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>2</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:91001:Y:H:j22:62:96222</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:91001:Y</siri:LineRef>
+                                    <siri:DirectionRef>H</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>regionalRail</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">TER</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">TER</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:87_LEX</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Emplacement vélo gratuit
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>I_0LQ</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8721202
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Strasbourg</ojp:Text>
+                                    </ojp:DestinationText>
+                                    <ojp:Deviation>true</ojp:Deviation>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">Train Express Regional</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">96222</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">LEX</ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>4</ojp:LegId>
+                            <ojp:TransferLeg>
+                                <ojp:TransferMode>walk</ojp:TransferMode>
+                                <ojp:LegStart>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegStart>
+                                <ojp:LegEnd>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:LocationName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:LocationName>
+                                </ojp:LegEnd>
+                                <ojp:TimeWindowStart>2022-11-19T10:29:00Z</ojp:TimeWindowStart>
+                                <ojp:TimeWindowEnd>2022-11-19T10:58:00Z</ojp:TimeWindowEnd>
+                                <ojp:Duration>PT29M</ojp:Duration>
+                                <ojp:WalkDuration>PT6M</ojp:WalkDuration>
+                                <ojp:BufferTime>PT23M</ojp:BufferTime>
+                            </ojp:TransferLeg>
+                        </ojp:TripLeg>
+                        <ojp:TripLeg>
+                            <ojp:LegId>5</ojp:LegId>
+                            <ojp:TimedLeg>
+                                <ojp:LegBoard>
+                                    <siri:StopPointRef>8718206</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Mulhouse</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceDeparture>
+                                        <ojp:TimetabledTime>2022-11-19T10:58:00Z
+                                        </ojp:TimetabledTime>
+                                    </ojp:ServiceDeparture>
+                                    <ojp:Order>1</ojp:Order>
+                                </ojp:LegBoard>
+                                <ojp:LegAlight>
+                                    <siri:StopPointRef>8768600</siri:StopPointRef>
+                                    <ojp:StopPointName>
+                                        <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                    </ojp:StopPointName>
+                                    <ojp:ServiceArrival>
+                                        <ojp:TimetabledTime>2022-11-19T14:04:00Z
+                                        </ojp:TimetabledTime>
+                                    </ojp:ServiceArrival>
+                                    <ojp:Order>6</ojp:Order>
+                                </ojp:LegAlight>
+                                <ojp:Service>
+                                    <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
+                                    <ojp:JourneyRef>ojp:9100R:Y:R:j22:65:6704</ojp:JourneyRef>
+                                    <siri:LineRef>ojp:9100R:Y</siri:LineRef>
+                                    <siri:DirectionRef>R</siri:DirectionRef>
+                                    <ojp:Mode>
+                                        <ojp:PtMode>rail</ojp:PtMode>
+                                        <siri:RailSubmode>highSpeedRailService</siri:RailSubmode>
+                                        <ojp:Name>
+                                            <ojp:Text xml:lang="de">Zug</ojp:Text>
+                                        </ojp:Name>
+                                        <ojp:ShortName>
+                                            <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                        </ojp:ShortName>
+                                    </ojp:Mode>
+                                    <ojp:PublishedLineName>
+                                        <ojp:Text xml:lang="de">TGV</ojp:Text>
+                                    </ojp:PublishedLineName>
+                                    <ojp:OperatorRef>ojp:87_LEX</ojp:OperatorRef>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Türen schliessen zwei Minuten
+                                                vor Abfahrt
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__TA</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">WLAN Hotspot verfügbar
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__WV</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Bar</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A___B</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Platzreservierung
+                                                obligatorisch
+                                            </ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__RR</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:Attribute>
+                                        <ojp:Text>
+                                            <ojp:Text xml:lang="de">Globalpreis</ojp:Text>
+                                        </ojp:Text>
+                                        <ojp:Code>A__GP</ojp:Code>
+                                    </ojp:Attribute>
+                                    <ojp:DestinationStopPointRef>8768600
+                                    </ojp:DestinationStopPointRef>
+                                    <ojp:DestinationText>
+                                        <ojp:Text xml:lang="de">Paris Gare de Lyon</ojp:Text>
+                                    </ojp:DestinationText>
+                                </ojp:Service>
+                                <ojp:Extension>
+                                    <ojp:TransportTypeName>
+                                        <ojp:Text xml:lang="de">Train a grande vit.</ojp:Text>
+                                    </ojp:TransportTypeName>
+                                    <ojp:PublishedJourneyNumber>
+                                        <ojp:Text xml:lang="de">6704</ojp:Text>
+                                    </ojp:PublishedJourneyNumber>
+                                    <ojp:OperatorName>
+                                        <ojp:Text xml:lang="de">LEX</ojp:Text>
+                                    </ojp:OperatorName>
+                                </ojp:Extension>
+                            </ojp:TimedLeg>
+                        </ojp:TripLeg>
+                    </ojp:Trip>
+                </ojp:TripResult>
+            </ojp:OJPTripDelivery>
+        </siri:ServiceDelivery>
+    </siri:OJPResponse>
+</siri:OJP>
