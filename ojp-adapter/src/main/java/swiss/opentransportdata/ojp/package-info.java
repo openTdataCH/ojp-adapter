@@ -18,6 +18,9 @@
  * Library to access Open Journey Planner (OJP) Public Transportation router.
  * <p>
  * Design goal: Easy Adapter to assist dealing with OJP 1.0 XML based requests and responses.
+ * <ul>
+ *     <li>v1 relates to vdv.OJP v1.0.1 xsd</li>
+ * </ul>
  *
  * @see <a href="https://opentransportdata.swiss/de/cookbook/">OJP Cookbook</a>
  * @see <a href="https://github.com/openTdataCH/opj-adapter>Github repository of this Software</a>
