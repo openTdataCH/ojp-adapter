@@ -7,7 +7,7 @@ public Open JourneyPlanner [OJP@Switzerland](https://opentransportdata.swiss/de/
 complex [VDV OJP v1.0.1 Schema](https://github.com/VDVde/OJP) by Java POJOs:
 
 * the OJP.xsd is transformed into a JAVA POJO (by JAXB) by
-    * open-source [blinksemlabs](https://github.com/bliksemlabs/ojp-java-model) or Maven
+    * open-source [bliksemlabs](https://github.com/bliksemlabs/ojp-java-model) or Maven
     * dependency [ojp-java-model](https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1)
 * Documentation of swiss [OJP cookbook](https://opentransportdata.swiss/de/cookbook/)
 
