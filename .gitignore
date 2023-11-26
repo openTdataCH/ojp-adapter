@@ -1,0 +1,13 @@
+target/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+#secrets
+ojp-adapter-integration/src/main/resources/ojp.properties
+
+application-local.yml
+logback-local.xml
