@@ -22,7 +22,7 @@
  *     <li>v1 relates to vdv.OJP v1.0.1 xsd</li>
  * </ul>
  *
- * @see <a href="https://opentransportdata.swiss/de/cookbook/">OJP Cookbook</a>
+ * @see <a href="https://opentransportdata.swiss/de/dataset/ojp2020">OJP Manual (swiss passive instance)</a>
  * @see <a href="https://github.com/openTdataCH/opj-adapter>Github repository of this Software</a>
  */
 
