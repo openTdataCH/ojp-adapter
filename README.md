@@ -5,7 +5,7 @@ Licence: [Apache License, Version 2.0](https://opensource.org/license/apache-2-0
 This is a simple OJP-Adapter _library_ to request Public-Transportation queries against the **swiss public Open JourneyPlanner [OJP@Switzerland](https://opentransportdata.swiss/de/dataset/ojp2020)** abstracting the complex [VDV OJP v1.0.1 Schema](https://github.com/VDVde/OJP) by Java POJOs:
 
 * the OJP.xsd is transformed into a JAVA POJO (by JAXB) by
-    * open-source [blinksemlabs](https://github.com/bliksemlabs/ojp-java-model) or Maven
+    * open-source [bliksemlabs](https://github.com/bliksemlabs/ojp-java-model) or Maven
     * dependency [ojp-java-model](https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1)
 * Documentation of swiss [OJP cookbook](https://opentransportdata.swiss/de/cookbook/)
 
