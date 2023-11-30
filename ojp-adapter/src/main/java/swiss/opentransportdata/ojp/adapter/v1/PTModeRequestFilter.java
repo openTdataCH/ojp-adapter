@@ -16,7 +16,7 @@
 package swiss.opentransportdata.ojp.adapter.v1;
 
 import de.vdv.ojp.PtModeFilterStructure;
-import eu.cen.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestFilter;
+import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestFilter;
 
 /**
  * OJP v1.x filter.

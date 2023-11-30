@@ -15,11 +15,11 @@
  */
 package swiss.opentransportdata.ojp.adapter.v1;
 
-import eu.cen.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestFilter;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestFilter;
 
 @Data
 @Builder
