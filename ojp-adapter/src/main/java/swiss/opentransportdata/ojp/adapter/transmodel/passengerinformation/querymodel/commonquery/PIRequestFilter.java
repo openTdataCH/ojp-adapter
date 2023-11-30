@@ -1,4 +1,4 @@
-package eu.cen.transmodel.v6.part6.passengerinformation.querymodel.commonquery;
+package swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery;
 
 /**
  * Search-Filter to apply for public transport requests.

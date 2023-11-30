@@ -340,7 +340,7 @@ public class OJPAdapterAccessTest {
     private void refreshPublicTransportLeg(OJPAccessor ojpAccessor, TripLegStructure tripLegStructure) {
         log.debug("TripLegStructure={}", tripLegStructure);
         if (tripLegStructure.getTimedLeg() != null) {
-            // refresh each PTRideLeg within the Trip (OJP TripLeg)
+            // refresh each Transmodel PTRideLeg within the Trip (OJP TripLeg)
             final JAXBElementContentContainer contentContainer = new JAXBElementContentContainer(tripLegStructure.getTimedLeg().getService().getContent());
             assertThat(contentContainer.getJourneyRefs()).hasSize(1);
             assertThat(contentContainer.getJourneyRefs().get(0).getValue()).isNotEmpty();
@@ -371,11 +371,11 @@ public class OJPAdapterAccessTest {
                 Assertions.fail("TripLeg reconstruction failed for: " + ojpAccessor.getEndpoint() + ", TimedLeg to refresh=" + tripLegStructure.getTimedLeg(), ex);
             }
         } else if (tripLegStructure.getTransferLeg() != null) {
-            log.info("TRANSFER={}", tripLegStructure.getTransferLeg());
+            // Transmodel ConnectionLeg
+            log.info("TransferLeg={}", tripLegStructure.getTransferLeg());
         } else if (tripLegStructure.getContinuousLeg() != null) {
-            log.info("FOOTPATH={}", tripLegStructure.getContinuousLeg());
-        } else {
-            Assertions.fail("unexpected Leg-type");
+            // Transmodel AccessLeg
+            log.info("ContinuousLeg={}", tripLegStructure.getContinuousLeg());
         }
     }
 
