@@ -39,7 +39,7 @@ The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if config
 ## Run it
 1. Download repository
 2. mvn clean install
-3. copy ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties to ojp.properties and add your own key for SKI+ OJP Instance from [opentransportdata.swiss **passive instance**](https://opentransportdata.swiss/de/dataset/ojp2020)
+3. copy ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties to ojp.properties and add your own key for SKI+ OJP Instance from [opentransportdata.swiss **passive instance**](https://opentransportdata.swiss/de/dataset/ojp2020) _"Manage the API key"_
 4. run OJPAdapterAccessTest
 
 Remark:
