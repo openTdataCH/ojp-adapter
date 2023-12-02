@@ -32,7 +32,7 @@ intuitive understanding as well).
   * Semantic model
     description [OJP - Open API for distributed Journey Planning by jmaerki](https://jmaerki.github.io/OJP/generated/OJP.html)
 
-The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if configured well:
+The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if configured well (by means your own access token):
 
 * use _OJPAadapter_ for raw native XML handling in conversation with OJP protocol.
 
