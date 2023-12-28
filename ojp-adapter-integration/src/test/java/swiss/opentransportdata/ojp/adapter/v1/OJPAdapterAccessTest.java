@@ -60,7 +60,7 @@ import swiss.opentransportdata.ojp.configuration.OJPAccessor;
  */
 @Slf4j
 @OJPTestProfile
-public class OJPAdapterAccessTest {
+class OJPAdapterAccessTest {
 
     @Autowired
     private OJPAdapter ojpAdapter;

@@ -23,27 +23,58 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <springframework.version>6.0.13</springframework.version>
+        <springframework.version>6.1.2</springframework.version>
         <lombok.version>1.18.30</lombok.version>
-        <logback-classic.version>1.4.11</logback-classic.version>
 
-        <junit-jupiter.version>5.8.2</junit-jupiter.version>
-        <assertj-core.version>3.18.1</assertj-core.version>
+        <org.slf4j.version>2.0.9</org.slf4j.version>
+        <ch.qos.logback-classic.version>1.4.14</ch.qos.logback-classic.version>
+
+        <junit-jupiter.version>5.10.1</junit-jupiter.version>
+        <assertj-core.version>3.24.2</assertj-core.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <scope>provided</scope>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${ch.qos.logback-classic.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit-jupiter.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj-core.version}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <!-- for all modules -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
