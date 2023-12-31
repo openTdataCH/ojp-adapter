@@ -54,7 +54,7 @@ import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContai
 import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 
 /**
- * Integration-Test.
+ * Integration-Test..
  * <p>
  * Data may differ between OJP passive and active instance.
  */
@@ -63,7 +63,8 @@ import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 class OJPAdapterAccessTest {
 
     @Autowired
-    private OJPAdapter ojpAdapter;
+    private OJPAdapter
+            ojpAdapter;
 
     @Autowired
     private OJPAdapterServiceConfiguration configuration;
@@ -300,7 +301,7 @@ class OJPAdapterAccessTest {
         // some kind of overview?
         final TripResponseContextStructure tripResponseContextStructure = ojpTripDeliveryStructure.getTripResponseContext();
         assertThat(tripResponseContextStructure).as("<ojp:TripResponseContext>").isNotNull();
-        assertThat(tripResponseContextStructure.getPlaces().getLocation()).as("<siri:StopPointRef>8507000</siri:StopPointRef>").hasSizeGreaterThanOrEqualTo(2);
+        assertThat(tripResponseContextStructure.getPlaces().getLocation()).as("<siri:StopPointRef>").hasSizeGreaterThanOrEqualTo(2);
         tripResponseContextStructure.getPlaces().getLocation().forEach(location -> {
             if (tripResponseContextStructure.getSituations() != null) {
                 SituationsStructure situationsStructure = tripResponseContextStructure.getSituations();
