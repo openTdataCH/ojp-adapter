@@ -105,12 +105,12 @@ public class OJPFactory {
 
     /**
      * @param initialLocationInputStructure for e.g. by-name or by-coordinates
-     * @param filter
+     * @param filter search arguments
      * @return OJP object to request places
      * @see <a href="https://opentransportdata.swiss/de/cookbook/ojplocationinformationrequest/">OJP LocationInformationRequest</a>
      */
     @NonNull
-    public OJP createOjpWithLocationInformationRequest(@NonNull Locale locale, @NonNull InitialLocationInputStructure initialLocationInputStructure, @NonNull PlaceRequestFilter filter) {
+    public OJP createOjpWithLocationInformationRequest(@NonNull InitialLocationInputStructure initialLocationInputStructure, @NonNull PlaceRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
 
         final OJPLocationInformationRequestStructure ojpLocationInformationRequestStructure = new OJPLocationInformationRequestStructure();
@@ -140,11 +140,11 @@ public class OJPFactory {
         // placeParamStructure.setContinueAt();
         ojpLocationInformationRequestStructure.setRestrictions(placeParamStructure);
 
-        return createSingleRequest(dateTime, locale, objectFactory.createOJPLocationInformationRequest(ojpLocationInformationRequestStructure));
+        return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactory.createOJPLocationInformationRequest(ojpLocationInformationRequestStructure));
     }
 
     @NonNull
-    public OJP createOjpWithTripRequest(@NonNull Locale locale, @NonNull TripRequestFilter filter) {
+    public OJP createOjpWithTripRequest(@NonNull TripRequestFilter filter) {
         final ZonedDateTime timestamp = createTimestamp();
 
         final OJPTripRequestStructure ojpTripRequestStructure = new OJPTripRequestStructure();
@@ -189,7 +189,7 @@ public class OJPFactory {
 
         ojpTripRequestStructure.setParams(tripParamStructure);
 
-        return createSingleRequest(timestamp, locale, objectFactory.createOJPTripRequest(ojpTripRequestStructure));
+        return createSingleRequest(timestamp, filter.getPreferredLanguage(), objectFactory.createOJPTripRequest(ojpTripRequestStructure));
     }
 
     static PlaceContextStructure createPlaceContextStructure(String stopPlaceUic, ZonedDateTime departureArrivalDateTime) {
@@ -206,14 +206,14 @@ public class OJPFactory {
 
     /**
      * @param requestTimestamp
-     * @param locale
+     * @param preferredLanguage
      * @param jaxbElement specific query params
      * @return complete OJP request
      */
-    OJP createSingleRequest(ZonedDateTime requestTimestamp, Locale locale, JAXBElement<? extends AbstractOJPServiceRequestStructure> jaxbElement) {
+    OJP createSingleRequest(ZonedDateTime requestTimestamp, Locale preferredLanguage, JAXBElement<? extends AbstractOJPServiceRequestStructure> jaxbElement) {
         final OJP ojp = new OJP();
         ojp.setOJPRequest(new OJPRequestStructure());
-        ojp.getOJPRequest().setServiceRequest(createServiceRequest(requestTimestamp, locale));
+        ojp.getOJPRequest().setServiceRequest(createServiceRequest(requestTimestamp, preferredLanguage));
 
         // singleton or collection possible
         ojp.getOJPRequest().getServiceRequest().withAbstractFunctionalServiceRequest(jaxbElement);
@@ -222,10 +222,10 @@ public class OJPFactory {
 
     /**
      * @param requestTimestamp timestamp for request
-     * @param locale Accept-Language
+     * @param preferredLanguage Accept-Language
      * @return General Service container for an OJP request
      */
-    ServiceRequest createServiceRequest(ZonedDateTime requestTimestamp, Locale locale) {
+    ServiceRequest createServiceRequest(ZonedDateTime requestTimestamp, Locale preferredLanguage) {
         final ServiceRequest serviceRequest = new ServiceRequest();
         serviceRequest.setRequestTimestamp(requestTimestamp);
         final ParticipantRefStructure participantRefStructure = new ParticipantRefStructure();
@@ -238,7 +238,7 @@ public class OJPFactory {
          */
 
         final ServiceRequestContextStructure serviceRequestContextStructure = new ServiceRequestContextStructure();
-        serviceRequestContextStructure.setLanguage(locale.getLanguage());
+        serviceRequestContextStructure.setLanguage(preferredLanguage.getLanguage());
         serviceRequestContextStructure.setRequestTimeout(Duration.ofMillis(29000));
         serviceRequestContextStructure.setDistanceUnits("m");
         // serviceRequestContextStructure.setGmlCoordinateFormat(???);
@@ -249,7 +249,7 @@ public class OJPFactory {
     }
 
     @NonNull
-    public OJP createOjpWithTripInfoRequest(@NonNull Locale locale, @NonNull TripLegRequestFilter filter) {
+    public OJP createOjpWithTripInfoRequest(@NonNull TripLegRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
 
         final TripInfoParamStructure tripInfoParamStructure = new TripInfoParamStructure();
@@ -280,7 +280,7 @@ public class OJPFactory {
         // ojpTripInfoRequestStructure.setTimeOfOperation();
         // ojpTripInfoRequestStructure.setVehicleRef();
 
-        return createSingleRequest(dateTime, locale, objectFactory.createOJPTripInfoRequest(ojpTripInfoRequestStructure));
+        return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactory.createOJPTripInfoRequest(ojpTripInfoRequestStructure));
     }
 
     /**
@@ -297,7 +297,7 @@ public class OJPFactory {
     }
 
     @NonNull
-    public OJP createOjpWithStopEventRequest(@NonNull Locale locale, @NonNull StopEventRequestFilter filter) {
+    public OJP createOjpWithStopEventRequest(@NonNull StopEventRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
         final StopEventParamStructure stopEventParamStructure = new StopEventParamStructure();
 
@@ -332,6 +332,6 @@ public class OJPFactory {
         ojpStopEventRequestStructure.setParams(stopEventParamStructure);
         ojpStopEventRequestStructure.setLocation(createPlaceContextStructure(filter.getStopPlaceReference(), filter.getDepartureArrivalDateTime()));
 
-        return createSingleRequest(dateTime, locale, objectFactory.createOJPStopEventRequest(ojpStopEventRequestStructure));
+        return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactory.createOJPStopEventRequest(ojpStopEventRequestStructure));
     }
 }

@@ -3,7 +3,7 @@ package swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.quer
 /**
  * Search-Filter to apply for public transport requests.
  * <p>
- * Transmodel:
+ * Transmodel: eu.cen.transmodel V6::Part 6::Passenger information::query model::common query
  * <ul>
  *     <li>"PI REQUEST FILTER" Filtering criteria to be used when computing the results for a PI REQUEST.</li>
  *     <li>"PI REQUEST" A request for a specific information on public transport, expressed during a PI REQUEST.</li>

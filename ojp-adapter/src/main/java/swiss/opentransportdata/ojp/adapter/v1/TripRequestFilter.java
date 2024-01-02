@@ -19,9 +19,11 @@ import de.vdv.ojp.PtModeFilterStructure;
 import de.vdv.ojp.TripViaStructure;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
 /**
  * A filter to apply for a Trip search.
@@ -34,10 +36,12 @@ import lombok.NonNull;
  */
 @Data
 @Builder
-public class TripRequestFilter implements PTModeRequestFilter {
+public class TripRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
 
     static final int TRANSFER_LIMIT_MAX = 11;
     static final int WALK_SPEED_DEFAULT = 100;
+
+    Locale preferredLanguage;
 
     Integer limit;
 

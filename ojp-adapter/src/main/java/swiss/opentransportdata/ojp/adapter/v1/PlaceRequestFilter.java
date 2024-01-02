@@ -17,10 +17,12 @@ package swiss.opentransportdata.ojp.adapter.v1;
 
 import de.vdv.ojp.PlaceTypeEnumeration;
 import de.vdv.ojp.PtModeFilterStructure;
+import java.util.Locale;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
 /**
  * A filter to apply for a Place request (Location is still an ambiguous OJP 1.x noun, though Transmodel delivers PLACE).
@@ -33,9 +35,11 @@ import lombok.NonNull;
  */
 @Data
 @Builder
-public class PlaceRequestFilter implements PTModeRequestFilter {
+public class PlaceRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
 
-    private static final int LIMIT_DEFAULT = 10;
+    public static final int LIMIT_DEFAULT = 10;
+
+    Locale preferredLanguage;
 
     @Builder.Default
     @NonNull
@@ -63,6 +67,7 @@ public class PlaceRequestFilter implements PTModeRequestFilter {
      */
     Integer radius;
 
+    // TODO replace by GeoJSON Point
     public static class Point {
 
         private final Double[] coordinates;
