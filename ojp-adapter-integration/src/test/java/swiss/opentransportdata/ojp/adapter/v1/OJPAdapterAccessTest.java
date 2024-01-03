@@ -54,7 +54,7 @@ import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContai
 import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 
 /**
- * Integration-Test..
+ * Integration-Test.
  * <p>
  * Data may differ between OJP passive and active instance.
  */
@@ -63,8 +63,7 @@ import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 class OJPAdapterAccessTest {
 
     @Autowired
-    private OJPAdapter
-            ojpAdapter;
+    private OJPAdapter ojpAdapter;
 
     @Autowired
     private OJPAdapterServiceConfiguration configuration;
