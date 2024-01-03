@@ -6,10 +6,10 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <!-- for %mdc{...} with possible variables and some general information -->
-            <pattern>timestamp=%d loglevel=%-5p class=%logger{36} Client-ID=%mdc{Client-ID:--}
-                Request-ID=%mdc{Request-ID:--} message=%msg%n
-            </pattern>
+            <!-- production like for SPLUNK etc -->
+            <pattern>timestamp=%d loglevel=%-5p class=%logger{36} message=%msg%n</pattern>
+            <!-- local host easy readable -->
+            <!--pattern>%highlight(%-5level) %logger{36} %msg %n</pattern-->
         </encoder>
         <withJansi>false</withJansi>
     </appender>
