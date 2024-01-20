@@ -1,0 +1,163 @@
+/*
+ * Copyright 2024 Peter Hirzel
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package swiss.opentransportdata.ojp.adapter.service.controller;
+
+import de.vdv.ojp.InternationalTextStructure;
+import de.vdv.ojp.OJPLocationInformationDeliveryStructure;
+import de.vdv.ojp.PlaceStructure;
+import de.vdv.ojp.PointOfInterestCategoryStructure;
+import de.vdv.ojp.StopPlaceStructure;
+import de.vdv.ojp.model.LocationStructure;
+import de.vdv.ojp.model.OJP;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
+import swiss.opentransportdata.ojp.adapter.model.place.response.Address;
+import swiss.opentransportdata.ojp.adapter.model.place.response.Place;
+import swiss.opentransportdata.ojp.adapter.model.place.response.PlaceResponse;
+import swiss.opentransportdata.ojp.adapter.model.place.response.PointOfInterest;
+import swiss.opentransportdata.ojp.adapter.model.place.response.PointOfInterestCategory;
+import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
+import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
+import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
+
+/**
+ * @author Peter Hirzel
+ */
+@Slf4j
+@Component("OJPPlaceConverter")
+public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
+
+    PlaceConverter() {
+        super();
+    }
+
+    /**
+     * Converter Function
+     */
+    @Override
+    public PlaceResponse convertToDTO(OJP ojpResponse) {
+        if ((ojpResponse == null) || (ojpResponse.getOJPResponse() == null)) {
+            throw new OJPException("ojpResponse must not be null");
+        }
+        return mapToPlaceResponse(ojpResponse);
+    }
+
+    /**
+     * @param ojpResponse
+     * @return
+     */
+    private PlaceResponse mapToPlaceResponse(OJP ojpResponse) throws OJPException {
+        log.debug("Converting a response with OJP::version={}", ojpResponse.getVersion());
+
+        final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
+
+        final List<Place> places = new ArrayList<>();
+        // "<ojp:Location>"
+        ojpLocationInformationDeliveryStructure.getLocation().forEach(ojpLocation -> {
+            final PlaceStructure placeStructure = ojpLocation.getLocation();
+            if (placeStructure.getStopPlace() != null) {
+                final StopPlaceStructure stopPlaceStructure = placeStructure.getStopPlace();
+                log.debug("non StopPlace: {}", stopPlaceStructure);
+                places.add(createStopPlace(stopPlaceStructure.getStopPlaceRef().getValue(),
+                    placeStructure.getStopPlace().getStopPlaceName(),
+                    placeStructure.getGeoPosition()));
+            } else if (placeStructure.getPointOfInterest() != null) {
+                log.debug("value={}", placeStructure.getPointOfInterest());
+                places.add(createPointOfInterest(placeStructure.getPointOfInterest().getPointOfInterestCode(),
+                    OJPAdapter.getText(placeStructure.getPointOfInterest().getPointOfInterestName()),
+                    placeStructure.getPointOfInterest().getPointOfInterestCategory(),
+                    placeStructure.getGeoPosition()));
+            } else if (placeStructure.getAddress() != null) {
+                log.debug("value={}", placeStructure.getAddress());
+                places.add(Address.builder()
+                    .type(Address.class.getSimpleName())
+                    .id(placeStructure.getAddress().getAddressCode())
+                    .name(/*TODO prefix .getPostCode() ?*/ OJPAdapter.getText(placeStructure.getAddress().getAddressName()))
+                    .centroid(toPoint(placeStructure.getGeoPosition()))
+                    /*
+                    .getTopographicPlaceName()
+                    .getTopographicPlaceRef()
+                     */
+                    .build());
+            } else {
+                // TopographicPlace
+                throw new OJPException("untreated PlaceRef: " + placeStructure);
+            }
+        });
+
+        return PlaceResponse.builder()
+            .places(places)
+            .build();
+    }
+
+    static StopPlace createStopPlace(String id, InternationalTextStructure internationalTextStructure, LocationStructure geoPosition) {
+        return createStopPlace(id,
+            OJPAdapter.getText(internationalTextStructure),
+            geoPosition);
+    }
+
+    private static StopPlace createStopPlace(String id, String name, LocationStructure geoPosition) {
+        return StopPlace.builder()
+            .type(StopPlace.class.getSimpleName())
+            .id(id)
+            .name(name)
+            //.province(locationV2.getCantonCH())
+            .centroid(toPoint(geoPosition))
+            /*
+                .distanceToSearchPosition(locationV2.getDistance())
+                .weighting(locationV2.getWeight())
+             */
+            /*TODO other like:
+             TopographicPlaceRefStructure,
+             wheelchairAccessible
+             address
+             */
+            .build();
+    }
+
+    static PointOfInterest createPointOfInterest(String poiCode, String name, List<PointOfInterestCategoryStructure> pointOfInterestCategoryStructures, LocationStructure locationStructure) {
+        Set<PointOfInterestCategory> categories = pointOfInterestCategoryStructures.stream()
+            // categories: depends on whether OJP uses ROKAS journey-poi service (current PoC), OSM or other
+            .map(pointOfInterestCategoryStructure -> PointOfInterestCategory.builder()
+                .type(pointOfInterestCategoryStructure.getOsmTag().get(0).getTag())
+                .name(pointOfInterestCategoryStructure.getOsmTag().get(0).getValue())
+                .build())
+            .collect(Collectors.toSet());
+        return PointOfInterest.builder()
+            .type(PointOfInterest.class.getSimpleName())
+            .id(poiCode)
+            .name(name)
+            .centroid(toPoint(locationStructure))
+            .categories(categories)
+            .build();
+    }
+
+    static Point toPoint(LocationStructure locationStructure) {
+        if (locationStructure == null) {
+            return null;
+        }
+
+        return new Point(locationStructure.getLongitude().doubleValue(),
+            locationStructure.getLatitude().doubleValue());
+    }
+}

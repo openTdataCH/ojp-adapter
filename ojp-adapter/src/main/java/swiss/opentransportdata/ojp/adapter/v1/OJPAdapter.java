@@ -48,8 +48,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.v1.converter.OJPFactory;
-import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 
 /**
  * Making access to OJP v1.x XML API easier.

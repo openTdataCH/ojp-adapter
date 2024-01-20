@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.configuration;
+package swiss.opentransportdata.ojp.adapter.configuration;
 
 import lombok.Builder;
 import lombok.Value;

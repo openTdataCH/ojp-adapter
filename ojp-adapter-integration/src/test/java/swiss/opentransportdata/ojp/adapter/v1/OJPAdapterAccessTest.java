@@ -48,10 +48,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.OJPTestProfile;
+import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAdapterServiceConfiguration;
 import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter.Point;
 import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
-import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 
 /**
  * Integration-Test..
@@ -412,7 +412,13 @@ class OJPAdapterAccessTest {
         assertThat(ojpStopEventDeliveryStructure.getStopEventResult()).isNotEmpty();
         for (StopEventResultStructure stopEventResultStructure : ojpStopEventDeliveryStructure.getStopEventResult()) {
             StopEventStructure stopEventStructure = stopEventResultStructure.getStopEvent();
-            assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue());
+            final String stopPlaceId = stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue();
+            if (stopPlaceId.startsWith("ch:") && stopPlaceId.contains(":sloid:")) {
+                //TODO assert 85 -> "ch:"; last 4 UIC numbers -> :xxxx:
+                log.info("OJP sends SLOID={} for requested StopPlace::id={}", stopPlaceId, departureStopPlaceReference);
+            } else {
+                assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopPlaceId);
+            }
             log.info("routeIndex={},  quayAimed={} departure={}", stopEventStructure.getThisCall().getCallAtStop().getOrder(),
                 OJPAdapter.getText(stopEventStructure.getThisCall().getCallAtStop().getPlannedQuay()),
                 stopEventStructure.getThisCall().getCallAtStop().getServiceDeparture().getTimetabledTime());
