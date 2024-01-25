@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>ojp-adapter</artifactId>
+    <description>Adapted to access OJP and response raw OJP XML format.</description>
 
     <properties/>
 
@@ -18,11 +19,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${springframework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
             <version>${springframework.version}</version>
         </dependency>
         <dependency>
@@ -36,12 +32,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>ojp-adapter-service</artifactId>
+    <description>Sample OpenApi 3/Swagger facade with RESTful endpoints to access OJP.</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

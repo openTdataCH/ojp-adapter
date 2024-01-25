@@ -29,9 +29,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * </ul>
  */
 @Configuration
-@PropertySource(value = "file:../ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties")
+@PropertySource(value = "file:../ojp-adapter-test/src/main/resources/ojp-SAMPLE.properties")
 // override sample with local settings where needed
-@PropertySource(value = "file:../ojp-adapter-integration/src/main/resources/ojp.properties", ignoreResourceNotFound = true)
+@PropertySource(value = "file:../ojp-adapter-test/src/main/resources/ojp.properties", ignoreResourceNotFound = true)
 public class EnvironmentProperties {
 
     @Bean
