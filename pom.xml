@@ -15,7 +15,7 @@
 
     <modules>
         <module>ojp-adapter</module>
-        <module>ojp-adapter-integration</module>
+        <module>ojp-adapter-test</module>
         <module>ojp-adapter-model</module>
         <module>ojp-adapter-service</module>
     </modules>

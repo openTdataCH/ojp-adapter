@@ -10,7 +10,8 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>ojp-adapter-integration</artifactId>
+    <artifactId>ojp-adapter-test</artifactId>
+    <description>Test (mainly integration-tests) for this project.</description>
 
     <properties/>
 
@@ -18,11 +19,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${springframework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
             <version>${springframework.version}</version>
         </dependency>
 
