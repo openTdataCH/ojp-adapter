@@ -16,14 +16,18 @@
 package swiss.opentransportdata.ojp.adapter.v1;
 
 import java.time.LocalDate;
+import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestFilter;
+import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
 @Data
 @Builder
-public class TripLegRequestFilter implements PIRequestFilter {
+public class TripLegRequestFilter implements PIRequestPolicy, PIRequestFilter {
+
+    Locale preferredLanguage;
 
     /**
      * PTRideLeg::id, for e.g. "ojp:91037::R:j22:527:3183".

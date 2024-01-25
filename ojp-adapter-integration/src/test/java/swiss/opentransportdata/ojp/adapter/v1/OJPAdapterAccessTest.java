@@ -48,10 +48,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.OJPTestProfile;
+import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAdapterServiceConfiguration;
 import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter.Point;
 import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
-import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 
 /**
  * Integration-Test.
@@ -70,8 +70,9 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_PlaceType_ALL() throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(configuration.ojpAccessPassive(), Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestPlaces(configuration.ojpAccessPassive(),
             PlaceRequestFilter.builder()
+                .preferredLanguage(Locale.GERMAN)
                 .placeTypes(Set.of(PlaceTypeEnumeration.STOP, PlaceTypeEnumeration.POI, PlaceTypeEnumeration.ADDRESS))
                 .placeName("Olten")
                 .build());
@@ -85,12 +86,13 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_active_StopPlace() throws OJPException {
-        requestStopPlaces(configuration.ojpAccessActive(), "Bern");
+        requestStopPlaces(configuration.ojpAccessActive(), "Zürich HB");
     }
 
     private void requestStopPlaces(OJPAccessor ojpAccessor, String nameMatch) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
+                .preferredLanguage(Locale.FRENCH)
                 .placeName(nameMatch)
                 .build());
         assertResponseOJP(ojpResponse);
@@ -123,12 +125,13 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_active_PointOfInterest() throws OJPException {
-        requestPointOfInterests(configuration.ojpAccessActive(), "Museum");
+        requestPointOfInterests(configuration.ojpAccessActive(), "Musée");
     }
 
     private void requestPointOfInterests(OJPAccessor ojpAccessor, String nameMatch) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
+                .preferredLanguage(Locale.ITALIAN)
                 .placeTypes(Set.of(PlaceTypeEnumeration.POI))
                 .placeName(nameMatch)
                 .build());
@@ -157,12 +160,13 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_active_Address() throws OJPException {
-        requestAddresses(configuration.ojpAccessActive(), "Wylerringstrasse");
+        requestAddresses(configuration.ojpAccessActive(), "Schwarztorstrasse");
     }
 
     private void requestAddresses(OJPAccessor accessor, String nameMatch) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(accessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestPlaces(accessor,
             PlaceRequestFilter.builder()
+                .preferredLanguage(Locale.ENGLISH)
                 .placeTypes(Set.of(PlaceTypeEnumeration.ADDRESS))
                 .placeName(nameMatch)
                 .build());
@@ -205,8 +209,9 @@ class OJPAdapterAccessTest {
     }
 
     private void requestStopPlacesByNameAndCoordinate(OJPAccessor ojpAccessor) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
+                .preferredLanguage(Locale.GERMAN)
                 .placeTypes(Set.of(PlaceTypeEnumeration.STOP))
                 .placeName("Oerlikon")
                 .centroid(new Point(8.544112, 47.411527))
@@ -243,8 +248,9 @@ class OJPAdapterAccessTest {
     }
 
     private void requestStopPlacesByCoordinatesAndRadius(OJPAccessor ojpAccessor) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
+                .preferredLanguage(Locale.GERMAN)
                 .placeTypes(Set.of(PlaceTypeEnumeration.STOP))
                 .centroid(new Point(8.544112, 47.411527))
                 .radius(300)
@@ -283,8 +289,9 @@ class OJPAdapterAccessTest {
 
     private void requestTrips(OJPAccessor ojpAccessor, String origin, String destination) throws OJPException {
         // request trips
-        final OJP ojpResponse = ojpAdapter.requestTrips(ojpAccessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestTrips(ojpAccessor,
             TripRequestFilter.builder()
+                .preferredLanguage(Locale.GERMAN)
                 .origin(origin)
                 .destination(destination)
                 .includeAccessibility(true)
@@ -354,8 +361,9 @@ class OJPAdapterAccessTest {
 
             try {
                 final OJP ojpResponse = ojpAdapter
-                    .requestTripLegByJourneyReference(ojpAccessor, Locale.GERMAN,
+                    .requestTripLegByJourneyReference(ojpAccessor,
                         TripLegRequestFilter.builder()
+                            .preferredLanguage(Locale.GERMAN)
                             .journeyReference(journeyRefTimedLeg)
                             .operatingDay(operationDay)
                             .build());
@@ -391,8 +399,9 @@ class OJPAdapterAccessTest {
     }
 
     private void requestDepartures(OJPAccessor ojpAccessor, String departureStopPlaceReference) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, Locale.GERMAN,
+        final OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor,
             StopEventRequestFilter.builder()
+                .preferredLanguage(Locale.GERMAN)
                 .stopPlaceReference(departureStopPlaceReference)
                 .limit(5)
                 .build());
@@ -402,7 +411,13 @@ class OJPAdapterAccessTest {
         assertThat(ojpStopEventDeliveryStructure.getStopEventResult()).isNotEmpty();
         for (StopEventResultStructure stopEventResultStructure : ojpStopEventDeliveryStructure.getStopEventResult()) {
             StopEventStructure stopEventStructure = stopEventResultStructure.getStopEvent();
-            assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue());
+            final String stopPlaceId = stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue();
+            if (stopPlaceId.startsWith("ch:") && stopPlaceId.contains(":sloid:")) {
+                //TODO assert 85 -> "ch:"; last 4 UIC numbers -> :xxxx:
+                log.info("OJP sends SLOID={} for requested StopPlace::id={}", stopPlaceId, departureStopPlaceReference);
+            } else {
+                assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopPlaceId);
+            }
             log.info("routeIndex={},  quayAimed={} departure={}", stopEventStructure.getThisCall().getCallAtStop().getOrder(),
                 OJPAdapter.getText(stopEventStructure.getThisCall().getCallAtStop().getPlannedQuay()),
                 stopEventStructure.getThisCall().getCallAtStop().getServiceDeparture().getTimetabledTime());

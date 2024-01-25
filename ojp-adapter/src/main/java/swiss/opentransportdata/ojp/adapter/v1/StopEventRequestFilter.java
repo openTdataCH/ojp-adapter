@@ -17,9 +17,11 @@ package swiss.opentransportdata.ojp.adapter.v1;
 
 import de.vdv.ojp.PtModeFilterStructure;
 import java.time.ZonedDateTime;
+import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
+import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
 /**
  * A filter to apply for a StopEventRequest.
@@ -32,9 +34,11 @@ import lombok.NonNull;
  */
 @Data
 @Builder
-public class StopEventRequestFilter implements PTModeRequestFilter {
+public class StopEventRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
 
     private static int LIMIT_DEFAULT = 20;
+
+    Locale preferredLanguage;
 
     @Builder.Default
     @NonNull

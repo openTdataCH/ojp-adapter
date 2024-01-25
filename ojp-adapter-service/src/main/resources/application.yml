@@ -1,0 +1,59 @@
+# WebApplication and SSL protocol to use
+server:
+  port: 8082
+  compression:
+    enabled: true
+
+info:
+  app:
+    name: OJP RESTful Transmodel like API (sample App)
+    description: Journey-Planner publication-service based on SKI+ OJP Switzerland
+
+logging:
+  pattern:
+    console: timestamp=%d loglevel=%-5p class=%logger{36} Request-ID=%mdc{Request-ID:--} Trace-ID=%mdc{traceId:--} message=%msg%n%ex{full, reactor.core, reactor.netty, io.netty.channel}
+  level:
+    root: ${LOG_LEVEL:-WARN}
+    org.springdoc: WARN
+    io.swagger.v3.oas: WARN
+    swiss.opentransportdata.ojp.adapter: INFO
+
+# spring-actuator
+management:
+  endpoints:
+    #enabled-by-default: true
+    web:
+      exposure:
+        include: health, info, cache, measurements, prometheus, metrics
+  endpoint:
+    health:
+      show-details: always # show more than just "UP" in /actuator/health
+    info:
+      id: springinfo
+      sensitive: false # hit outside security context
+      enabled: true
+
+springdoc:
+  swagger-ui:
+    #just forcing order in swaggerUI.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    path: '/swagger-ui.html'
+    disable-swagger-default-url: true
+
+# Caching definitions according to https://www.rfc-editor.org/rfc/rfc7234.html#section-5.2
+caching:
+  default:
+    definition: no-cache # every API serves no-cache, when not overriden and handled by specific config.
+  places:
+    definition: private, must-revalidate, max-age=86400 # one day
+
+ojp:
+  timeoutConnect: 15000
+  timeoutRead: 25000
+  # active instance (capable to interact with other international OJP instances)
+  endpointActive: https://api.opentransportdata.swiss/ojp-la-aktiv
+  # passive instance (default)
+  endpoint: https://api.opentransportdata.swiss/ojp2020
+  # "shared" secret-token for regular
+  authorization: # see https://opentransportdata.swiss/de/cookbook/verwendung-der-api/

@@ -37,7 +37,6 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import java.util.Locale;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -45,13 +44,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.v1.converter.OJPFactory;
-import swiss.opentransportdata.ojp.configuration.OJPAccessor;
 
 /**
  * Making access to OJP v1.x XML API easier.
@@ -72,7 +70,7 @@ import swiss.opentransportdata.ojp.configuration.OJPAccessor;
  * @see <a href="https://github.com/skinkie/ojp-example">Stefan de Konink repos (part of SBB OJP consultants)</a>
  */
 @Slf4j
-@Component
+//TODO @Component
 public class OJPAdapter {
 
     public static final String NOTICE_ATTRIBUTE_PREFIX = "A__";
@@ -125,7 +123,7 @@ public class OJPAdapter {
     /**
      * @param ojpResponse returned properly by an OJP request
      * @return first data-object of interest
-     * @see #requestPlaces(OJPAccessor, Locale, PlaceRequestFilter)
+     * @see #requestPlaces(OJPAccessor, PlaceRequestFilter)
      */
     public static OJPLocationInformationDeliveryStructure mapToFirstOJPLocationInformationDeliveryStructure(OJP ojpResponse) {
         final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
@@ -145,7 +143,7 @@ public class OJPAdapter {
     /**
      * @param ojpResponse returned properly by an OJP request
      * @return first data-object of interest
-     * @see #requestTripLegByJourneyReference(OJPAccessor, Locale, TripLegRequestFilter)
+     * @see #requestTripLegByJourneyReference(OJPAccessor, TripLegRequestFilter)
      */
     public static OJPTripInfoDeliveryStructure mapToFirstOJPTripInfoDeliveryStructure(OJP ojpResponse) {
         final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
@@ -161,7 +159,7 @@ public class OJPAdapter {
     /**
      * @param ojpResponse returned properly by an OJP request
      * @return first data-object of interest
-     * @see #requestTrips(OJPAccessor, Locale, TripRequestFilter)
+     * @see #requestTrips(OJPAccessor, TripRequestFilter)
      */
     public static OJPTripDeliveryStructure mapToFirstOJPTripDeliveryStructure(OJP ojpResponse) {
         final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
@@ -182,7 +180,7 @@ public class OJPAdapter {
     /**
      * @param ojpResponse returned properly by an OJP request
      * @return first data-object of interest
-     * @see #requestStopEvent(OJPAccessor, Locale, StopEventRequestFilter)
+     * @see #requestStopEvent(OJPAccessor, StopEventRequestFilter)
      */
     public static OJPStopEventDeliveryStructure mapToFirstOJPStopEventDeliveryStructure(OJP ojpResponse) {
         final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
@@ -258,7 +256,7 @@ public class OJPAdapter {
      * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#TopographicPlaceStructure">OJP TopographicPlaceStructure</a>
      */
     @NonNull
-    public OJP requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull Locale locale, @NonNull PlaceRequestFilter filter) throws OJPException {
+    public OJP requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull PlaceRequestFilter filter) throws OJPException {
         if (StringUtils.isBlank(filter.getPlaceName()) && (filter.getCentroid() == null)) {
             throw new IllegalArgumentException("Either placeName and/or centroid must be set.");
         }
@@ -284,7 +282,7 @@ public class OJPAdapter {
                     initialLocationInputStructure.setGeoRestriction(geoRestrictionsStructure);
                 }
             }
-            final OJP ojpRequest = ojpFactory.createOjpWithLocationInformationRequest(locale, initialLocationInputStructure, filter);
+            final OJP ojpRequest = ojpFactory.createOjpWithLocationInformationRequest(initialLocationInputStructure, filter);
             return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") LocationInformation request failed" + ex.getMessage(), ex);
@@ -305,9 +303,9 @@ public class OJPAdapter {
      * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#OJPTripInfoDeliveryStructure">OJP TripInforDeliveryStructure</a>
      */
     @NonNull
-    public OJP requestTrips(@NonNull OJPAccessor ojpAccessor, @NonNull Locale locale, @NonNull TripRequestFilter filter) throws OJPException {
+    public OJP requestTrips(@NonNull OJPAccessor ojpAccessor, @NonNull TripRequestFilter filter) throws OJPException {
         try {
-            final OJP ojpRequest = ojpFactory.createOjpWithTripRequest(locale, filter);
+            final OJP ojpRequest = ojpFactory.createOjpWithTripRequest(filter);
             return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") Trip request failed", ex);
@@ -344,9 +342,9 @@ public class OJPAdapter {
      * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#TripInfoRequestGroup">OJP TripInfoRequest</a>
      */
     @NonNull
-    public OJP requestTripLegByJourneyReference(@NonNull OJPAccessor ojpAccessor, @NonNull Locale locale, @NonNull TripLegRequestFilter filter) throws OJPException {
+    public OJP requestTripLegByJourneyReference(@NonNull OJPAccessor ojpAccessor, @NonNull TripLegRequestFilter filter) throws OJPException {
         try {
-            final OJP ojpRequest = ojpFactory.createOjpWithTripInfoRequest(locale, filter);
+            final OJP ojpRequest = ojpFactory.createOjpWithTripInfoRequest(filter);
             return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ", journeyReference=" + filter.getJourneyReference() + ") TripInfo request failed", ex);
@@ -368,9 +366,9 @@ public class OJPAdapter {
      * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#OJPStopEventRequest>OJP StopEventRequest</a>
      */
     @NonNull
-    public OJP requestStopEvent(@NonNull OJPAccessor ojpAccessor, @NonNull Locale locale, StopEventRequestFilter filter) throws OJPException {
+    public OJP requestStopEvent(@NonNull OJPAccessor ojpAccessor, @NonNull StopEventRequestFilter filter) throws OJPException {
         try {
-            final OJP ojpRequest = ojpFactory.createOjpWithStopEventRequest(locale, filter);
+            final OJP ojpRequest = ojpFactory.createOjpWithStopEventRequest(filter);
             return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") StopEvent request failed" + ex.getMessage(), ex);

@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 /**
- * J-S OJP-Adapter Exception if any OJP Backend fault happens or OJP returned an ErrorCondition.
+ * OJP-Adapter Exception if any OJP Backend fault happens or OJP returned an ErrorCondition.
  *
  * @author Peter Hirzel
  * @see <a href="https://opentransportdata.swiss/de/wichtiges/">OJP Website</a>
