@@ -69,7 +69,7 @@ public class StopPlace implements Place /*TODO, eu.cen.transmodel.v6x56.part2.pt
     //    @NonNull
     //    Boolean tariffBorder;
 
-    @Schema(description = ModelDoc.DESCRIPTION_WEIGHT, example = ModelDoc.EXAMPLE_WEIGHT)
+    @Schema(description = ModelDoc.DESCRIPTION_WEIGHT, example = ModelDoc.SAMPLE_WEIGHT)
     Integer weighting;
 
     //    /**

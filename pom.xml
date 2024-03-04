@@ -18,6 +18,7 @@
         <module>ojp-adapter-test</module>
         <module>ojp-adapter-model</module>
         <module>ojp-adapter-service</module>
+        <module>ojp-adapter-transmodel</module>
     </modules>
 
     <properties>

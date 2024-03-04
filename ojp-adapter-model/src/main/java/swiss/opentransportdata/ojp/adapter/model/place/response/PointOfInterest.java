@@ -37,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
     description = "Point of Interest (POI), such as a Museum (source: [ROKAS POI-Service `Poi`](https://developer.sbb.ch/apis/journey-pois/information)." + ModelDoc.HINT_INHERITED_PLACE)
 @Builder
 @Value
-public class PointOfInterest implements Place /*TODO, eu.cen.transmodel.v6x56.part2.ptnetworktopology.fixedobject.pointofinterest.PointOfInterest*/ {
+public class PointOfInterest implements Place, swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.pointofinterest.PointOfInterest {
 
     @Schema(type = "string",
         requiredMode = RequiredMode.REQUIRED,

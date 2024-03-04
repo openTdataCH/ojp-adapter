@@ -24,6 +24,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
+import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.locationquery.LocationDelivery;
 
 /**
  * @author Peter Hirzel
@@ -31,7 +32,7 @@ import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
 @Schema(description = "Response container of a Place-request.")
 @Builder
 @Value
-public class PlaceResponse implements JsonResponse /*TODO, LocationDelivery*/ {
+public class PlaceResponse implements JsonResponse, LocationDelivery {
 
     @ArraySchema(minItems = 1, schema = @Schema(/*allOf = {StopPlace.class, Address.class, PointOfInterest.class, but not StopPlaceDetailed},*/
         description = "Found places.", requiredMode = RequiredMode.REQUIRED))
