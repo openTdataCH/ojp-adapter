@@ -33,9 +33,9 @@ public class PublicLinks {
      * Public Client documentation.
      */
     public static final String DEV_MANUAL_ROOT = "https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/";
-    //    public static final String DEV_MANUAL_JSON_OBJECTS = DEV_MANUAL_ROOT + "v3/JSON-Objects.md";
-    //    public static final String DEV_MANUAL_DATED_VEHICLE_JOURNEY_REFERENCE = DEV_MANUAL_JSON_OBJECTS + "#datedvehiclejourneyreference";
-    //    public static final String DEV_MANUAL_ROUTING_BASICS = DEV_MANUAL_ROOT + "business/RoutingBasics.md";
+    public static final String DEV_MANUAL_JSON_OBJECTS = DEV_MANUAL_ROOT + "v3/JSON-Objects.md";
+    public static final String DEV_MANUAL_DATED_VEHICLE_JOURNEY_REFERENCE = DEV_MANUAL_JSON_OBJECTS + "#datedvehiclejourneyreference";
+    public static final String DEV_MANUAL_ROUTING_BASICS = DEV_MANUAL_ROOT + "business/RoutingBasics.md";
     //    public static final String DEV_MANUAL_TECHNICAL_ASPECTS = DEV_MANUAL_ROOT + "technial/TechnicalAspects.md";
     /**
      * @see Problem#getType()
@@ -46,6 +46,19 @@ public class PublicLinks {
      * Main entry page for J-S devMan.(Open Journey Planner (SKI+ Switzerland)).
      */
     public static final String DEV_MANUAL_ENTRY_PAGE = DEV_MANUAL_ROOT + "Developer-Manual.md";
-    //    public static final String DEV_MANUAL_HINT_COMPLEX_PARAMETER = "[complex parameter](" + PublicLinks.DEV_MANUAL_JSON_OBJECTS + ")";
-    //    public static final String DEV_MANUAL_V580_SBB_PRODUCT_CATEGORY = "[v580 de:Verkehrsmittelkategorien (aka Transmodel or OJP/Siri `VehicleMode`)](" + DEV_MANUAL_ROOT + "business/TransportMode.md)";
+    public static final String DEV_MANUAL_HINT_COMPLEX_PARAMETER = "[complex parameter](" + DEV_MANUAL_JSON_OBJECTS + ")";
+    public static final String DEV_MANUAL_V580_SBB_PRODUCT_CATEGORY = "[v580 de:Verkehrsmittelkategorien (aka Transmodel or OJP/Siri `VehicleMode`)](" + DEV_MANUAL_ROOT + "business/TransportMode.md)";
+
+    /**
+     * UX: FIGMA is "single source of truth" for SBB Icons.
+     * <ul>
+     *     <li>sbb.ch uses the official Icon-CDN.</li>
+     *     <li>SBB Mobile may download and pack relevant Icons for App from Figma (which is the base for Icon CDN)</li>
+     *     <li>Other channels may choose whatever way they prefer</li>
+     * </ul>
+     *
+     * @see swiss.opentransportdata.ojp.adapter.model.standards.CorporateIdentity#getCorporateIdentityIcon()
+     */
+    public static final String CDN_ICON_LINK = "[SBB Corporate-Identity catalog (CDN, aka FIGMA Icons)](https://www.figma.com/file/UQBd7cHKav0hr9oXYp7opJ/SBB-Icons?node-id=395%3A2952&t=ad26LgREBbTANSK5-1)";
+
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package swiss.opentransportdata.ojp.adapter.model.common.response;
+package swiss.opentransportdata.ojp.adapter.model.place.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
