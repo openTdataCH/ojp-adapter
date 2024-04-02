@@ -24,7 +24,7 @@ public interface MonitoringConstants {
     /**
      * devOps relevant header: Instana-Tracing among a chane of Instana based Applications is maintained by introspection intrinsically.
      *
-     * @see <a href="https://www.instana.com/docs/ecosystem/opentelemetry/">OpenTelemtry (FPLJS-624)</a>
+     * @see <a href="https://www.instana.com/docs/ecosystem/opentelemetry/">OpenTelemtry</a>
      */
     String HEADER_REQUEST_ID = "Request-ID";
 }

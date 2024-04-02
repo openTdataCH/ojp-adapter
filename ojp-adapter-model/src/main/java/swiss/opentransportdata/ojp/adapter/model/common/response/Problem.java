@@ -34,7 +34,7 @@ import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
  * @see <a href="https://opensource.zalando.com/restful-api-guidelines/#234">MUST only use durable and immutable remote references [234]</a>
  * @see org.springframework.http.ProblemDetail {@code ProblemDetail} from Spring as a possible replacement
  */
-@Schema(name = "Problem", description = "Zalando like error-object if not HttpStatus 2xx (see " + ModelDoc.RFC7807 + "). Check for: " + HttpHeaders.CONTENT_TYPE + "="
+@Schema(description = "Zalando like error-object if not HttpStatus 2xx (see " + ModelDoc.RFC7807 + "). Check for: " + HttpHeaders.CONTENT_TYPE + "="
     + MediaType.APPLICATION_PROBLEM_JSON_VALUE)
 @Builder
 @Value
