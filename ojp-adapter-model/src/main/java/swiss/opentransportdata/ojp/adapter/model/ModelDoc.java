@@ -68,7 +68,7 @@ public class ModelDoc {
      * @see <a href="https://schweizerischebundesbahnen.github.io/api-principles/restful/principles/#get-with-body">SBB Principles, RESTful Best Practices</a>
      * @see <a href="https://schweizerischebundesbahnen.github.io/api-principles/restful/best-practices/#consider-to-design-post-and-patch-idempotent">POST idempotent</a>
      * @see <a href="https://opensource.zalando.com/restful-api-guidelines/#get-with-body">Zalando rules</a>
-     * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm">OSDM declares an `Idempotency key`, but we think J-S does not change state by such an
+     * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm">OSDM declares an `Idempotency key`, but we think does not change state by such an
      *     API and therefore over-engineered.</a>
      */
     public static final String HINT_GET_BY_POST = "{Idempotent: GET with body payload}";
@@ -115,13 +115,13 @@ public class ModelDoc {
     /**
      * @see <a href="https://unioninternationalcheminsdefer.github.io/OSDM/spec/catalog-of-code-lists">station prefix urn:uic.stn</a>
      */
-    public static final String DESCRIPTION_STOP_PLACE_ID = "UIC of a StopPlace (according to DiDok format).";
+    public static final String DESCRIPTION_STOP_PLACE_ID = "UIC of a StopPlace (according to Atlas format).";
     public static final String SAMPLE_STOPPLACE_ID = "8507000";
     public static final String DESCRIPTION_CANTON = "In CH this represents the 'canton' abbreviation.";
     public static final String EXAMPLE_CANTON = "BE";
-    public static final String DESCRIPTION_SLOID = "Swiss location id (SLOID) from DiDok. More on [Service Points (DiDok) API](https://developer.sbb.ch/apis/servicepoints/documentation).";
+    public static final String DESCRIPTION_SLOID = "Swiss location id (SLOID) from Atlas. More on [Service Points (DiDok) API](https://developer.sbb.ch/apis/servicepoints/documentation).";
     public static final String EXAMPLE_SLOID_STOP_PLACE = "ch:1:sloid:16161";
-    public static final String DESCRIPTION_COUNTRY_CODE = "The two uppercase character of ISO 3166 code, mostly similar to lowercase IANA identifier (source: DiDok geographic-based _isoCountryCode_).";
+    public static final String DESCRIPTION_COUNTRY_CODE = "The two uppercase character of ISO 3166 code, mostly similar to lowercase IANA identifier (source: Atlas geographic-based _isoCountryCode_).";
     public static final String EXAMPLE_COUNTRY_CODE = "CH";
     public static final String DESCRIPTION_POSITION = "A representative geographic position of the `Place` by a [GeoJSON Point](https://datatracker.ietf.org/doc/html/rfc794).";
     public static final String DESCRIPTION_WEIGHT = "The higher the traffic load/importance the higher the value, null if unknown.";
@@ -130,7 +130,7 @@ public class ModelDoc {
     public static final String JOURNEY_REFERENCE_DESCRIPTION = "Underlying system specific unique identifier representing a concrete (partial) route for a specific vehicle and time. Be aware this is just a temporary id and may change daily!";
 
     /**
-     * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm">ODSM TripSearchCriteria ::carrierFilter by RICS company code</a>
+     * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm">OSDM TripSearchCriteria ::carrierFilter by RICS company code</a>
      */
     public static final String DESCRIPTION_OPERATORS =
         "Operators involved on Line. Three variants are supported, see **OperatorReference** in " + PublicLinks.DEV_MANUAL_HINT_COMPLEX_PARAMETER + "\n" +
@@ -174,7 +174,7 @@ public class ModelDoc {
     public static final String HINT_INHERITED_LEG = "<br>Inherited from `Leg`.";
 
     public static final String DESCRIPTION_INCLUDE_TRAIN_STOP_ASSIGNMENTS =
-        "Whether `PTRideLeg's` should include `CompoundTrain's`(aka formation, composition). However, `CompoundTrain's` at any `ScheduledStopPoint` on the `ServiceJourney` may be loaded separately by `/v3/vehicle-journeys/by-stoppoints`.\n" /*DatedVehicleJourneyController.API_VEHICLE_JOURNEYS_BY_STOPPOINTS*/
+        "Whether `PTRideLeg's` should include `CompoundTrain's`(aka formation, composition). However, `CompoundTrain's` at any `ScheduledStopPoint` on the `ServiceJourney` may be loaded separately by `/v0/vehicle-journeys/by-stoppoints`.\n" /*DatedVehicleJourneyController.API_VEHICLE_JOURNEYS_BY_STOPPOINTS*/
             +
             "Possible values:\n" +
             "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_NONE + " none at all, though a `PTRideLeg::trainStopAssignmentHint` is always given.\n" +

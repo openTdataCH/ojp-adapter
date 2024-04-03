@@ -83,7 +83,7 @@
                 <version>${spring-boot-starter.version}</version>
                 <configuration>
                     <mainClass>
-                        swiss.opentransportdata.ojp.adapter.service.application.WebApplication
+                        swiss.opentransportdata.ojp.adapter.service.application.OJPWebApplication
                     </mainClass>
                 </configuration>
                 <executions>

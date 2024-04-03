@@ -22,6 +22,7 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import swiss.opentransportdata.ojp.adapter.model.ObjectMapperFactory;
+import swiss.opentransportdata.ojp.adapter.model.geojson.response.LineString;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
 
 /**
@@ -76,7 +77,7 @@ public final class GeoJsonConverter {
     @NonNull
     public static Point parsePoint(@NonNull String geoJsonPoint) {
         if (StringUtils.isBlank(geoJsonPoint)) {
-            throw new IllegalArgumentException("GeoJson Point must not be empty");
+            throw new IllegalArgumentException("GeoJson Point must not be empty.");
         }
 
         final Point point;
@@ -84,39 +85,39 @@ public final class GeoJsonConverter {
             Double[] coords = MAPPER.readerFor(Double[].class).readValue(geoJsonPoint);
             point = new Point(coords);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Bad format of GeoJson Point " + geoJsonPoint, e);
+            throw new IllegalArgumentException("Bad format of GeoJson Point: " + geoJsonPoint, e);
         }
         if ((point.getLongitude() < LONGITUDE_MIN) || (point.getLongitude() > LONGITUDE_MAX)) {
-            throw new IllegalArgumentException("longitude should be in range [" + LONGITUDE_MIN + "°, " + LONGITUDE_MAX + "°] but was " + point.getLongitude());
+            throw new IllegalArgumentException("longitude should be in range [" + LONGITUDE_MIN + "°, " + LONGITUDE_MAX + "°] but was: " + point.getLongitude());
         }
         if ((point.getLatitude() < LATITUDE_MIN) || (point.getLatitude() > LATITUDE_MAX)) {
-            throw new IllegalArgumentException("latitude should be in range [" + LATITUDE_MIN + "°, " + LATITUDE_MAX + "°] but was " + point.getLatitude());
+            throw new IllegalArgumentException("latitude should be in range [" + LATITUDE_MIN + "°, " + LATITUDE_MAX + "°] but was: " + point.getLatitude());
         }
         return point;
     }
 
-    //    public static LineString toLineString(String polylineFormattedWithCommaAndVerticalBar) {
-    //        if (StringUtils.isBlank(polylineFormattedWithCommaAndVerticalBar)) {
-    //            return null;
-    //        } else {
-    //            String[] coordinates = polylineFormattedWithCommaAndVerticalBar.split("\\|");
-    //            Double[][] positions = new Double[coordinates.length][];
-    //            for (int i = 0; i < coordinates.length; i++) {
-    //                positions[i] = toCoordAsArray(coordinates[i]);
-    //            }
-    //            return new LineString(positions);
-    //        }
-    //    }
+    public static LineString toLineString(String polylineFormattedWithCommaAndVerticalBar) {
+        if (StringUtils.isBlank(polylineFormattedWithCommaAndVerticalBar)) {
+            return null;
+        } else {
+            String[] coordinates = polylineFormattedWithCommaAndVerticalBar.split("\\|");
+            Double[][] positions = new Double[coordinates.length][];
+            for (int i = 0; i < coordinates.length; i++) {
+                positions[i] = toCoordAsArray(coordinates[i]);
+            }
+            return new LineString(positions);
+        }
+    }
 
-    //    private static Double[] toCoordAsArray(@NotNull String coordinatesSeparatedByComma) {
-    //    	String[] coordArrayOfString = coordinatesSeparatedByComma.split(",");
-    //    	Double[] coordArrayOfDouble = new Double[coordArrayOfString.length];
-    //    	for (int i=0 ; i<coordArrayOfString.length ; i++ ) {
-    //    		coordArrayOfDouble[i] = Double.valueOf(coordArrayOfString[i]);
-    //    	}
-    //    	// same lon/lat convention between J-A v2 and GeoJson => do NOT swap
-    //        return coordArrayOfDouble;
-    //    }
+    private static Double[] toCoordAsArray(@NonNull String coordinatesSeparatedByComma) {
+        String[] coordArrayOfString = coordinatesSeparatedByComma.split(",");
+        Double[] coordArrayOfDouble = new Double[coordArrayOfString.length];
+        for (int i = 0; i < coordArrayOfString.length; i++) {
+            coordArrayOfDouble[i] = Double.valueOf(coordArrayOfString[i]);
+        }
+        // same lon/lat convention between J-A v2 and GeoJson => do NOT swap
+        return coordArrayOfDouble;
+    }
 
     //    public static org.geolatte.geom.Point<G2D> toGeolatte2DPoint(Point point) {
     //        if (point == null) {

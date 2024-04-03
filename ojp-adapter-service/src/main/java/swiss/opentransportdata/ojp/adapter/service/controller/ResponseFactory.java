@@ -28,6 +28,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import swiss.opentransportdata.ojp.adapter.model.common.response.Problem;
+import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
+import swiss.opentransportdata.ojp.adapter.service.error.TopLevelHandler;
 
 /**
  * Reusable REST response utilities.

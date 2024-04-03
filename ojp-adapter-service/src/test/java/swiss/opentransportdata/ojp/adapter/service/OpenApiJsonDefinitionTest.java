@@ -29,8 +29,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import swiss.opentransportdata.ojp.adapter.model.ObjectMapperFactory;
-import swiss.opentransportdata.ojp.adapter.service.application.SwaggerConfiguration;
-import swiss.opentransportdata.ojp.adapter.service.application.WebApplication;
+import swiss.opentransportdata.ojp.adapter.service.application.OJPWebApplication;
+import swiss.opentransportdata.ojp.adapter.service.application.configuration.SwaggerConfiguration;
 
 /**
  * UNIT-TEST  booting Journey-Service and generating OpenApi 3 specific JSON definition files out of Springdoc annotations.
@@ -58,7 +58,7 @@ import swiss.opentransportdata.ojp.adapter.service.application.WebApplication;
  */
 @Deprecated
 @Slf4j
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = WebApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = OJPWebApplication.class)
 @ActiveProfiles({"unit"})
 class OpenApiJsonDefinitionTest {
 

@@ -27,6 +27,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import swiss.opentransportdata.ojp.adapter.model.common.response.Problem;
+import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
 import swiss.opentransportdata.ojp.adapter.service.operations.MonitoringConstants;
 
 /**
@@ -117,7 +118,7 @@ public final class ResponseEntityFactory {
     }
 
     /**
-     * rfc7807 says: - Header: HttpStatus resp. high-level error class - section 3.1 declares members of a Problem Details (problem+json) Object: status
+     * rfc7807 says: Header: HttpStatus resp. high-level error class - section 3.1 declares members of a Problem Details (problem+json) Object: status
      *
      * @param language for e.g. "de" according to {@link ApiDocumentation#HEADER_ACCEPT_LANGUAGE_VALUES}
      * @return error header

@@ -53,9 +53,9 @@ public interface Place extends InheritanceDiscriminable, Positionable, swiss.ope
     /**
      * Two character ISO 3166 = ~ IANA identifier
      * <p>
-     * DiDok v3 GeoContext (not Organisation)
+     * DiDok/Atlas GeoContext (not Organisation)
      */
-    @Schema(description = "The two uppercase character of ISO 3166 code, mostly similar to lowercase IANA identifier (source: DiDok geographic-based _isoCountryCode_).", example = "CH")
+    @Schema(description = "The two uppercase character of ISO 3166 code, mostly similar to lowercase IANA identifier (source: Atlas geographic-based _isoCountryCode_).", example = "CH")
     String getCountryCode();
 
     //    /**
@@ -63,6 +63,6 @@ public interface Place extends InheritanceDiscriminable, Positionable, swiss.ope
     //     *
     //     * @return distance
     //     */
-    //    @Schema(description = "Specifies the distance in [m] to the given coordinates in request." + " (Only set for `v3/places/by-coordinates*`).")
+    //    @Schema(description = "Specifies the distance in [m] to the given coordinates in request." + " (Only set for `v0/places/by-coordinates*`).")
     //    Integer getDistanceToSearchPosition();
 }
