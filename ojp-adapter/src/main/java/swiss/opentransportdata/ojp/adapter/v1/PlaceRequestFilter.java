@@ -37,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.query
 @Builder
 public class PlaceRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
 
-    public static final int LIMIT_DEFAULT = 10;
+    private static final int LIMIT_DEFAULT = 10;
 
     Locale preferredLanguage;
 

@@ -44,6 +44,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -70,11 +71,12 @@ import swiss.opentransportdata.ojp.adapter.v1.converter.OJPFactory;
  * @see <a href="https://github.com/skinkie/ojp-example">Stefan de Konink repos (part of SBB OJP consultants)</a>
  */
 @Slf4j
-//TODO @Component
+@Component
 public class OJPAdapter {
 
     public static final String NOTICE_ATTRIBUTE_PREFIX = "A__";
-    public static final String OJP_NAMESPACE = "ojp:";
+    public static final String OJP_IDENTIFIER = "ojp";
+    public static final String OJP_NAMESPACE = OJP_IDENTIFIER + ":";
     public static final String STOP_REF_HINT = "OJP passive instance requires Stop UIC like '850700' whereas active instance enforces 'OJP:STOP:SBB:8507000|Bern'.";
     /**
      * OJP active instance relevant, like "OJP:STOP:SBB:8503308|Kloten" (where classic UIC could be extracted).
@@ -92,7 +94,7 @@ public class OJPAdapter {
     private final String callerReference;
 
     /**
-     * Some OJP Strings have a Router-System specific prefix, which might by unwanted for end-user or better readability.
+     * Some OJP Strings have a Router-System specific prefix, which might be unwanted for end-user or better readability.
      *
      * @param prefixedValue
      * @return given value without {@link #OJP_NAMESPACE}
