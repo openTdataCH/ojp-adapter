@@ -31,7 +31,7 @@ public class OJPAccessor {
     /**
      * Instance URL of OJP server.
      *
-     * @see <a href="https://opentransportdata.swiss/de/dataset/ojp2020">Swiss passive instance (default)</a>
+     * @see <a href="https://api.opentransportdata.swiss/ojp2020">Swiss passive instance (default)</a>
      * @see <a href="https://api.opentransportdata.swiss/ojp-la-aktiv">Swiss active instance (capable to interact with other international OJP instances)</a>
      */
     String endpoint;

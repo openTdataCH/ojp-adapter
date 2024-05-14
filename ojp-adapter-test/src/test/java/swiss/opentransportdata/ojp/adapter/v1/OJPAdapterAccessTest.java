@@ -297,6 +297,7 @@ class OJPAdapterAccessTest {
                 .includeAccessibility(true)
                 .includeOperatingDays(true)
                 .includeIntermediateStops(true)
+                .includeSituationsContext(true)
                 .build());
         assertResponseOJP(ojpResponse);
 
@@ -347,13 +348,18 @@ class OJPAdapterAccessTest {
     private void refreshPublicTransportLeg(OJPAccessor ojpAccessor, TripLegStructure tripLegStructure) {
         log.debug("TripLegStructure={}", tripLegStructure);
         if (tripLegStructure.getTimedLeg() != null) {
-            // refresh each Transmodel PTRideLeg within the Trip (OJP TripLeg)
+            // refresh each PTRideLeg within the Trip (OJP TripLeg)
             final JAXBElementContentContainer contentContainer = new JAXBElementContentContainer(tripLegStructure.getTimedLeg().getService().getContent());
             assertThat(contentContainer.getJourneyRefs()).hasSize(1);
             assertThat(contentContainer.getJourneyRefs().get(0).getValue()).isNotEmpty();
 
             // reconstruct Public Transport leg
             final String journeyRefTimedLeg = contentContainer.getJourneyRefs().get(0).getValue();
+            if (isSwissJourneyId(journeyRefTimedLeg)) {
+                log.debug("OJP JourneyReference as SJYID={}", journeyRefTimedLeg);
+            } else {
+                log.info("OJP JourneyReference as <proprietary>={}", journeyRefTimedLeg);
+            }
             // assertThat(tripLegStructure.getTimedLeg().getLegBoard().getServiceDeparture().getEstimatedTime()).as("rt mostly given").isNotNull();
             assertThat(contentContainer.getOperatingDays()).hasSize(1);
             assertThat(contentContainer.getOperatingDays().get(0).getValue()).isNotEmpty();
@@ -388,14 +394,16 @@ class OJPAdapterAccessTest {
     }
 
     @Test
-    void requestStopEventRequestdeparture() throws OJPException {
-        // passive can deal with classic UIC only
-        requestDepartures(configuration.ojpAccessPassive(), "8503424");
+    void requestStopEventRequest_passive_departure() throws OJPException {
+        // passive can deal with classic UIC or SBOID
+        requestDepartures(configuration.ojpAccessPassive(), "8503424" /*Schaffhausen*/);
+        requestDepartures(configuration.ojpAccessPassive(), "ch:1:sloid:3424:3:4");
     }
 
     @Test
     void requestStopEventRequest_active_departure() throws OJPException {
         requestDepartures(configuration.ojpAccessActive(), "OJP:STOP:SBB:8503424|Schaffhausen");
+        // FAILS with SBOID: requestDepartures(configuration.ojpAccessActive(), "ch:1:sloid:3424:3:4");
     }
 
     private void requestDepartures(OJPAccessor ojpAccessor, String departureStopPlaceReference) throws OJPException {
@@ -414,27 +422,34 @@ class OJPAdapterAccessTest {
             final String stopPlaceId = stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue();
             if (stopPlaceId.startsWith("ch:") && stopPlaceId.contains(":sloid:")) {
                 //TODO assert 85 -> "ch:"; last 4 UIC numbers -> :xxxx:
-                log.info("OJP sends SLOID={} for requested StopPlace::id={}", stopPlaceId, departureStopPlaceReference);
+                log.info("OJP SLOID={} for requested StopPlace::id={}", stopPlaceId, departureStopPlaceReference);
             } else {
                 assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopPlaceId);
             }
             log.info("routeIndex={},  quayAimed={} departure={}", stopEventStructure.getThisCall().getCallAtStop().getOrder(),
                 OJPAdapter.getText(stopEventStructure.getThisCall().getCallAtStop().getPlannedQuay()),
                 stopEventStructure.getThisCall().getCallAtStop().getServiceDeparture().getTimetabledTime());
-            DatedJourneyStructure datedJourneyStructure = stopEventStructure.getService();
+            final DatedJourneyStructure datedJourneyStructure = stopEventStructure.getService();
 
             JAXBElementContentContainer contentContainer = new JAXBElementContentContainer(datedJourneyStructure.getContent());
             assertThat(contentContainer.getJourneyRefs()).hasSize(1);
-            assertThat(contentContainer.getJourneyRefs().get(0).getValue()).isNotEmpty();
+            assertThat(contentContainer.getJourneyRefs().get(0).getValue()).isNotBlank();
+            if (isSwissJourneyId(contentContainer.getJourneyRefs().get(0).getValue())) {
+                log.debug("OJP JourneyReference as SJYID={}", contentContainer.getJourneyRefs().get(0).getValue());
+            } else {
+                log.info("OJP JourneyReference as <proprietary>={}", contentContainer.getJourneyRefs().get(0).getValue());
+            }
             assertThat(contentContainer.getOperatingDays()).hasSize(1);
             assertThat(LocalDate.parse(contentContainer.getOperatingDays().get(0).getValue())).isNotNull();
             assertThat(contentContainer.getLines()).hasSizeGreaterThan(0);
             assertThat(contentContainer.getDirections()).hasSizeGreaterThan(0);
             assertThat(contentContainer.getModes()).hasSizeGreaterThan(0);
             assertThat(contentContainer.getOperators()).hasSizeGreaterThan(0);
-
-            // refresh not possible by TripInfoRequest
         }
+    }
+
+    private static boolean isSwissJourneyId(String ojpJourneyReference) {
+        return ojpJourneyReference.contains("sjyid");
     }
 
     private void assertResponseOJP(OJP ojp) {

@@ -104,6 +104,8 @@ public class TripRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
     boolean includeOperatingDays = false;
     @Builder.Default
     boolean includeIntermediateStops = false;
+    @Builder.Default
+    boolean includeSituationsContext = true;
 
     /**
      * Default: false, all trips are calculated by realtime data; true: planned data only
