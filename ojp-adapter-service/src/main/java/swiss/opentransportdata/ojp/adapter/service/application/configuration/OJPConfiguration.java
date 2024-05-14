@@ -28,8 +28,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -39,12 +40,13 @@ import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
 import swiss.opentransportdata.ojp.adapter.service.api.converter.OJPController;
 import swiss.opentransportdata.ojp.adapter.service.exchange.ExchangeConstants;
 import swiss.opentransportdata.ojp.adapter.service.exchange.webclient.HttpGetExchangeStrategies;
+import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 
 /**
  * Configuration to access OJP SKI+ Switzerland.
  */
 @Slf4j
-@Component
+@Configuration
 public class OJPConfiguration {
 
     /**
@@ -91,6 +93,25 @@ public class OJPConfiguration {
         }
     }
 
+    @Value("${ojp.timeoutConnect:15000}")
+    Integer timeoutConnect;
+    @Value("${ojp.timeoutRead:25000}")
+    Integer timeoutRead;
+
+    /**
+     * Hint for SKI+ OJP Support-Team about use case usage of OJP active/passive instance.
+     * <p>
+     * Replace if downloaded and operated for your own context.
+     */
+    @Value("${ojp.callerReference:OJP-Adapter_OSS}")
+    String callerReference;
+
+    @Bean(name = "OJPAdapter")
+    public OJPAdapter ojpAdapter() {
+        // simple WebClient setup for tests
+        return new OJPAdapter(createWebClient(), callerReference);
+    }
+
     /**
      * The proxy-host
      */
@@ -103,12 +124,6 @@ public class OJPConfiguration {
      * Domains to connect without a proxy
      */
     private String nonProxyHosts;
-
-    @Value("${ojp.timeoutConnect:15000}")
-    Integer timeoutConnect;
-    @Value("${ojp.timeoutRead:25000}")
-    Integer timeoutRead;
-
     /**
      * true: gzip compression is enabled (default is false)
      */
@@ -138,7 +153,7 @@ public class OJPConfiguration {
      */
     private List<ExchangeFilterFunction> exchangeFilterFunctions;
 
-    public WebClient createWebClient() {
+    private WebClient createWebClient() {
         final HttpClient httpClient = httpConnectTimeout()
             .andThen(httpReadTimeout())
             .andThen(httpProxy())

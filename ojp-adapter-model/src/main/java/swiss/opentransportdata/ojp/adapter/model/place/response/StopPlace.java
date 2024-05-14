@@ -40,7 +40,7 @@ public class StopPlace implements Place /*TODO, eu.cen.transmodel.v6x56.part2.pt
 
     @Schema(description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, requiredMode = RequiredMode.REQUIRED, defaultValue = "StopPlace")
     @NonNull
-    String type;
+    String type = StopPlace.class.getSimpleName();
 
     /**
      * Be aware: relates to DB stopplace::uic and not the internal stopplace::id (technical id)!

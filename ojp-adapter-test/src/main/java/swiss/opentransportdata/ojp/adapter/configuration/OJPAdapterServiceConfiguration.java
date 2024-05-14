@@ -37,7 +37,7 @@ public class OJPAdapterServiceConfiguration {
      *
      * @see <a href="https://stackoverflow.com/questions/25433258/what-is-the-x-request-id-http-header">Usage of Request-ID</a>
      */
-    public static final String REQUEST_ID_VALUE_TEST = "OJPAdapter_TEST";
+    private static final String REQUEST_ID_VALUE_TEST = "OJPAdapter_OSS_TEST";
 
     // OJP->OJPAdapterTest relevant: passive instance
     @Value("${ojp.endpoint.passive:https://api.opentransportdata.swiss/ojp2020}")

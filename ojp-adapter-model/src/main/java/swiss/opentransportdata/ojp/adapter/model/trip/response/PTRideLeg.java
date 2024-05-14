@@ -41,7 +41,7 @@ public class PTRideLeg implements Leg, ServiceJourneyPattern, swiss.opentranspor
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "PTRideLeg")
     @NonNull
-    String type;
+    String type = PTRideLeg.class.getSimpleName();
 
     /**
      * Depends on search parameter {@link swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum}

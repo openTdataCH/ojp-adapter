@@ -63,10 +63,9 @@ import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContai
 class OJPAdapterAccessTest {
 
     @Autowired
-    private OJPAdapter ojpAdapter;
-
-    @Autowired
     private OJPAdapterServiceConfiguration configuration;
+    @Autowired
+    private OJPAdapter ojpAdapter;
 
     @Test
     void requestPlaces_passive_PlaceType_ALL() throws OJPException {

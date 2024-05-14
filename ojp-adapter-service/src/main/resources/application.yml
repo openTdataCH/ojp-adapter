@@ -57,3 +57,5 @@ ojp:
   endpoint: https://api.opentransportdata.swiss/ojp2020
   # "shared" secret-token for regular
   authorization: # see https://opentransportdata.swiss/de/cookbook/verwendung-der-api/
+  # override for your scope
+  callerReference: OJP-Adapter_OSS

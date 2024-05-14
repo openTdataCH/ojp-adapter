@@ -55,7 +55,6 @@ import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.res
 import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus;
-import swiss.opentransportdata.ojp.adapter.service.application.configuration.OJPConfiguration;
 import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
 import swiss.opentransportdata.ojp.adapter.service.utils.DateTimeUtils;
 import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
@@ -75,10 +74,6 @@ import swiss.opentransportdata.ojp.adapter.v1.TripLegRequestFilter;
 public class OJPFacade {
 
     /**
-     * Hint for SKI+ OJP Support-Team about use case usage of OJP active/passive instance.
-     */
-    static final String CALLER_REF = "OJP-Adapter";
-    /**
      * According to SKI+ Andreas Glauser, data available 2 weeks back only.
      */
     @Experimental
@@ -88,19 +83,19 @@ public class OJPFacade {
     private final PlaceConverter placeConverter;
     private final TripConverter tripConverter;
     private final ServiceJourneyConverter serviceJourneyConverter;
-
     private final OJPAdapter ojpAdapter;
 
     @Autowired
-    public OJPFacade(OJPConfiguration ojpConfiguration,
+    public OJPFacade(
         @Qualifier("OJPPlaceConverter") PlaceConverter placeConverter,
         @Qualifier("OJPTripConverter") TripConverter tripConverter,
-        @Qualifier("OJPDepartureConverter") ServiceJourneyConverter serviceJourneyConverter) {
+        @Qualifier("OJPDepartureConverter") ServiceJourneyConverter serviceJourneyConverter,
+        @Qualifier("OJPAdapter") OJPAdapter ojpAdapter) {
 
-        this.ojpAdapter = new OJPAdapter(ojpConfiguration.createWebClient(), CALLER_REF);
         this.placeConverter = placeConverter;
         this.tripConverter = tripConverter;
         this.serviceJourneyConverter = serviceJourneyConverter;
+        this.ojpAdapter = ojpAdapter;
     }
 
     static TripStatus createTripStatus() {

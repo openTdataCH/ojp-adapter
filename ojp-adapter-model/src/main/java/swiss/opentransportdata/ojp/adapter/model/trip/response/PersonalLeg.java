@@ -33,7 +33,7 @@ public class PersonalLeg implements Leg, swiss.opentransportdata.ojp.adapter.tra
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "PersonalLeg")
     @NonNull
-    String type;
+    String type = PersonalLeg.class.getSimpleName();
 
     /**
      * "ROAD"

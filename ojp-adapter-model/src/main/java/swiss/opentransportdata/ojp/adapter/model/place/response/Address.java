@@ -38,7 +38,7 @@ public class Address implements Place /*TODO , PostalAddress future perhaps eu.c
 
     @Schema(description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, requiredMode = RequiredMode.REQUIRED, defaultValue = "Address")
     @NonNull
-    String type;
+    String type = Address.class.getSimpleName();
 
     @Schema(description = "Id of a postal address (given by underlaying system).", requiredMode = RequiredMode.REQUIRED)
     @NonNull
