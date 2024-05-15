@@ -6,7 +6,7 @@ Licence: [Apache License, Version 2.0](https://opensource.org/license/apache-2-0
 This is a simple OJP-Adapter _library_ to request Public-Transportation queries against the **swiss public [_Open Journey-Planner (SKI)_](https://opentransportdata.swiss/de/dataset/ojp2020)**.
 
 Remark about **OJP SKI**
-* Public Transportation router in order to [BAV](https://www.bav.admin.ch/bav/de/home.html)
+* Public Transportation router commissioned by [BAV](https://www.bav.admin.ch/bav/de/home.html)
 * Usage for e.g. by [öv-info.ch](https://www.öv-info.ch/de)
 
 ## Goals
@@ -55,12 +55,11 @@ Remark:
 
 ### Module "ojp-transmodel" & "Swagger-UI"
 
-* Planned for the near future: **further extension of OJPController** like subset of [**SBB Journey-Service**](https://developer.sbb.ch/apis/journey-service/documentation) v0 APIs where supported by SKI+ OJP:
+* Planned for the near future: **further extension of OJPController** like subset of [**SBB Journey-Service**](https://developer.sbb.ch/apis/journey-service/documentation) v3 APIs where supported by SKI+ OJP:
   * [Transmodel](https://www.transmodel-cen.eu/) like implementation model as used by SBB Customer Information
   * Model mapper between VDV specification to the Transmodel like implementaiton model
   * Simple [OpenApi 3](https://swagger.io/blog/news/whats-new-in-openapi-3-0/) REST API based application
 
 ## Known usage
 This Software was originally developed for _SBB AG Switzerland, Personenverkehr, Customer Information_ by Peter Hirzel (Software Architect Journey-Planner) for experimental reasons:
-
 * APIs (endpoints) under [**SBB Journey-Service**](https://developer.sbb.ch/apis/journey-service/documentation) within tag **Open Journey Planner V3**
