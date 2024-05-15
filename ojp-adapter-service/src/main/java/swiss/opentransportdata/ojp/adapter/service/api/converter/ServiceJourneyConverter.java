@@ -175,7 +175,6 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
             null, null);
         return ScheduledStopPoint.builder()
             .place(StopPlace.builder()
-                .type(StopPlace.class.getSimpleName())
                 .id(uic)
                 .name(OJPAdapter.getText(stopPointName))
                 //.province(stopV2.getCantonCH())

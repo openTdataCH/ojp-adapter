@@ -58,7 +58,7 @@ public class AccessLeg implements Leg, swiss.opentransportdata.ojp.adapter.trans
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE,
         defaultValue = "AccessLeg")
     @NonNull
-    String type;
+    String type = AccessLeg.class.getSimpleName();
 
     /**
      * @see AccessMode

@@ -45,9 +45,9 @@ public class ConnectionLeg implements Leg, swiss.opentransportdata.ojp.adapter.t
     public static final String MODE_TRANSFER = "TRANSFER";
 
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
-        description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "PTConnectionLeg")
+        description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "ConnectionLeg")
     @NonNull
-    String type;
+    String type = ConnectionLeg.class.getSimpleName();
 
     @Schema(description = "Transfer-mode: {" + MODE_TRANSFER + "}",
         requiredMode = RequiredMode.REQUIRED, example = MODE_TRANSFER)

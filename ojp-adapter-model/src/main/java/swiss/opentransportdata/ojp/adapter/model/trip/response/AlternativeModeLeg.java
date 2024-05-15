@@ -37,7 +37,7 @@ public class AlternativeModeLeg implements Leg,
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "AlternativeModeLeg")
     @NonNull
-    String type;
+    String type = AlternativeModeLeg.class.getSimpleName();
 
     @Schema(description = "Alternative mode",
         requiredMode = RequiredMode.REQUIRED)

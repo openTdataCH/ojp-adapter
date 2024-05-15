@@ -223,7 +223,6 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         final ModeOJP mode = ServiceJourneyConverter.mapToMode(serviceContentContainer.getModes());
 
         return PTRideLeg.builder()
-            .type(PTRideLeg.class.getSimpleName())
             .mode(mode.getMode())
             .id(tripLegStructure.getLegId())
             //.distance()
@@ -244,7 +243,6 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
     private AccessLeg mapToAccessLeg(TripLegStructure tripLegStructure) {
         final ContinuousLegStructure continuousLegStructure = tripLegStructure.getContinuousLeg();
         return AccessLeg.builder()
-            .type(AccessLeg.class.getSimpleName())
             .mode(AccessLeg.ACCESS_MODE_FOOT /*or AccessLeg.ACCESS_MODE_ROAD*/)
             .id(tripLegStructure.getLegId())
             //.distance(legV2.getDistance())
@@ -257,7 +255,6 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
     private ConnectionLeg mapToPTConnectionLeg(TripLegStructure tripLegStructure) {
         final TransferLegStructure transferLegStructure = tripLegStructure.getTransferLeg();
         return ConnectionLeg.builder()
-            .type(ConnectionLeg.class.getSimpleName())
             .mode(ConnectionLeg.MODE_TRANSFER)
             .id(tripLegStructure.getLegId())
             //.distance(legV2.getDistance())

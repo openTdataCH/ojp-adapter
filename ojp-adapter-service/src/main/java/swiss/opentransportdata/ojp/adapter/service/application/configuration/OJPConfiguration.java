@@ -16,35 +16,31 @@
 
 package swiss.opentransportdata.ojp.adapter.service.application.configuration;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.UnaryOperator;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
-import reactor.netty.transport.ProxyProvider;
 import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
 import swiss.opentransportdata.ojp.adapter.service.api.converter.OJPController;
-import swiss.opentransportdata.ojp.adapter.service.exchange.ExchangeConstants;
 import swiss.opentransportdata.ojp.adapter.service.exchange.webclient.HttpGetExchangeStrategies;
+import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 
 /**
  * Configuration to access OJP SKI+ Switzerland.
  */
 @Slf4j
-@Component
+@Configuration
 public class OJPConfiguration {
 
     /**
@@ -91,28 +87,29 @@ public class OJPConfiguration {
         }
     }
 
-    /**
-     * The proxy-host
-     */
-    private String httpProxyHost;
-    /**
-     * The port of the proxy-host
-     */
-    private Integer httpProxyPort;
-    /**
-     * Domains to connect without a proxy
-     */
-    private String nonProxyHosts;
-
     @Value("${ojp.timeoutConnect:15000}")
     Integer timeoutConnect;
     @Value("${ojp.timeoutRead:25000}")
     Integer timeoutRead;
 
     /**
+     * Hint for SKI+ OJP Support-Team about use case usage of OJP active/passive instance.
+     * <p>
+     * Replace if downloaded and operated for your own context.
+     */
+    @Value("${ojp.callerReference:OJP-Adapter_OSS}")
+    String callerReference;
+
+    @Bean(name = "OJPAdapter")
+    public OJPAdapter ojpAdapter() {
+        // simple WebClient setup for tests
+        return new OJPAdapter(createWebClient(), callerReference);
+    }
+
+    /**
      * true: gzip compression is enabled (default is false)
      */
-    private boolean compress;
+    private final boolean compress = false;
 
     /**
      * Whether to follow links when retrieving redirect-url.
@@ -121,7 +118,6 @@ public class OJPConfiguration {
      * <p>
      * Default is true, which means requests will follow the redirects.
      */
-    @Builder.Default
     private final boolean followRedirects = true;
 
     /**
@@ -129,21 +125,22 @@ public class OJPConfiguration {
      * <p>
      * null defaults to {@link HttpGetExchangeStrategies}
      */
-    private ExchangeStrategies exchangeStrategies;
+    private final ExchangeStrategies exchangeStrategies = null;
 
     /**
      * Declare additional exchange-filter-functions if needed
      * <p>
      * Configure your exchange-filters to be adapted for each query by WebClient, for e.g. for authentication or error-handling.
      */
-    private List<ExchangeFilterFunction> exchangeFilterFunctions;
+    private final List<ExchangeFilterFunction> exchangeFilterFunctions = null;
 
-    public WebClient createWebClient() {
-        final HttpClient httpClient = httpConnectTimeout()
-            .andThen(httpReadTimeout())
-            .andThen(httpProxy())
-            .andThen(followRedirects())
-            .apply(HttpClient.create())
+    private WebClient createWebClient() {
+        final HttpClient httpClient = HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeoutConnect)
+            .doOnConnected(conn -> conn.addHandlerLast(new ReadTimeoutHandler(timeoutRead))
+                /*.addHandlerLast(new WriteTimeoutHandler(writeTimeOut))*/)
+            //.wiretap(enableWireTap)
+            .followRedirect(followRedirects)
             .compress(compress);
 
         final WebClient.Builder webClientBuilder = WebClient.builder()
@@ -152,7 +149,7 @@ public class OJPConfiguration {
 
         // check if additional FilterFunctions should be applied.
         // e.g. RepsonseErrorHandler or AuthorizationFilter are set with this feature
-        if ((exchangeFilterFunctions == null) || exchangeFilterFunctions.isEmpty()) {
+        if (CollectionUtils.isEmpty(exchangeFilterFunctions)) {
             log.debug("No custom exchange-filters applied");
         } else {
             webClientBuilder.filters(funcs -> funcs.addAll(exchangeFilterFunctions));
@@ -160,42 +157,5 @@ public class OJPConfiguration {
         }
 
         return webClientBuilder.build();
-    }
-
-    private UnaryOperator<HttpClient> httpConnectTimeout() {
-        return client -> client
-            .tcpConfiguration(conf -> conf
-                .option(
-                    ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                    ExchangeConstants.restrictTimeout(timeoutConnect, true)));
-    }
-
-    private UnaryOperator<HttpClient> httpReadTimeout() {
-        return client -> client
-            .tcpConfiguration(conf -> conf
-                .doOnConnected(connection -> connection
-                    .addHandlerLast(new ReadTimeoutHandler(
-                        ExchangeConstants.restrictTimeout(timeoutRead, false),
-                        TimeUnit.MILLISECONDS))));
-    }
-
-    private UnaryOperator<HttpClient> httpProxy() {
-        boolean httpProxyHostAssigned = isNotBlank(httpProxyHost);
-        if (!httpProxyHostAssigned) {
-            log.trace("no httpProxy configured");
-            return client -> client;
-        }
-
-        return client -> client
-            .tcpConfiguration(conf -> conf
-                .proxy(spec -> spec
-                    .type(ProxyProvider.Proxy.HTTP)
-                    .host(httpProxyHost)
-                    .port(httpProxyPort)
-                    .nonProxyHosts(nonProxyHosts)));
-    }
-
-    private UnaryOperator<HttpClient> followRedirects() {
-        return client -> client.followRedirect(followRedirects);
     }
 }

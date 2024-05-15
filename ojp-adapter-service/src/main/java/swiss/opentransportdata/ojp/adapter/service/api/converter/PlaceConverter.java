@@ -90,7 +90,6 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
             } else if (placeStructure.getAddress() != null) {
                 log.debug("value={}", placeStructure.getAddress());
                 places.add(Address.builder()
-                    .type(Address.class.getSimpleName())
                     .id(placeStructure.getAddress().getAddressCode())
                     .name(/*TODO prefix .getPostCode() ?*/ OJPAdapter.getText(placeStructure.getAddress().getAddressName()))
                     .centroid(toPoint(placeStructure.getGeoPosition()))
@@ -118,7 +117,6 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
 
     private static StopPlace createStopPlace(String id, String name, LocationStructure geoPosition) {
         return StopPlace.builder()
-            .type(StopPlace.class.getSimpleName())
             .id(id)
             .name(name)
             //.province(locationV2.getCantonCH())
@@ -144,7 +142,6 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
                 .build())
             .collect(Collectors.toSet());
         return PointOfInterest.builder()
-            .type(PointOfInterest.class.getSimpleName())
             .id(poiCode)
             .name(name)
             .centroid(toPoint(locationStructure))

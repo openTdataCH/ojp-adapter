@@ -44,7 +44,7 @@ public class PointOfInterest implements Place, swiss.opentransportdata.ojp.adapt
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE,
         defaultValue = "PointOfInterest")
     @NonNull
-    String type;
+    String type = PointOfInterest.class.getSimpleName();
 
     @Schema(description = "Id of a POI (given by underlaying system).",
         requiredMode = RequiredMode.REQUIRED)
