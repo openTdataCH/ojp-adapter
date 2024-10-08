@@ -21,7 +21,7 @@ import lombok.experimental.UtilityClass;
 import org.springframework.http.HttpHeaders;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.IntermediateStopsEnum;
-import swiss.opentransportdata.ojp.adapter.model.trip.request.TrainStopAssignmentsEnum;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
 
 @UtilityClass
 public class ModelDoc {
@@ -48,6 +48,20 @@ public class ModelDoc {
      * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm>OSDM sample 'ptModes'</a>
      */
     public static final String HINT_ENUM_EXTENSIBLE = "<br>x-extensible-enum: ";
+    /**
+     * TODO SBB specific yet
+     *
+     * @see TransportModeEnum
+     */
+    public static final String DESCRIPTION_TRANSPORT_MODES =
+        "Optionally restrict to a requestable set of SBB specific TransportMode's (aka OJP PTMode). The set is relevant for any vehicle-journey (`DatedVehicleJourney`, `PTRideLeg`, ..). "
+            + "Relates to `ServiceProduct::vehicleMode` and `::vehicleSubModes`.\n"
+            + "- Default: non-restricted (null or empty-list), by means all TransportMode's are searched.\n"
+            + "- If some choice is made, other TransportMode's are excluded implicitely.\n"
+            + "- To get TRAIN (VehicleMode::id) only, add: [HIGH_SPEED_TRAIN,INTERCITY,INTERREGIO,REGIO,URBAN_TRAIN,SPECIAL_TRAIN]\n>"
+            + "- Be aware that TRAMWAY also searches for METRO (not distinguished it here further!)\n"
+            + "- Also there is no exact possibility to distinguish more precisely between CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR at search time<br>"
+            + HINT_ENUM_EXTENSIBLE;
     /**
      * Developer hint: Add to any params which are performance critical.
      */
@@ -148,7 +162,6 @@ public class ModelDoc {
     public static final String PARAM_SERVICE_DAYS = "Operating days of 'same journey' within planned yearly operating-period though multiple entries are possible (for e.g. `Operator` change or different daysRegular/daysIrregular).";
     public static final String DESCRIPTION_LINKS = "List of links as per [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principle.";
 
-    public static final String EXAMPLE_WEIGHT = "30170";
     public static final String HINT_QUAY_CHANGE = "**false** even if the related `StopCall::quayRt` is set, this is not considered a realtime change (acc. to SBB busines rules); **true** real `*QuayRt` change, also see `ServiceAlteration::quayChangedFormatted`.";
 
     public static final String OCCUPANCY_ENUM_LIST = "[UNKNOWN,LOW,MEDIUM,HIGH]";
@@ -157,7 +170,6 @@ public class ModelDoc {
     public static final String TRIP_POLYLINE = "With or without a plottable polyline for each vehicle-journey (if available)." + HINT_PERFORMANCE;
     public static final String PARAM_INCLUDE_ROUTE_PROJECTION = "includeRouteProjection";
     public static final String PARAM_INCLUDE_OPERATING_DAYS = "includeOperatingDays";
-    public static final String PARAM_INCLUDE_SUMMARY = "includeSummary";
     public static final String PARAM_INCLUDE_INTERMEDIATE_STOPS = "includeIntermediateStops";
     public static final String PARAM_INCLUDE_TRAIN_STOP_ASSIGNMENTS = "includeTrainStopAssignments";
     public static final String PARAM_INCLUDE_TRANSPORT_MODES = "includeTransportModes";
@@ -166,21 +178,24 @@ public class ModelDoc {
             + HINT_PERFORMANCE;
     public static final String DESCRIPTION_INCLUDE_INTERMEDIATE_STOPS =
         "Whether the `PTRideLeg's` should include intermediate stops (between the passenger's board and alight in `ServiceJourney::stopPoints`)." + ModelDoc.HINT_ENUM_EXTENSIBLE + " ["
-            + IntermediateStopsEnum.INTERMEDIATE_STOPS_ALL + "," + IntermediateStopsEnum.INTERMEDIATE_STOPS_NONE + "," + IntermediateStopsEnum.INTERMEDIATE_STOPS_BOARDING_ALIGHTING + "] where "
-            + IntermediateStopsEnum.INTERMEDIATE_STOPS_ALL + " is " + IntermediateStopsEnum.INTERMEDIATE_STOPS_BOARDING_ALIGHTING + " plus virtual stops.";
+            + IntermediateStopsEnum.ALL_AS_STRING + "," + IntermediateStopsEnum.NONE_AS_STRING + "," + IntermediateStopsEnum.BOARDING_ALIGHTING_AS_STRING + "] where "
+            + IntermediateStopsEnum.ALL_AS_STRING + " is " + IntermediateStopsEnum.BOARDING_ALIGHTING_AS_STRING + " plus virtual stops.";
 
     public static final String DESCRIPTION_LEG_DISTANCE = "Total distance for Leg (in meter).";
     public static final String DESCRIPTION_LEG_ID = "Unique Index ordered within Trip (may be casted to Integer for local indexing).";
     public static final String HINT_INHERITED_LEG = "<br>Inherited from `Leg`.";
 
-    public static final String DESCRIPTION_INCLUDE_TRAIN_STOP_ASSIGNMENTS =
-        "Whether `PTRideLeg's` should include `CompoundTrain's`(aka formation, composition). However, `CompoundTrain's` at any `ScheduledStopPoint` on the `ServiceJourney` may be loaded separately by `/v0/vehicle-journeys/by-stoppoints`.\n" /*DatedVehicleJourneyController.API_VEHICLE_JOURNEYS_BY_STOPPOINTS*/
-            +
-            "Possible values:\n" +
-            "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_NONE + " none at all, though a `PTRideLeg::trainStopAssignmentHint` is always given.\n" +
-            "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_ORIGIN + "  `TrainStopAssignment's` are added to first (departure) `ScheduledStopPoint` of each `PTRideLeg` \n" +
-            "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_ORIGIN_DESTINATION
-            + " `TrainStopAssignment's` are added to first (departure) and last (arrival) `ScheduledStopPoint` of each `PTRideLeg` having a `TrainStopAssignment` resp. a `CompoundTrain`.";
+    //    public static final String DESCRIPTION_INCLUDE_TRAIN_STOP_ASSIGNMENTS =
+    //        "Whether `PTRideLeg's` should include `CompoundTrain's`(aka formation, composition). However, `CompoundTrain's` at any `ScheduledStopPoint` on the `ServiceJourney` may be loaded separately by `/v0/vehicle-journeys/by-stoppoints`.\n" /*DatedVehicleJourneyController.API_VEHICLE_JOURNEYS_BY_STOPPOINTS*/
+    //            +
+    //            "Possible values:\n" +
+    //            "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_NONE + " none at all, though a `PTRideLeg::trainStopAssignmentHint` is always given.\n" +
+    //            "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_ORIGIN + "  `TrainStopAssignment's` are added to first (departure) `ScheduledStopPoint` of each `PTRideLeg` \n" +
+    //            "- " + TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_ORIGIN_DESTINATION
+    //            + " `TrainStopAssignment's` are added to first (departure) and last (arrival) `ScheduledStopPoint` of each `PTRideLeg` having a `TrainStopAssignment` resp. a `CompoundTrain`.";
+
+    public static final String DEFAULT_DATE_TODAY = "defaults to TODAY";
+    public static final String DEFAULT_TIME_NOW = "defaults to NOW";
 
     public static final String SAMPLE_WEIGHT = "30170";
 
@@ -193,7 +208,6 @@ public class ModelDoc {
      * @see #ISO8601
      */
     public static final String SAMPLE_OFFSETDATETIME = "2024-04-18T14:55:00+01:00";
-    public static final String SAMPLE_STRETCHMINUTES = "5";
     public static final String SAMPLE_DATE = "2024-04-18";
     public static final String SAMPLE_TIME = "13:07";
 }

@@ -42,6 +42,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +63,8 @@ import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejour
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.ArrivalResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.DepartureResponse;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.TripsByOriginAndDestinationRequestBody;
+import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
 import swiss.opentransportdata.ojp.adapter.service.api.ApiParametersDefault.ParamAcceptLanguage;
 import swiss.opentransportdata.ojp.adapter.service.api.ApiParametersDefault.ParamRequestId;
@@ -97,40 +101,24 @@ public class OJPController extends BaseController implements LocationPlaceFilter
     private static final String PATH_SEGMENT_OJP = "/ojp";
     private static final String PATH_SEGMENT_PLACES = "/places";
     private static final String PATH_SEGMENT_VEHICLE_JOURNEYS = "/vehicle-journeys";
-    //private static final String PATH_SEGMENT_TRIPS = "/trips";
+    private static final String PATH_SEGMENT_TRIPS = "/trips";
 
     static final String PATH = ApiDocumentation.VERSION_URI_V0 + PATH_SEGMENT_OJP;
     private static final String OJP_PLACES = PATH + PATH_SEGMENT_PLACES;
-
     //private static final String OJP_PLACES_COORDINATES_LAT_LON = PATH + PATH_SEGMENT_PLACES + "/by-coordinates";
-
-    //private static final String API_TRIPS_BY_ORIGIN_DESTINATION = PATH + PATH_SEGMENT_TRIPS + "/by-origin-destination";
-    private static final String API_VEHICLE_JOURNEY_BY_ID = PATH + PATH_SEGMENT_VEHICLE_JOURNEYS + "/{id}";
-    private static final String API_DEPARTURES = PATH + PATH_SEGMENT_VEHICLE_JOURNEYS + "/by-departure/{origin}";
-    private static final String API_ARRIVALS = PATH + PATH_SEGMENT_VEHICLE_JOURNEYS + "/by-arrival/{destination}";
-
     private static final String PLACES_PARAM_NAMEMATCH = "nameMatch";
     private static final int PLACES_DEFAULT_LIMIT = PlaceRequestFilter.LIMIT_DEFAULT;
     private static final int PLACES_MIN_LIMIT = 1;
     private static final int PLACES_MAX_LIMIT = 50;
     private static final int PLACES_DEFAULT_RADIUS = 1000;
 
+    private static final String API_VEHICLE_JOURNEY_BY_ID = PATH + PATH_SEGMENT_VEHICLE_JOURNEYS + "/{id}";
+    private static final String API_DEPARTURES = PATH + PATH_SEGMENT_VEHICLE_JOURNEYS + "/by-departure/{origin}";
+    private static final String API_ARRIVALS = PATH + PATH_SEGMENT_VEHICLE_JOURNEYS + "/by-arrival/{destination}";
     private static final int STATIONBOARD_DEFAULT_LIMIT = 20;
 
-    /**
-     * TODO SBB specific yet
-     *
-     * @see TransportModeEnum
-     */
-    public static final String DESCRIPTION_TRANSPORT_MODES =
-        "Optionally restrict to a requestable set of SBB specific TransportMode's (aka OJP PTMode). The set is relevant for any vehicle-journey (`DatedVehicleJourney`, `PTRideLeg`, ..). "
-            + "Relates to `ServiceProduct::vehicleMode` and `::vehicleSubModes`.\n"
-            + "- Default: non-restricted (null or empty-list), by means all TransportMode's are searched.\n"
-            + "- If some choice is made, other TransportMode's are excluded implicitely.\n"
-            + "- To get TRAIN (VehicleMode::id) only, add: [HIGH_SPEED_TRAIN,INTERCITY,INTERREGIO,REGIO,URBAN_TRAIN,SPECIAL_TRAIN]\n>"
-            + "- Be aware that TRAMWAY also searches for METRO (not distinguished it here further!)\n"
-            + "- Also there is no exact possibility to distinguish more precisely between CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR at search time<br>"
-            + ModelDoc.HINT_ENUM_EXTENSIBLE;
+    // see StartEndLeg -> terminology for Trip is origin/destination
+    private static final String API_TRIPS_BY_ORIGIN_DESTINATION = PATH + PATH_SEGMENT_TRIPS + "/by-origin-destination";
 
     private static final String HEADER_ACCEPT_LANGUAGE_DEFAULT = "en";
     private static final String HEADER_CONTENT_LANGUAGE_ERROR_DETAIL_DEFAULT = "en";
@@ -263,8 +251,8 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = ModelDoc.TRIP_POLYLINE, schema = @Schema(defaultValue = "false", type = "boolean"))
         @RequestParam(value = ModelDoc.PARAM_INCLUDE_ROUTE_PROJECTION, required = false) Boolean includeRouteProjection
         /*
-        @Parameter(description = ApiDocumentation.DESCRIPTION_INCLUDE_INTERMEDIATE_STOPS, schema = @Schema(defaultValue = IntermediateStopsEnum.INTERMEDIATE_STOPS_ALL))
-        @RequestParam(value = ApiDocumentation.PARAM_INCLUDE_INTERMEDIATE_STOPS, required = false) IntermediateStopsEnum includeIntermediateStops
+        @Parameter(description = ModelDoc.DESCRIPTION_INCLUDE_INTERMEDIATE_STOPS, schema = @Schema(defaultValue = IntermediateStopsEnum.INTERMEDIATE_STOPS_ALL))
+        @RequestParam(value = ModelDoc.PARAM_INCLUDE_INTERMEDIATE_STOPS, required = false) IntermediateStopsEnum includeIntermediateStops
         @Parameter(description = ApiDocumentation.DESCRIPTION_INCLUDE_TRAIN_STOP_ASSIGNMENTS)
         @RequestParam(value = ApiDocumentation.PARAM_INCLUDE_TRAIN_STOP_ASSIGNMENTS, required = false, defaultValue = TrainStopAssignmentsEnum.TRAIN_STOP_ASSIGNMENT_NONE) TrainStopAssignmentsEnum includeTrainStopAssignments
         */) {
@@ -335,7 +323,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = "Maximum number of departures to be returned.",
             schema = @Schema(type = "integer", defaultValue = "" + STATIONBOARD_DEFAULT_LIMIT))
         @RequestParam(value = "limit", required = false) Integer limit,
-        @Parameter(description = DESCRIPTION_TRANSPORT_MODES)
+        @Parameter(description = ModelDoc.DESCRIPTION_TRANSPORT_MODES)
         @RequestParam(value = ModelDoc.PARAM_INCLUDE_TRANSPORT_MODES, required = false) Set<TransportModeEnum> includeTransportModes
         /*
         @Parameter(description = "Restrict departures optionally from given tracks (related to origin).",
@@ -419,7 +407,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = "Maximum number of arrivals to be returned.",
             schema = @Schema(type = "integer", defaultValue = "" + STATIONBOARD_DEFAULT_LIMIT))
         @RequestParam(value = "limit", required = false) Integer limit,
-        @Parameter(description = DESCRIPTION_TRANSPORT_MODES)
+        @Parameter(description = ModelDoc.DESCRIPTION_TRANSPORT_MODES)
         @RequestParam(value = ModelDoc.PARAM_INCLUDE_TRANSPORT_MODES, required = false) Set<TransportModeEnum> includeTransportModes
         /*
         @Parameter(description = "Restrict departures optionally from given tracks (related to origin).",
@@ -462,6 +450,26 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         } catch (Exception ex) {
             return responseFactory.createUnexpectedProblemResponse("OJP /arrivals", ex);
         }
+    }
+
+    @PostMapping(value = {API_TRIPS_BY_ORIGIN_DESTINATION})
+    @Operation(summary = ModelDoc.HINT_GET_BY_POST
+        + " Get one-way trips between given origin and destination locations. Each Leg is operated by a certain transport-product, therefore multiple legs means changing vehicles.",
+        description = "The underlying public transportation planner will provide the best journey-connections according to your query-parameters, such as via, individual change time (ICT) etc." +
+            "<br>Between 0 and about 12 hits are expectable, related to realtime circumstances.")
+    @ApiStandardResponse(
+        content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = TripResponse.class)))
+    @ApiResponseProblemSet
+    //@ApiInternalRequestTimeout
+    public ResponseEntity<? extends JsonResponse> getTripsByOriginAndDestination(
+        // headers
+        @ParamRequestId @RequestHeader(value = MonitoringConstants.HEADER_REQUEST_ID, required = false) String requestId,
+        @ParamAcceptLanguage @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, defaultValue = ApiDocumentation.HEADER_ACCEPT_LANGUAGE_DEFAULT, required = false) String acceptLanguage,
+
+        @Parameter(description = "Request parameters (POST body).", required = true)
+        @RequestBody TripsByOriginAndDestinationRequestBody body
+    ) {
+        return responseFactory.createNotImplementedResponse("/trips");
     }
 
     /**
