@@ -35,7 +35,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformation
  * <p>
  * Conventions:
  * <ul>
- *     <li>Such a class is not 1:1 to be found in Transmodel (the model is pretty conceptual here), therefore we introduce our own Structure (like Hafas ProductType) and its data.</li>
+ *     <li>Such a class is not 1:1 to be found in Transmodel (the model is pretty conceptual here), therefore we introduce our own Structure and its data.</li>
  *     <li>A {@link Line} is more like a planning/commercial thing but its name is reused here.</li>
  * </ul>
  * <p>
@@ -95,8 +95,6 @@ public class ServiceProduct implements RouteIndexInterval, CorporateIdentity, Li
     VehicleMode vehicleMode;
 
     /**
-     * Value is given 1:1 according to Hafas.
-     *
      * @see TrainNumber
      */
     @Schema(description = "Unique per `OperatingDay` (CH day-change at 04:00 !) and name (where 'IC 1' can run several times per day in either of opposite directions). " +

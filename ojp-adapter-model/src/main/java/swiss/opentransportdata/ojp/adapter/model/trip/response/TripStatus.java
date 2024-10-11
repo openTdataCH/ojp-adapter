@@ -76,7 +76,7 @@ public class TripStatus {
     boolean delayedUnknown;
 
     /**
-     * CUS/Hafas mechanism VDV-756 standard.
+     * CUS mechanism VDV-756 standard.
      */
     @Schema(description = "If not true, changing `PTRideLeg's` is not guaranteed (de:Anschluss gehalten).",
         requiredMode = RequiredMode.REQUIRED, defaultValue = "true")

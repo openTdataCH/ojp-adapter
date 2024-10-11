@@ -35,7 +35,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformat
  * @since 2.21.3
  */
 @Schema(description = "Specification and behaviour of via StopPlace (aka OJP TripViaStructure).\n" +
-    // FPLJS-1134 OpenApi hack -> this description wins over local redefinition at usage!
+    // OpenApi hack -> this description wins over local redefinition at usage!
     "- TripsByOriginAndDestinationPostBody: all filters supported\n" +
     "- ServiceCalendarByOriginAndDestinationRequestBody: only `stopPlaceId` and `transportModes` supported yet")
 @Data

@@ -25,9 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public final class ExchangeConstants {
 
     /**
-     * Timeout setting [ms] is critical for a correct interaction with middleware and Hafas::REST. It has a great impact in load-scenarios and end-user experience!
+     * Timeout setting [ms] is critical for a correct interaction with middleware. It has a great impact in load-scenarios and end-user experience!
      * <p>
-     * Hafas::REST and related middleware
      * <ul>
      *     <li>Connect-Timeout is set to max 30s</li>
      *     <li>Read-Timeout is set to max 30s. However a min. of 10s is recommened, there are some time
@@ -48,7 +47,7 @@ public final class ExchangeConstants {
             throw new IllegalArgumentException("timeout (must be >0)");
         }
         if (timeout > DEFAULT_TIMEOUT_IN_MS) {
-            throw new IllegalArgumentException("timeout (> " + DEFAULT_TIMEOUT_IN_MS + "ms exceeds max timeout of Hafas/middleware!)");
+            throw new IllegalArgumentException("timeout (> " + DEFAULT_TIMEOUT_IN_MS + "ms exceeds max timeout of middleware!)");
         }
 
         log.debug("{}-timeout configured to: {}[ms]", getExpression(connectTimeout), timeout);

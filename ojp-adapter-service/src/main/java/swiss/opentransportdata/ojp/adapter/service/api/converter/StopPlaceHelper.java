@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
  *   <li>foreign UIC train stations, though they are often self defined by Atlas and must not be equivalent to other country definitions (unless they are in the ENEE DB)</li>
  * </ul
  * <p>
- * Atlas manages all UIC codes, where Hafas only contains the StopLocation set of really passed stations by calculated routes (delta is produced by Hafas-Transform).
+ * Atlas manages all UIC codes.
  */
 @UtilityClass
 public class StopPlaceHelper {

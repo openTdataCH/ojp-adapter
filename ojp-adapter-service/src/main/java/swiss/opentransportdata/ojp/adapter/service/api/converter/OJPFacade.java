@@ -304,7 +304,6 @@ public class OJPFacade {
                 case TRAMWAY -> {
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.TRAM);
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.TRAM_SERVICE);
-                    // Hafas cannot separate between T+M
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.METRO);
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.METRO_SERVICE);
                 }
@@ -319,7 +318,7 @@ public class OJPFacade {
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.RAILWAY_SERVICE);
                 }
                 default ->
-                    /* not explicitely searchable by J-S/Hafas TransportMode's yet:
+                    /* not explicitely searchable yet:
                     VehicleModesOfTransportEnumeration.AIR:
                     VehicleModesOfTransportEnumeration.SELF_DRIVE:
                     VehicleModesOfTransportEnumeration.TAXI:

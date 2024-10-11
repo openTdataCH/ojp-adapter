@@ -97,7 +97,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         final OJPTripDeliveryStructure ojpTripDeliveryStructure = OJPAdapter.mapToFirstOJPTripDeliveryStructure(ojpResponseWithTrips);
 
         final List<Trip> trips = new ArrayList<>();
-        // assumption: given for PTRideLeg::origin::departure and destination::arrival (as by Hafas) -> calculate for PTConnectionLeg and AccessLeg by their Duration
+        // assumption: given for PTRideLeg::origin::departure and destination::arrival (as by Hafas) -> calculate for ConnectionLeg and AccessLeg by their Duration
         for (TripResultStructure resultStructure : ojpTripDeliveryStructure.getTripResult()) {
             final List<Leg> legs = new ArrayList<>();
             for (TripLegStructure tripLegStructure : resultStructure.getTrip().getTripLeg()) {
@@ -356,7 +356,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
 
     /**
      * @param date
-     * @param time seconds irrelevant for Hafas
+     * @param time seconds irrelevant for passenger display
      * @return
      */
     @NonNull

@@ -56,7 +56,7 @@ public final class PlaceReferenceHelper {
         } else if (StringUtils.isNumeric(placeReferenceVariousFormat) && trimedReference.length() <= MAX_LENGTH_INTEGER) {
             return buildStopPlaceUic(Integer.valueOf(trimedReference), placeReferenceVariousFormat);
         } else if (SwissLocationId.isSwissLocationId(trimedReference)) {
-            // if this reference is to be used by Hafas, further extraction of classic numeric UIC may be done by caller
+            // if this reference is to be used for further extraction of classic numeric UIC may be done by caller
             return buildStopPlaceSloid(placeReferenceVariousFormat);
         } else if (trimedReference.startsWith(OJPAdapter.OJP_STOPPLACE_ID_PREFIX)) {
             return buildStopPlaceExternalId(placeReferenceVariousFormat, RouterEnum.OJP_ACTIVE);

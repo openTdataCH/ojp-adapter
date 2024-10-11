@@ -46,7 +46,7 @@ public enum RouterEnum {
     //ROUTERANK("RR")
     ;
 
-    public static final RouterEnum DEFAULT_ROUTER = RouterEnum.HAFAS;
+    public static final RouterEnum DEFAULT_ROUTER = RouterEnum.OJP_PASSIVE;
 
     public static final int ABBREVIATION_LENGTH = 2;
 

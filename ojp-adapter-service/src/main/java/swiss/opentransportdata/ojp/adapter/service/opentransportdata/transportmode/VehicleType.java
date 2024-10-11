@@ -158,7 +158,6 @@ public enum VehicleType implements CorporateIdentity {
      *     <li>Abk. INFO+ "TX"</li>
      * </ul>
      * <p>
-     * Remark: trainsearch found hits by Hafas.
      *
      * @see <a href="https://opentransportdata.swiss/de/dataset/verkehrsmittellisten/resource/88959f54-b8be-488d-887b-4b4b00cb2573>Not in OpentransportData.swiss or UNKNOWN</a>
      */
@@ -268,6 +267,7 @@ public enum VehicleType implements CorporateIdentity {
      * @param productSubCategoryShortName short sub-category name of ProductType:getSubCategoryShort() (Hafas field catOutS) for e.g. "IC"
      * @return defaults to TRAIN if not found
      */
+    @Deprecated
     @NonNull
     public static VehicleType findByProductCategoryShortName(@NonNull String productSubCategoryShortName) {
         final VehicleType matchingVehicleType = vehicleSubModeToType.get(productSubCategoryShortName);
@@ -284,6 +284,7 @@ public enum VehicleType implements CorporateIdentity {
      * @param productSubCategoryShortName short sub-category name of ProductType:getSubCategoryShort() (Hafas field catOutS) for e.g. "IC"
      * @return defaults to null if not found
      */
+    @Deprecated
     public static VehicleType findByProductSubCategoryShortName(@NonNull String productSubCategoryShortName) {
         return vehicleSubModeToType.get(productSubCategoryShortName);
     }

@@ -202,7 +202,6 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         if (!PlaceReference.TYPE_STOP_PLACE.equals(placeReference.getType())) {
             throw new IllegalArgumentException("StopPlace only supported for OJP yet but was type=" + placeReference.getType());
         }
-        // perhaps a finer switch like in TripControllerV3.toHafasLocationReference
     }
 
     private ResponseEntity<? extends JsonResponse> requestPlaces(String nameMatch, Set<PlaceTypeEnum> types, Integer limit, Point center, Integer radius) {
@@ -614,7 +613,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             .dateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(body.getDate(), body.getTime())))
             .vias(OJPFacade.mapToViaStops(body.getVias()))
             //.limit(limit)
-            .includeAccessibility(accessibilityEnum == null || accessibilityEnum == AccessibilityEnum.ALL)
+            .includeAccessibility(accessibilityEnum == AccessibilityEnum.ALL)
             .includeIntermediateStops(body.getIncludeIntermediateStops() == null || body.getIncludeIntermediateStops() == IntermediateStopsEnum.ALL)
             .includeOperatingDays(Boolean.TRUE.equals(body.getIncludeOperatingDays()))
             .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))

@@ -176,7 +176,7 @@ public final class TransportModeData {
         TRANSPORT_MODES.put(VehicleType.FUNICULAR, VehicleModeEnum.CABLEWAY);
         TRANSPORT_MODES.put(VehicleType.BOAT, VehicleModeEnum.SHIP);
         TRANSPORT_MODES.put(VehicleType.TRAMWAY, VehicleModeEnum.TRAMWAY);
-        // NeTEx other; VehicleType.LIFT not supported by Hafas yet
+        // NeTEx other; VehicleType.LIFT
         TRANSPORT_MODES.put(VehicleType.LIFT, VehicleModeEnum.ELEVATOR);
         // Non-PT: Mentioned by v580; NeTEx vehicle-enum; TAP TSI (OSDM)
         TRANSPORT_MODES.put(VehicleType.AIRPLANE, VehicleModeEnum.PLANE);
@@ -203,7 +203,7 @@ public final class TransportModeData {
         TRANSPORT_MODES_NETEX.put(VehicleType.FUNICULAR, NETEX_VEHICLE_MODE_FUNICULAR);
         TRANSPORT_MODES_NETEX.put(VehicleType.BOAT, NETEX_VEHICLE_MODE_WATER /*TODO or "ferry"*/);
         TRANSPORT_MODES_NETEX.put(VehicleType.TRAMWAY, NETEX_VEHICLE_MODE_TRAM);
-        // NeTEx other; VehicleType.LIFT not supported by Hafas yet
+        // NeTEx other; VehicleType.LIFT
         TRANSPORT_MODES_NETEX.put(VehicleType.LIFT, NETEX_VEHICLE_MODE_OTHER);
         // Non-PT: Mentioned by v580; NeTEx vehicle-enum; TAP TSI (OSDM)
         TRANSPORT_MODES_NETEX.put(VehicleType.AIRPLANE, NETEX_VEHICLE_MODE_AIR);

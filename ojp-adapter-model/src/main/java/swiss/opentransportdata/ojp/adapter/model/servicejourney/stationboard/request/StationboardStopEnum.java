@@ -19,9 +19,6 @@ package swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.re
 import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 
-/**
- * SERVER_DEFAULT is configured within Hafas.
- */
 @JsonExtensibleEnum
 @Schema(enumAsRef = true)
 public enum StationboardStopEnum {

@@ -214,8 +214,6 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
 
     public static final Boolean DEFAULT_INCLUDE_ROUTE_PROJECTION = Boolean.FALSE;
     /**
-     * Hafas can only deliver Polylines per Leg.
-     *
      * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::inlcludeRouteProjection, ::includeLegProjection
      */
     @Schema(description = "With or without a plottable polyline for each vehicle-journey (if available)." + ModelDoc.HINT_PERFORMANCE,

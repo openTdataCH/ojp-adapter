@@ -45,7 +45,7 @@ public final class DateTimeUtils {
      */
     public static final String TIMEZONE_CH = "Europe/Zurich";
     /**
-     * Hafas returns all DateTime values in local time Switzerland. Assume the given region based ZoneId for all (date, time [,timezone]) values transmitted by Hafas::REST.
+     * Journey-Planner Switzerland zone.
      */
     public static final ZoneId ZONE_ID_CH = ZoneId.of(TIMEZONE_CH);
 
@@ -145,7 +145,7 @@ public final class DateTimeUtils {
     }
 
     /**
-     * Hafas typical: No seconds or nanos supported!
+     * Typically: No seconds or nanos supported!
      *
      * @param date to set (today if null)
      * @param time to set (now if null)
@@ -157,9 +157,9 @@ public final class DateTimeUtils {
     }
 
     /**
-     * Hafas typical: No seconds or nanos supported!
+     * Typically: No seconds or nanos supported!
      *
-     * @return current Swiss date/time instance adjusted for Hafas timetable queries
+     * @return current Swiss date/time instance adjusted for timetable queries
      */
     @NonNull
     public static ZonedDateTime createSwissDateTime() {

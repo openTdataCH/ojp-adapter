@@ -48,8 +48,6 @@ public class PTSituation implements swiss.opentransportdata.ojp.adapter.transmod
     PTSituationAffectedScope affectedScope;
 
     /**
-     * Should never be empty resp. 1:1 with Hafas data!
-     *
      * @see PTSituationConsequenceScope
      */
     @ArraySchema(schema = @Schema(description = "An extent impacted by the PT situation-consequence on the `ServiceJourney` resp. `ServiceProduct`." +

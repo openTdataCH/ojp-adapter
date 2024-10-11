@@ -59,8 +59,6 @@ public interface Place extends InheritanceDiscriminable, Positionable, swiss.ope
     String getCountryCode();
 
     //    /**
-    //     * Hafas specific bound to /location.nearby
-    //     *
     //     * @return distance
     //     */
     //    @Schema(description = "Specifies the distance in [m] to the given coordinates in request." + " (Only set for `v0/places/by-coordinates*`).")
