@@ -28,8 +28,8 @@ import lombok.ToString;
  * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.interchange.Interchange
  * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.routingconstraint.TransferRestriction
  */
-@Schema(description = "Parameters to restrict the transfer options - particularly for interchanging PTRideLeg's by passenger (de: Individuelles Umsteigeverhalten).\n" +
-    // FPLJS-1134 OpenApi hack -> this description wins over local redefinition at usage!
+@Schema(description = "Parameters to restrict the transfer options - particularly for interchanging `PTRideLeg's` by passenger (de: Individuelles Umsteigeverhalten).\n" +
+    // OpenApi hack -> this description wins over local redefinition at usage!
     "- TripsByOriginAndDestinationPostBody: all filters supported\n" +
     "- ServiceCalendarByOriginAndDestinationRequestBody: only `maxTransfers` supported yet")
 @Data
@@ -55,17 +55,17 @@ public class TripMobilityFilter implements swiss.opentransportdata.ojp.adapter.t
         "- See `Trip::fastTransfer` for time risky changes.", defaultValue = "" + DEFAULT_WALKSPEED, type = "integer")
     Integer walkSpeed;
 
-    /**
-     * OJP/OSDM TripMobilityFilter::additionalTransferTime
-     */
-    @Schema(description = "Additional time [in min.] on top of default transfer time when changing Vehicle's.", type = "integer", defaultValue = "" + DEFAULT_ADDITIONAL_TRANSFER_TIME)
-    Integer additionalTransferTime;
+    //    /**
+    //     * OJP/OSDM TripMobilityFilter::additionalTransferTime
+    //     */
+    //    @Schema(description = "Additional time [in min.] on top of default transfer time when changing Vehicle's.", type = "integer", defaultValue = "" + DEFAULT_ADDITIONAL_TRANSFER_TIME)
+    //    Integer additionalTransferTime;
 
-    @Schema(description = "Minimum change time [in min.] when changing transport-products. There is no constant default, depends on SBB defined changing time at specific STATION.",
-        type = "integer", minimum = "0")
-    Integer minTransferTime;
+    //    @Schema(description = "Minimum change time [in min.] when changing transport-products. There is no constant default, depends on SBB defined changing time at specific STATION.",
+    //        type = "integer", minimum = "0")
+    //    Integer minTransferTime;
 
-    @Schema(description = "Maximum change time at stop in minutes. In realtimeMode=FULL only planned time is considered (by means not guaranteed if dateTimeRt is given).",
-        type = "integer", minimum = "0")
-    Integer maxTransferTime;
+    //    @Schema(description = "Maximum change time at stop in minutes. In realtimeMode=FULL only planned time is considered (by means not guaranteed if dateTimeRt is given).",
+    //        type = "integer", minimum = "0")
+    //    Integer maxTransferTime;
 }

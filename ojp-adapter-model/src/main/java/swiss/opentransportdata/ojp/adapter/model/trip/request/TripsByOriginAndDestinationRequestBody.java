@@ -34,14 +34,12 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
+import swiss.opentransportdata.ojp.adapter.model.servicejourney.request.RealtimeModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.utils.LocalTimeToHourMinuteSerializer;
 import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestFilter;
 
 /**
- * Request-filter v3.
- *
  * @author u210875 (Peter Hirzel)
- * @since 2.26.0
  */
 @Schema(description = ModelDoc.HINT_GET_BY_POST + "RequestBody containing search filter params.")
 @Data
@@ -81,17 +79,17 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     @Schema(description = "Ending point of the trip at destination (arrival). See **PlaceReference** in " + PublicLinks.DEV_MANUAL_HINT_COMPLEX_PARAMETER,
         type = "string",
         requiredMode = RequiredMode.REQUIRED,
-        example = "[7.435194,46.945679]")
+        example = "8507000")
     @NonNull
     String destination;
 
-    @Schema(description = "Tolerated walk distance (radius [m]) at `Place` origin (departure). Default is " + DEFAULT_WALK_RADIUS,
-        example = "800")
-    Integer originRadius;
+    //    @Schema(description = "Tolerated walk distance (radius [m]) at `Place` origin (departure). Default is " + DEFAULT_WALK_RADIUS,
+    //        example = "800")
+    //    Integer originRadius;
 
-    @Schema(description = "Tolerated walk distance (radius [m]) at `Place` destination (arrival). Default is " + DEFAULT_WALK_RADIUS,
-        example = "1500")
-    Integer destinationRadius;
+    //    @Schema(description = "Tolerated walk distance (radius [m]) at `Place` destination (arrival). Default is " + DEFAULT_WALK_RADIUS,
+    //        example = "1500")
+    //    Integer destinationRadius;
 
     public static final Boolean DEFAULT_FOR_ARRIVAL = Boolean.FALSE;
     @Schema(description = "Search for arriving (true) or departing (false) trips.",
@@ -101,7 +99,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     public static final Supplier<LocalDate> DEFAULT_DATE = LocalDate::now;
     @Schema(description = "(Local) date at either origin (`forArrival`=false) or destination (`forArrival`=true) related to `time`, " +
         ModelDoc.DEFAULT_DATE_TODAY + ".",
-        format = "date", example = ModelDoc.SAMPLE_DATE)
+        format = "date")
     @DateTimeFormat(iso = ISO.DATE)
     LocalDate date;
 
@@ -137,17 +135,17 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     //    /**
     //     * Transmodel {@link TripRequestPolicy} ::useRealTime
     //     */
-    //    @Schema(description = ApiDocumentationV3.DESCRIPTION_REALTIME_MODES, defaultValue = RealtimeModeEnum.REALTIME_AS_STRING)
-    //    RealtimeModeEnum realtimeMode;
+    @Schema(description = ModelDoc.HINT_ENUM_EXTENSIBLE
+        + "\n- `REALTIME` potentially planned and RT **including non-rideable** (like cancelled)"
+        + "\n- `OFF` **planned only**", defaultValue = RealtimeModeEnum.REALTIME_AS_STRING)
+    RealtimeModeEnum realtimeMode;
 
-    /**
-     * FPLJS-897
-     *
-     * @see swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse#getPaginationCursor()
-     * @see TripsByOriginAndDestinationRequestBody#getPagingCursor()
-     */
-    @Schema(description = ModelDoc.DESCRIPTION_PAGING_CURSOR)
-    String pagingCursor;
+    //    /**
+    //     * @see swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse#getPaginationCursor()
+    //     * @see TripsByOriginAndDestinationRequestBody#getPagingCursor()
+    //     */
+    //    @Schema(description = ModelDoc.DESCRIPTION_PAGING_CURSOR)
+    //    String pagingCursor;
 
     //    @Schema(description = "Configure the search algorithm influencing Trip search results.")
     //    OptimisationMethod optimisationMethod;
@@ -156,27 +154,27 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
      * Optional, additional data includes in response!
      */
 
-    //    public static final AccessibilityEnum DEFAULT_INCLUDE_ACCESSIBILITY = AccessibilityEnum.ALL;
-    //    /**
-    //     * Depends on {@link ch.sbb.ki.journeyservice.base.exchange.Grant#DENY_ACCESSIBILITY}
-    //     *
-    //     * @see TripRequestPolicy ::includeAccessibility
-    //     * @see ApiDocumentationV3#PARAM_INCLUDE_ACCESSIBILITY
-    //     */
-    //    @Schema(description = ApiDocumentationV3.DESCRIPTION_ACCESSIBILITY + "<br>" + ApiDocumentationV3.HINT_REGION_NUMBER,
-    //        defaultValue = AccessibilityEnum.ALL_AS_STRING /*TODO breaking change: bad default should be NONE, since not all clients have GRANT-rights*/)
-    //    AccessibilityEnum includeAccessibility;
+    public static final AccessibilityEnum DEFAULT_INCLUDE_ACCESSIBILITY = AccessibilityEnum.ALL;
+    /**
+     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::includeAccessibility
+     */
+    @Schema(description = "Sets Accessibility (de:BFR/BAIM) on each `ScheduledStopPoint::accessibilityBoardingAlighting` for better handicap support using vehicles. " +
+        "This is especially relevant on first (boarding) and last (alighting) of each `PTRideLeg::serviceJourney::stopPoints` (implicitely affects transfers).<br>" +
+        "If 'NONE' or non `PTRideLeg's` irrelevant and never given." +
+        ModelDoc.HINT_ENUM_EXTENSIBLE + " see enum values.",
+        defaultValue = AccessibilityEnum.ALL_AS_STRING /*TODO breaking change: bad default should be NONE, since not all clients have GRANT-rights*/)
+    AccessibilityEnum includeAccessibility;
 
     //    public static final AlternateMatchEnum DEFAULT_INCLUDE_ALTERNATE_MATCH = AlternateMatchEnum.IRRELEVANT;
     //    @Schema(description = ApiDocumentationV3.TRIP_ALTERNATEMATCH_DESCRIPTION,
     //        defaultValue = AlternateMatchEnum.IRRELEVANT_AS_STRING)
     //    AlternateMatchEnum includeAlternateMatch;
 
-    //    /**
-    //     * See OJP TripMobilityFilter::bikeTransport
-    //     */
-    //    @ArraySchema(schema = @Schema(description = ApiDocumentationV3.DESCRIPTION_NOTICE_ATTRIBUTES))
-    //    Set<NoticeAttributeEnum> includeNoticeAttributes;
+    /**
+     * See OJP TripMobilityFilter::bikeTransport
+     */
+    @ArraySchema(schema = @Schema(description = "Searchable `Notice's` values for type=ATTRIBUTE. Relates to `ServiceJourney::notices`." + ModelDoc.HINT_ENUM_EXTENSIBLE))
+    Set<NoticeAttributeEnum> includeNoticeAttributes;
 
     public static final Boolean DEFAULT_INCLUDE_ECONOMIC = Boolean.FALSE;
     @Schema(description = "Consider additional connections by Bus or S-Bahn leading to destination as well (de:'Zusätzliche Alternativverbindungen', 'Mehrdimensionale Suche', 'Preiswerte Suche')."
@@ -231,7 +229,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     //     * <p>
     //     * The reservation process itself is not maintained by J-S, but delegated interaction between sbb.ch and CAPRE.
     //     * <p>
-    //     * FPLJS-910 {@link NoticeAttributeEnum#GROUPS_ADMITTED}
+    //     * {@link NoticeAttributeEnum#GROUPS_ADMITTED}
     //     *
     //     * @see ApiDocumentationV3#PARAM_INCLUDE_GROUP_RESERVATION
     //     */
@@ -242,10 +240,10 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
 
     // TODO ? TripRequestPolicy::includeSituations=true (perhaps make requestable, defaultValue = true)
 
-    public static final Boolean DEFAULT_INCLUDE_SUMMARY = Boolean.FALSE;
-    @Schema(description = "Create some summary facts about each Trip (useful for UI overviews)." + ModelDoc.HINT_PERFORMANCE,
-        type = "boolean", defaultValue = "false")
-    Boolean includeSummary;
+    //    public static final Boolean DEFAULT_INCLUDE_SUMMARY = Boolean.FALSE;
+    //    @Schema(description = "Create some summary facts about each Trip (useful for UI overviews)." + ModelDoc.HINT_PERFORMANCE,
+    //        type = "boolean", defaultValue = "false")
+    //    Boolean includeSummary;
 
     /**
      * @see ModelDoc#PARAM_INCLUDE_INTERMEDIATE_STOPS
@@ -263,8 +261,6 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     //    TrainStopAssignmentsEnum includeTrainStopAssignments;
 
     //    /**
-    //     * FPLJS-1529
-    //     *
     //     * @see ApiDocumentationV3#PARAM_INCLUDE_REQUEST_ARGUMENTS
     //     */
     //    public static final Boolean DEFAULT_INCLUDE_REQUEST_ARGUMENTS = Boolean.FALSE;
@@ -276,8 +272,6 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     //    /**
     //     * Depends on {@link ch.sbb.ki.journeyservice.base.exchange.Grant#DENY_NON_PT_TRIPS}
     //     * <p>
-    //     * FPLJS-1479
-    //     *
     //     * @see ApiDocumentationV3#PARAM_INCLUDE_NON_PT_TRIPS
     //     */
     //    @Schema(description = "Include non-_Public Transportation_ `Trip` if a short footpath makes sense between two `StopPlace's`:\n" +
@@ -292,20 +286,4 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     /*-------------------------------------------------------------------------
      * Optional excludes resp. reduction of trips!
      */
-    //    @ArraySchema(schema = @Schema(description =
-    //        "Exclude a non-wanted set of `DatedVehicleJourney`s (each representing a ServiceProduct on a Line) including precise `name` and `start/end`) in the response (aka de:Sperrliste). " +
-    //            "See [**DatedVehicleJourneyReference**](" + PublicLinks.DEV_MANUAL_DATED_VEHICLE_JOURNEY_REFERENCE + ") case 1."))
-    //    List<DatedVehicleJourneyReference> excludeDatedVehicleJourneys;
-
-    //    public static final Boolean DEFAULT_EXCLUDE_FOOTPATH_AT_ORIGIN_AND_DESTINATION = Boolean.FALSE;
-    //    @Schema(description = "In case of `StopPlace` to `StopPlace` at origin and/or destination set true to prevent `AccessLeg's` at beginning or end.",
-    //        type = "boolean", defaultValue = "false")
-    //    Boolean excludeFootpathAtOriginAndDestination;
-
-    //    public static final Boolean DEFAULT_EXCLUDE_UNNECESSARY_TRANSFERS = Boolean.FALSE;
-    //    /**
-    //     * FPLJS-1478 Due to Hafas and Railkit router combination for national/internal Trips.
-    //     */
-    //    @Schema(description = ApiDocumentationV3.DESCRIPTION_EXCLUDE_UNNECESSARY_TRANSFERS, type = "boolean", defaultValue = "false")
-    //    Boolean excludeUnnecessaryTransfers;
 }

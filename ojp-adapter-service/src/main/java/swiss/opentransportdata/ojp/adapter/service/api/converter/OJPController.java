@@ -33,6 +33,7 @@ import java.util.Locale;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -57,12 +58,18 @@ import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
 import swiss.opentransportdata.ojp.adapter.model.common.response.Problem;
 import swiss.opentransportdata.ojp.adapter.model.geojson.GeoJsonConverter;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
+import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceReference;
 import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceTypeEnum;
 import swiss.opentransportdata.ojp.adapter.model.place.response.PlaceResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response.DatedVehicleJourney;
+import swiss.opentransportdata.ojp.adapter.model.servicejourney.request.RealtimeModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.ArrivalResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.DepartureResponse;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.AccessibilityEnum;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.IntermediateStopsEnum;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.NoticeAttributeEnum;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.TripMobilityFilter;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TripsByOriginAndDestinationRequestBody;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
@@ -189,6 +196,13 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         }
 
         return requestPlaces(nameMatch, types, limit, center, radius);
+    }
+
+    private void validatePlaceReference(PlaceReference placeReference) {
+        if (!PlaceReference.TYPE_STOP_PLACE.equals(placeReference.getType())) {
+            throw new IllegalArgumentException("StopPlace only supported for OJP yet but was type=" + placeReference.getType());
+        }
+        // perhaps a finer switch like in TripControllerV3.toHafasLocationReference
     }
 
     private ResponseEntity<? extends JsonResponse> requestPlaces(String nameMatch, Set<PlaceTypeEnum> types, Integer limit, Point center, Integer radius) {
@@ -350,11 +364,19 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         }
         */
 
+        final PlaceReference startPlaceRef;
+        try {
+            startPlaceRef = PlaceReferenceHelper.parse(origin);
+            validatePlaceReference(startPlaceRef);
+        } catch (IllegalArgumentException ex) {
+            return responseFactory.createBadParamResponse(ex, "destination", ex.getMessage());
+        }
+
         try {
             final StopEventRequestFilter filter = StopEventRequestFilter.builder()
                 .preferredLanguage(getPreferredLanguage())
                 .searchForArrival(false)
-                .stopPlaceReference(PlaceReferenceHelper.extractStopPlaceId(origin, "origin"))
+                .stopPlaceReference(startPlaceRef.getPlaceId())
                 .departureArrivalDateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(date, time)))
                 .limit(limit == null ? STATIONBOARD_DEFAULT_LIMIT : limit)
                 .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(includeTransportModes))
@@ -427,16 +449,24 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         /*
         Integer directionId = null;
         if (StringUtils.isNotBlank(direction)) {
-            directionId = PlaceReferenceHelper.extractStopPlaceId(direction, "direction");
+            directionId = PlaceReferenceHelper.parse(direction);
             return responseFactory.createNotImplementedResponse("direction");
         }
          */
+
+        final PlaceReference endPlaceRef;
+        try {
+            endPlaceRef = PlaceReferenceHelper.parse(destination);
+            validatePlaceReference(endPlaceRef);
+        } catch (IllegalArgumentException ex) {
+            return responseFactory.createBadParamResponse(ex, "destination", ex.getMessage());
+        }
 
         try {
             final StopEventRequestFilter filter = StopEventRequestFilter.builder()
                 .preferredLanguage(getPreferredLanguage())
                 .searchForArrival(true)
-                .stopPlaceReference(PlaceReferenceHelper.extractStopPlaceId(destination, "destination"))
+                .stopPlaceReference(endPlaceRef.getPlaceId())
                 .departureArrivalDateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(date, time)))
                 .limit(limit == null ? STATIONBOARD_DEFAULT_LIMIT : limit)
                 .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(includeTransportModes))
@@ -455,8 +485,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
     @PostMapping(value = {API_TRIPS_BY_ORIGIN_DESTINATION})
     @Operation(summary = ModelDoc.HINT_GET_BY_POST
         + " Get one-way trips between given origin and destination locations. Each Leg is operated by a certain transport-product, therefore multiple legs means changing vehicles.",
-        description = "The underlying public transportation planner will provide the best journey-connections according to your query-parameters, such as via, individual change time (ICT) etc." +
-            "<br>Between 0 and about 12 hits are expectable, related to realtime circumstances.")
+        description = "The underlying public transportation planner will provide the best journey-connections according to your query-parameters, such as via, individual change time (ICT) etc.")
     @ApiStandardResponse(
         content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = TripResponse.class)))
     @ApiResponseProblemSet
@@ -469,7 +498,165 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = "Request parameters (POST body).", required = true)
         @RequestBody TripsByOriginAndDestinationRequestBody body
     ) {
-        return responseFactory.createNotImplementedResponse("/trips");
+        monitorRequest(API_TRIPS_BY_ORIGIN_DESTINATION);
+
+        if (OJPFacade.isTooOld(body.getDate())) {
+            return responseFactory.createBadParamResponse(null, "date", OJPFacade.JOURNEY_PLANNER_DAYS_DETAIL);
+        }
+
+        //        if (body.getOriginRadius() != null && body.getOriginRadius() != TripsByOriginAndDestinationRequestBody.DEFAULT_WALK_RADIUS) {
+        //            // FPLJS-1384/FPLJS-1246
+        //            return responseFactory.createNotImplementedResponse("originRadius");
+        //        }
+        //        if (body.getDestinationRadius() != null && body.getDestinationRadius() != TripsByOriginAndDestinationRequestBody.DEFAULT_WALK_RADIUS) {
+        //            // FPLJS-1384/FPLJS-1246
+        //            return responseFactory.createNotImplementedResponse("destinationRadius");
+        //        }
+        //        final List<NotViaStop> notViaStops = viaMapper.mapToNotViaStops(body.getViasNot());
+        //        if (!CollectionUtils.isEmpty(notViaStops)) {
+        //            return responseFactory.createNotImplementedResponse("viasNot");
+        //        }
+        //        final List<NoChangeAtStop> noChangesAtStops = viaMapper.mapToNoChangesAtStop(body.getViasNoTransfer());
+        //        if (!CollectionUtils.isEmpty(noChangesAtStops)) {
+        //            return responseFactory.createNotImplementedResponse("viasNoTransfer");
+        //        }
+        //        if ((body.getOccupancyAverage() != null) && (body.getOccupancyAverage() != TripsByOriginAndDestinationRequestBody.DEFAULT_OCCUPANCY_AVERAGE)) {
+        //            // FPLJS-1246
+        //            return responseFactory.createNotImplementedResponse("occupancyAverage");
+        //        }
+        //        if (Boolean.TRUE.equals(body.getExcludeUnnecessaryTransfers())) {
+        //            // FPLJS-1478
+        //            return responseFactory.createBadParamResponse(null, ApiDocumentationV3.PARAM_EXCLUDE_UNNECESSARY_TRANSFERS, "true: not supported for OJP Trip's.");
+        //        }
+
+        final PlaceReference startPlaceReference;
+        try {
+            // straight routing params
+            startPlaceReference = PlaceReferenceHelper.parse(body.getOrigin());
+            validatePlaceReference(startPlaceReference);
+        } catch (IllegalArgumentException ex) {
+            return responseFactory.createBadParamResponse(ex, "origin", ex.getMessage());
+        }
+        final PlaceReference endPlaceRef;
+        try {
+            endPlaceRef = PlaceReferenceHelper.parse(body.getDestination());
+            validatePlaceReference(endPlaceRef);
+        } catch (IllegalArgumentException ex) {
+            return responseFactory.createBadParamResponse(ex, "destination", ex.getMessage());
+        }
+
+        //        if (body.getPagingCursor() != null) {
+        //            return responseFactory.createBadParamResponse(null, "pagingCursor", "not supported by OJP yet");
+        //        }
+        //        if (StringUtils.isNotBlank(body.getIncludeGroupReservation()) /*|| TripControllerV3.enforceRegionNumber(accessibilityEnum)*/) {
+        //            //infos = TripControllerV3.createRegionNumberSet();
+        //            return responseFactory.createBadParamResponse(null, ApiDocumentationV3.PARAM_INCLUDE_GROUP_RESERVATION, "not supported for OJP yet");
+        //        }
+        //        if (Boolean.TRUE.equals(body.getIncludeSummary())) {
+        //            // FPLJS-1246
+        //            return responseFactory.createNotImplementedResponse(ApiDocumentationV3.PARAM_INCLUDE_SUMMARY);
+        //        }
+        //        if (Boolean.TRUE.equals(body.getIncludeEconomic())) {
+        //            return responseFactory.createNotImplementedResponse("includeEconomic");
+        //        }
+        //        if (Boolean.TRUE.equals(body.getIncludeUnsharp())) {
+        //            return responseFactory.createNotImplementedResponse("includeUnsharp");
+        //        }
+        //        if (Boolean.TRUE.equals(body.getIncludeEarlier())) {
+        //            return responseFactory.createNotImplementedResponse("includeEarlier");
+        //        }
+        //        if (body.getIncludeEcologyComparison() != null && !"NONE".equals(body.getIncludeEcologyComparison())) {
+        //            return responseFactory.createNotImplementedResponse(ApiDocumentationV3.PARAM_INCLUDE_ECOLOGY_COMPARISON);
+        //        }
+        //        if (body.getIncludeRequestArguments() != null && !TripsByOriginAndDestinationRequestBody.DEFAULT_INCLUDE_REQUEST_ARGUMENTS.equals(body.getIncludeRequestArguments())) {
+        //            return responseFactory.createNotImplementedResponse(ApiDocumentationV3.PARAM_INCLUDE_REQUEST_ARGUMENTS);
+        //        }
+        //        if (body.getIncludeAlternateMatch() != null && TripsByOriginAndDestinationRequestBody.DEFAULT_INCLUDE_ALTERNATE_MATCH != body.getIncludeAlternateMatch()) {
+        //            return responseFactory.createBadParamResponse(null, ApiDocumentationV3.PARAM_INCLUDE_ALTERNATE_MATCH, "Only " + AlternateMatchEnum.IRRELEVANT_AS_STRING + " is supported for OJP yet");
+        //        }
+        //        if (!((body.getIncludeNonPublicTransportationTrips() == null) || (body.getIncludeNonPublicTransportationTrips() == TripsByOriginAndDestinationRequestBody.DEFAULT_INCLUDE_NON_PT_TRIP))) {
+        //            // FPLJS-1479
+        //            return responseFactory.createNotImplementedResponse(ApiDocumentationV3.PARAM_INCLUDE_NON_PT_TRIPS);
+        //        }
+        //        // exclude params
+        //        if (!CollectionUtils.isEmpty(body.getExcludeDatedVehicleJourneys())) {
+        //            return responseFactory.createBadParamResponse(null, "excludeDatedVehicleJourneys", "not supported for OJP yet");
+        //        }
+        //        if (Boolean.TRUE.equals(body.getExcludeFootpathAtOriginAndDestination())) {
+        //            return responseFactory.createBadParamResponse(null, "excludeFootpathAtOriginAndDestination", "not supported for OJP yet");
+        //        }
+        //
+        //        Integer limit = null;
+        //        if (body.getOptimisationMethod() != null) {
+        //            // OJP concept differs from Hafas! Leave the default to OJP and do not override by TripSearchAlgorithmConfig.DEFAULT_NUMF
+        //            if (body.getOptimisationMethod().getNumberOfResultsBefore() != null) {
+        //                log.debug("PATCH: OptimisationMethod::numberOfResultsBefore={} is ignored -> not supported by OJP", body.getOptimisationMethod().getNumberOfResultsBefore());
+        //            }
+        //            if (body.getOptimisationMethod().getNumberOfResultsAfter() != null) {
+        //                if (body.getOptimisationMethod().getNumberOfResultsAfter() <= 0) {
+        //                    return responseFactory.createBadParamResponse(null, "optimisationMethod::numberOfResultsAfter", "must be > 0");
+        //                }
+        //                limit = body.getOptimisationMethod().getNumberOfResultsAfter();
+        //            }
+        //        }
+
+        final AccessibilityEnum accessibilityEnum = ObjectUtils.defaultIfNull(body.getIncludeAccessibility(), TripsByOriginAndDestinationRequestBody.DEFAULT_INCLUDE_ACCESSIBILITY);
+        if (!(accessibilityEnum == AccessibilityEnum.NONE || accessibilityEnum == AccessibilityEnum.ALL)) {
+            return responseFactory.createBadParamResponse(null, "includeAccessibility",
+                "only '" + AccessibilityEnum.ALL_AS_STRING + "' or '" + AccessibilityEnum.NONE_AS_STRING + "' supported by OJP yet");
+        }
+
+        swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter.TripRequestFilterBuilder tripRequestFilterBuilder = swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter.builder()
+            .preferredLanguage(getRequestContext().getAcceptLocale())
+            .searchForArrival(ObjectUtils.defaultIfNull(body.getForArrival(), TripsByOriginAndDestinationRequestBody.DEFAULT_FOR_ARRIVAL))
+            .origin(startPlaceReference.getPlaceId())
+            .destination(endPlaceRef.getPlaceId())
+            .dateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(body.getDate(), body.getTime())))
+            .vias(OJPFacade.mapToViaStops(body.getVias()))
+            //.limit(limit)
+            .includeAccessibility(accessibilityEnum == null || accessibilityEnum == AccessibilityEnum.ALL)
+            .includeIntermediateStops(body.getIncludeIntermediateStops() == null || body.getIncludeIntermediateStops() == IntermediateStopsEnum.ALL)
+            .includeOperatingDays(Boolean.TRUE.equals(body.getIncludeOperatingDays()))
+            .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))
+            .includeSituationsContext(true /*TODO make configurable*/)
+            .includeLegProjection(Boolean.TRUE.equals(body.getIncludeRouteProjection()))
+            .excludeRealtime(body.getRealtimeMode() == RealtimeModeEnum.OFF);
+
+        if (body.getMobilityFilter() == null) {
+            tripRequestFilterBuilder.transferLimit(TripMobilityFilter.DEFAULT_MAX_TRANSFERS)
+                .walkSpeed(TripMobilityFilter.DEFAULT_WALKSPEED);
+        } else {
+            /*
+            if (body.getMobilityFilter().getAdditionalTransferTime() != null ||
+                body.getMobilityFilter().getMaxTransferTime() != null ||
+                body.getMobilityFilter().getMinTransferTime() != null) {
+                return responseFactory.createBadParamResponse(null, "mobilityFilter", "only 'maxTransfers' and 'walkSpeed' supported for OJP yet");
+            }
+            */
+            tripRequestFilterBuilder.transferLimit(body.getMobilityFilter().getMaxTransfers() == null ? TripMobilityFilter.DEFAULT_MAX_TRANSFERS : body.getMobilityFilter().getMaxTransfers())
+                .walkSpeed(body.getMobilityFilter().getWalkSpeed() == null ? TripMobilityFilter.DEFAULT_WALKSPEED : body.getMobilityFilter().getWalkSpeed());
+        }
+
+        if (body.getIncludeNoticeAttributes() != null) {
+            if (body.getIncludeNoticeAttributes().size() == 1 && body.getIncludeNoticeAttributes().contains(NoticeAttributeEnum.BIKE_TRANSPORT)) {
+                tripRequestFilterBuilder.includeBikeCarriage(true);
+            } else {
+                return responseFactory.createBadParamResponse(null, "includeNoticeAttributes", "only 'BIKE_TRANSPORT' supported for OJP yet");
+            }
+        }
+
+        try {
+            final TripResponse tripResponse = ojpFacade.requestTrips(createOJPAccessor(), tripRequestFilterBuilder.build());
+            if (tripResponse.getTrips().isEmpty()) {
+                return responseFactory.createNotFoundResponse();
+            }
+            // TODO FPLJS-1247 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
+            return responseFactory.createOkResponse(tripResponse, getRequestContext().getAcceptLocale());
+        } catch (OJPException ex) {
+            return handle(ex);
+        } catch (Exception ex) {
+            return responseFactory.createUnexpectedProblemResponse("OJP /trips", ex);
+        }
     }
 
     /**
