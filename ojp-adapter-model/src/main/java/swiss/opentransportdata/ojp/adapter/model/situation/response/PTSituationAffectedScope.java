@@ -35,7 +35,7 @@ import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Vehicle
 @Value
 public class PTSituationAffectedScope implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationAffectedScope {
 
-    // List<Operator> operators; -> not given by Hafas
+    // List<Operator> operators; -> not given
 
     @ArraySchema(schema = @Schema(description = "Vehicle modes affected, if available.", requiredMode = RequiredMode.REQUIRED))
     @NonNull

@@ -17,10 +17,13 @@
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
 import de.vdv.ojp.JourneyRefStructure;
+import de.vdv.ojp.PlaceRefStructure;
 import de.vdv.ojp.PlaceTypeEnumeration;
 import de.vdv.ojp.PtModeFilterStructure;
+import de.vdv.ojp.TripViaStructure;
 import de.vdv.ojp.model.OJP;
 import de.vdv.ojp.model.VehicleModesOfTransportEnumeration;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -32,6 +35,7 @@ import java.util.stream.Collectors;
 import jdk.jfr.Experimental;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -53,7 +57,9 @@ import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.res
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.Departure;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.DepartureResponse;
 import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
+import swiss.opentransportdata.ojp.adapter.model.trip.request.PTViaReference;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
+import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus;
 import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
 import swiss.opentransportdata.ojp.adapter.service.utils.DateTimeUtils;
@@ -61,13 +67,16 @@ import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter;
 import swiss.opentransportdata.ojp.adapter.v1.StopEventRequestFilter;
 import swiss.opentransportdata.ojp.adapter.v1.TripLegRequestFilter;
+import swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter;
+import swiss.opentransportdata.ojp.adapter.v1.converter.OJPFactory;
 
 /**
- * Facade to interact with OJP using Transmodel (TRM6) like models, therefore this is a kind of OJP overlay.
+ * Facade to interact with OJP using J-S v3 Transmodel (TRM6) like models, therefore this is a kind of OJP overlay by J-S POJOs.
  * <p>
- * Requests against OJP by {@link OJPAdapter} and maps native OJP XML responses to TRM implementations models.
+ * Requests against OJP by {@link OJPAdapter} and maps native OJP XML responses to J-S v3 models.
  *
  * @author Peter Hirzel
+ * @since 3.1.3
  */
 @Slf4j
 @Component
@@ -98,16 +107,6 @@ public class OJPFacade {
         this.ojpAdapter = ojpAdapter;
     }
 
-    static TripStatus createTripStatus() {
-        return TripStatus.builder()
-            /*TODO .valid()
-            .cancelled()
-            .partiallyCancelled()
-            ...
-             */
-            .build();
-    }
-
     static boolean isTooOld(LocalDate date) {
         if (date == null) {
             // NOW
@@ -117,7 +116,7 @@ public class OJPFacade {
     }
 
     static Set<PlaceTypeEnumeration> mapToPlaceTypes(Set<PlaceTypeEnum> types) {
-        if (CollectionUtils.isEmpty(types) || types.contains(PlaceTypeEnum.ALL) || (types.size() >= 3)) {
+        if (CollectionUtils.isEmpty(types) || types.contains(PlaceTypeEnum.ALL) || (types.size() >= PlaceTypeEnum.values().length - 1)) {
             // not supported yet: PlaceTypeEnumeration.COORD, PlaceTypeEnumeration.TOPOGRAPHIC_PLACE
             return Set.of(PlaceTypeEnumeration.STOP, PlaceTypeEnumeration.ADDRESS, PlaceTypeEnumeration.POI);
         }
@@ -132,35 +131,6 @@ public class OJPFacade {
             .collect(Collectors.toSet());
     }
 
-    // TODO refactor to stricter Builder usage (current goal: just make sure all OJP "XML structures of the same" result into same data)
-    static ServiceJourney createServiceJourney(@NonNull List<JourneyRefStructure> journeyRefStructures, @NonNull List<ScheduledStopPoint> scheduledStopPoints,
-        @NonNull List<ServiceProduct> serviceProducts,
-        @NonNull List<Direction> directions, @NonNull List<Notice> notices, @NonNull List<PTSituation> situations, @NonNull ServiceAlteration serviceAlteration,
-        List<OperatingPeriod> operatingPeriods) {
-
-        if (journeyRefStructures.isEmpty()) {
-            throw new DeveloperException("OJP PTRideLeg has no journeyReference");
-        } else if (journeyRefStructures.size() > 1) {
-            log.info("unexpected > 1 PTRideLeg::id -> {}", journeyRefStructures);
-        }
-        return ServiceJourney.builder()
-            .id(journeyRefStructures.get(0).getValue())
-            // TODO might not be the exact operatingDay!
-            .operatingDay(scheduledStopPoints.get(0).getDeparture().getTimeAimed().toLocalDate())
-            .stopPoints(scheduledStopPoints)
-            .serviceProducts(serviceProducts)
-            .directions(directions)
-            .notices(notices)
-            .situations(situations)
-            .serviceAlteration(serviceAlteration)
-            .operatingPeriods(operatingPeriods == null ? Collections.emptyList() : operatingPeriods)
-            //TODO J-A ProductCategory::getTranslation(locale)
-            .quayTypeName("Gleis")
-            .quayTypeShortName("GL.")
-            // TODO .spatialProjection(GeoJsonConverter.toLineString(polylineFormatted))
-            .build();
-    }
-
     /**
      * Find Place's by OJP.
      *
@@ -173,6 +143,14 @@ public class OJPFacade {
     public PlaceResponse requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull PlaceRequestFilter filter) throws OJPException {
         final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, filter);
         return placeConverter.convertToDTO(ojpResponse);
+    }
+
+    @NonNull
+    public TripResponse requestTrips(@NonNull OJPAccessor ojpAccessor, @NonNull TripRequestFilter tripRequestFilter)
+        throws OJPException {
+
+        final OJP ojpResponse = ojpAdapter.requestTrips(ojpAccessor, tripRequestFilter);
+        return tripConverter.convertToDTO(ojpResponse);
     }
 
     /**
@@ -225,6 +203,70 @@ public class OJPFacade {
             .build();
     }
 
+    // TODO refactor to stricter Builder usage (current goal: just make sure all OJP "XML structures of the same" result into same data)
+    static ServiceJourney createServiceJourney(@NonNull List<JourneyRefStructure> journeyRefStructures, @NonNull List<ScheduledStopPoint> scheduledStopPoints,
+        @NonNull List<ServiceProduct> serviceProducts,
+        @NonNull List<Direction> directions, @NonNull List<Notice> notices, @NonNull List<PTSituation> situations, @NonNull ServiceAlteration serviceAlteration,
+        List<OperatingPeriod> operatingPeriods) {
+
+        if (journeyRefStructures.isEmpty()) {
+            throw new DeveloperException("OJP PTRideLeg has no journeyReference");
+        } else if (journeyRefStructures.size() > 1) {
+            log.info("unexpected > 1 PTRideLeg::id -> {}", journeyRefStructures);
+        }
+        return ServiceJourney.builder()
+            .id(journeyRefStructures.get(0).getValue())
+            // TODO might not be the exact operatingDay!
+            .operatingDay(scheduledStopPoints.get(0).getDeparture().getTimeAimed().toLocalDate())
+            .stopPoints(scheduledStopPoints)
+            .serviceProducts(serviceProducts)
+            .directions(directions)
+            .notices(notices)
+            //.checkConstraints()
+            .situations(situations)
+            .serviceAlteration(serviceAlteration)
+            .operatingPeriods(operatingPeriods == null ? Collections.emptyList() : operatingPeriods)
+            //TODO J-A ProductCategory::getTranslation(locale)
+            .quayTypeName("Gleis")
+            .quayTypeShortName("GL.")
+            // TODO .spatialProjection(GeoJsonConverter.toLineString(polylineFormatted))
+            .build();
+    }
+
+    static TripStatus createTripStatus() {
+        return TripStatus.builder()
+            /*TODO .valid()
+            .cancelled()
+            .partiallyCancelled()
+            ...
+             */
+            .build();
+    }
+
+    static List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences) {
+        if (CollectionUtils.isEmpty(ptViaReferences)) {
+            return null;
+        }
+        return ptViaReferences.stream()
+            .map(ptViaReference -> {
+                final TripViaStructure tripViaStructure = new TripViaStructure();
+                final PlaceRefStructure placeRefStructure = OJPFactory.createPlaceReferenceStructure(ptViaReference.getStopPlaceId());
+                tripViaStructure.setViaPoint(placeRefStructure);
+                tripViaStructure.setDwellTime(ptViaReference.getWaittime() == null ? null : Duration.ofMinutes(ptViaReference.getWaittime()));
+                if ((ptViaReference.getStatus() != null) && (!PTViaReference.STATUS_BOARDING_ALIGHTING_NECESSARY.equals(ptViaReference.getStatus())) ||
+                    (!CollectionUtils.isEmpty(ptViaReference.getTransportModes())) /*||
+                    Boolean.TRUE.equals(ptViaReference.getDirect()) ||
+                    Boolean.TRUE.equals(ptViaReference.getCouchette()) ||
+                    Boolean.TRUE.equals(ptViaReference.getSleepingCar())*/
+                ) {
+                    throw new NotImplementedException("PTViaReference::stopPlaceId, ::waittime only supported yet");
+                }
+
+                return tripViaStructure;
+            })
+            .toList();
+    }
+
     /**
      * @param transportModes
      * @return including enforced
@@ -262,7 +304,6 @@ public class OJPFacade {
                 case TRAMWAY -> {
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.TRAM);
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.TRAM_SERVICE);
-                    // Hafas cannot separate between T+M
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.METRO);
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.METRO_SERVICE);
                 }
@@ -277,7 +318,7 @@ public class OJPFacade {
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.RAILWAY_SERVICE);
                 }
                 default ->
-                    /* not explicitely searchable TransportMode's yet:
+                    /* not explicitely searchable yet:
                     VehicleModesOfTransportEnumeration.AIR:
                     VehicleModesOfTransportEnumeration.SELF_DRIVE:
                     VehicleModesOfTransportEnumeration.TAXI:

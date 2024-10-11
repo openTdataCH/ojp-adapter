@@ -89,12 +89,6 @@ public class ServiceJourney implements Route, swiss.opentransportdata.ojp.adapte
     List<PTSituation> situations;
 
     /**
-     * <ul>
-     *     <li>Hafas Leg::serviceDays is in rest.xsd but seems to have never data</li>
-     *     <li>Hafas Arrival/Departure have no serviceDays property yet, therefore never given.</li>
-     *     <li>However Hafas JourneyDetail::serviceDays may occur</li>
-     * </ul>
-     * <p>
      * By design we decide to implement it on ServiceJourney, though on DatedVehicleJourney might be enough.
      * This is owed to future model change prevention and alternate routers such as OJP.
      */
@@ -119,7 +113,7 @@ public class ServiceJourney implements Route, swiss.opentransportdata.ojp.adapte
         example = "Gl.")
     String quayTypeShortName;
 
-    // [0..*] by Hafas (Specialcase: de:Ringzug)
+    // [0..*] by (Specialcase: de:Ringzug)
     @ArraySchema(schema = @Schema(description = ModelDoc.DIRECTION_DESCRIPTION,
         requiredMode = RequiredMode.REQUIRED))
     @NonNull

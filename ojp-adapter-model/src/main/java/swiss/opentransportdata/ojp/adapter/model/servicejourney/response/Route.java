@@ -27,7 +27,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformat
  * Conventions made (tricky one!!!):
  * <ul>
  *     <li>eu.cen.transmodel.v6x56.part2.ptnetworktopology.networkdescription.route.Route and eu.cen.transmodel.v6x56.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern are similar, where JourneyPattern's ordered list of SCHEDULED STOP POINTs and TIMING POINTs is on a single ROUTE.</li>
- *     <li>Route (road & rail) is more generic than JourneyPattern (PT), therefore we use a list of {@link ScheduledStopPoint} instead of Transmodel {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ScheduledStopPoint} for all Leg types and Hafas JourneyDetail here in a generic manner as well (corresponds to OJP::StopPoint).</li>
+ *     <li>Route (road & rail) is more generic than JourneyPattern (PT), therefore we use a list of {@link ScheduledStopPoint} instead of Transmodel {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ScheduledStopPoint} for all Leg types and  JourneyDetail here in a generic manner as well (corresponds to OJP::StopPoint).</li>
  * </ul>
  */
 public interface Route extends PlottableProjection, swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.networkdescription.route.Route {

@@ -61,8 +61,6 @@ public class ApiDocumentation {
     public static final String STATUS_403 = "Forbidden";
     public static final String STATUS_404 = "No entity/resource found (in Backend)";
 
-    public static final String HINT_GET_BY_POST = "{Idempotent: GET with body payload}";
-
     /**
      * @see <a href="https://tools.ietf.org/html/rfc2616#section-14.14">RFC2616 section 14.14</a>
      * @see <a href="https://tools.ietf.org/html/rfc6648">Naming of HTTP header fields</a>

@@ -44,7 +44,7 @@ public class ServiceCalendar implements JsonResponse, swiss.opentransportdata.oj
     String name;
 
     /**
-     * Transmodel role: "for" Hafas: List of ServiceDays
+     * Transmodel role: "for" List of service-days
      * <p>
      * For Trip current period only.
      */

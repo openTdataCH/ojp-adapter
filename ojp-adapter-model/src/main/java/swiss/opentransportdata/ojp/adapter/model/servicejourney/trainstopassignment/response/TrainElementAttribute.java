@@ -19,6 +19,7 @@ package swiss.opentransportdata.ojp.adapter.model.servicejourney.trainstopassign
 import com.fasterxml.jackson.annotation.JsonValue;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 
+//TODO strip
 @JsonExtensibleEnum
 public enum TrainElementAttribute {
 

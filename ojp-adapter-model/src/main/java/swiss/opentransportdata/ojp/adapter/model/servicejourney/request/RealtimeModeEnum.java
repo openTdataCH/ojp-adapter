@@ -14,17 +14,28 @@
  * limitations under the License.
  */
 
-package swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.request;
+package swiss.opentransportdata.ojp.adapter.model.servicejourney.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 
+/**
+ * Planned versus realtime impacted journeys.
+ */
 @JsonExtensibleEnum
 @Schema(enumAsRef = true)
-public enum StationboardStopEnum {
-    CONCRETE_STOP,
-    EQUIVALENT_STOPS;
+public enum RealtimeModeEnum {
+    /**
+     * Realtime impacted if any.
+     */
+    REALTIME,
+    /**
+     * Planned.
+     */
+    OFF;
 
-    public static final String DEFAULT_VALUE = "CONCRETE_STOP";
-    public static final String EQUIVALENT_STOPS_NAME = "EQUIVALENT_STOPS";
+    /**
+     * First entry becomes defaultValue by OpenApi if not further restricted!
+     */
+    public static final String REALTIME_AS_STRING = "REALTIME";
 }

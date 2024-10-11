@@ -18,7 +18,10 @@ public enum IntermediateStopsEnum {
      */
     NONE;
 
-    public static final String INTERMEDIATE_STOPS_ALL = "ALL";
-    public static final String INTERMEDIATE_STOPS_BOARDING_ALIGHTING = "BOARDING_ALIGHTING";
-    public static final String INTERMEDIATE_STOPS_NONE = "NONE";
+    /**
+     * First entry becomes defaultValue by OpenApi if not further restricted!
+     */
+    public static final String ALL_AS_STRING = "ALL";
+    public static final String BOARDING_ALIGHTING_AS_STRING = "BOARDING_ALIGHTING";
+    public static final String NONE_AS_STRING = "NONE";
 }

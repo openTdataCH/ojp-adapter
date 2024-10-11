@@ -20,10 +20,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 
 /**
- * TODO Provide better Standard terms, which are the concrete modes SBB P-Data-Mgmt provides and Hafas supports them! They do
+ * TODO Provide better Standard terms, which are the concrete modes SBB. They do
  * not match exactly to TransportModeData "TransportMode" values which relate to more generic  {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part10.alternativemodes.reusablecomponents.vehicletype.VehicleType} and they map to {@link swiss.opentransportdata.ojp.adapter.model.servicejourney.response.VehicleMode}!!!
  * <p>
- * P-Data-Mgmt is not quiet conform to OpenTransportData TransportMode's and TransportSubmode's, therefore this is a mixture possible to query against Hafas for {@link swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney}.
+ * P-Data-Mgmt is not quiet conform to OpenTransportData TransportMode's and TransportSubmode's, therefore this is a mixture possible to query for {@link swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney}.
  * <p>
  * TODO By convention sticks to 1) Opentransportdata definition, 2) TAP-TSI, 3) creates an own filter-expression
  *
@@ -80,20 +80,14 @@ public enum TransportModeEnum {
     SPECIAL_TRAIN /*non-standard name*/,
     /**
      * Transport mode: "SHIP"
-     * <p>
-     * Hafas class: 4
      */
     SHIP,
     /**
      * Transport mode: "BUS"
-     * <p>
-     * Hafas class: 6
      */
     BUS,
     /**
      * Transport mode: "TRAMWAY" or "METRO"
-     * <p>
-     * Hafas class: 9
      */
     TRAMWAY,
     /**
