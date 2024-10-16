@@ -22,12 +22,14 @@ The author hopes using this OJP-Adapter library may "abstract" the above steps m
 
 ## Content
 
-* the OJP.xsd is transformed into a JAVA POJO (by JAXB) by
+* the **OJP**.xsd **1.0** is transformed into a JAVA POJO (by JAXB) by
   * open-source [bliksemlabs](https://github.com/bliksemlabs/ojp-java-model) or Maven
   * dependency [ojp-java-model](https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1)
 * Further documentation:
   * Swiss [OJP cookbook](https://opentransportdata.swiss/de/cookbook/)
-  * Semantic model description [OJP - Open API for distributed Journey Planning by jmaerki](https://jmaerki.github.io/OJP/generated/OJP.html)
+  * [OJP/Transmodel mapping](https://github.com/VDVde/OJP/blob/develop/docs/transmodel_ojp_mapping/Mapping_OJP_TRANSMODEL_V3.0.xlsx)
+  * Semantic model
+    description [OJP - Open API for distributed Journey Planning by jmaerki](https://jmaerki.github.io/OJP/generated/OJP.html)
 
 The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if configured well (by means your own access token):
 * use _OJPAadapter_ for raw native XML handling in conversation with OJP protocol.
@@ -37,29 +39,53 @@ The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if config
 2. mvn clean install
 3. copy ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties to ojp.properties and add your own key for SKI+ OJP Instance from [opentransportdata.swiss **passive instance**](https://opentransportdata.swiss/de/dataset/ojp2020) _"Manage the API key"_
 4. run swiss.opentransportdata.ojp.adapter.v1.OJPAdapterAccessTest (to try out native OJP XML based request/response)
-5. run swiss.opentransportdata.ojp.adapter.service.application.**OJPWebApplication** and open [OpenAPI 3 Swagger-UI](http://localhost:8082/swagger-ui/index.html)
+5. run swiss.opentransportdata.ojp.adapter.service.application.**OJPWebApplication** and
+   open [OpenAPI 3 Swagger-UI](http://localhost:8082/swagger-ui/index.html)
 
 Remark:
+
 * At least the OJP passive key should be easy to get.
 * For the OJP active instance key you probably need to contact the operation-responsibles.
+* If your just interested in Open API 3 Swagger-UI resulting out of ojp-adapter-service/../*
+  *OJPController**, see [JSON-specification](open-journey-planner-api_v0.9.0-SNAPSHOT.json)
 
 ## Open issues
 
 ### Module "ojp-adapter"
 
-* **Currently, OJPAdapter deals with one SINGLE Journey-Planner request at a time**, though MULTIPLE requests could be performed at once.
+#### OJP 1.0 implementation
+
+OK: Covers **Place, Trip, DatedVehicleJourney (including Departures/Arrivals)**
+
+* **Currently, OJPAdapter deals with one SINGLE Journey-Planner request at a time**, though MULTIPLE
+  requests could be performed at once.
 * Complete OJP set of request-filters (currently the most relevant filters are adapted).
 * Complete OJP response mapping (currently the most relevant properties are implemented).
 * Implement further details marked by _TODO_
 * Quality tests for correctly mapped output should be verified and confirmed by SKI+.
 
+#### OJP 2.0 implementation
+
+Planned upgrade to use OJP 2.0 API.
+See:
+
+* [OJP 2.0 Cookbook](https://opentransportdata.swiss/de/cookbook/ojp2entwicklung/)
+* [OJP SDK](https://github.com/openTdataCH/ojp-sdk?tab=readme-ov-file)
+  * [VDV OJP 2.0 Model](https://github.com/VDVde/OJP) base for Java model
+
 ### Module "ojp-transmodel" & "Swagger-UI"
 
-* Planned for the near future: **further extension of OJPController** like subset of [**SBB Journey-Service**](https://developer.sbb.ch/apis/journey-service/documentation) v3 APIs where supported by SKI+ OJP:
-  * [Transmodel](https://www.transmodel-cen.eu/) like implementation model as used by SBB Customer Information
+* Planned for the near future: **further extension of OJPController** like subset of [**SBB
+  Journey-Service**](https://developer.sbb.ch/apis/journey-service/documentation) v3 APIs where
+  supported by SKI+ OJP:
+  * [Transmodel](https://www.transmodel-cen.eu/) like implementation model as used by SBB Customer
+    Information
   * Model mapper between VDV specification to the Transmodel like implementaiton model
-  * Simple [OpenApi 3](https://swagger.io/blog/news/whats-new-in-openapi-3-0/) REST API based application
+  * Simple [OpenApi 3](https://swagger.io/blog/news/whats-new-in-openapi-3-0/) REST API based
+    application offering a Swagger UI to execute requests against OJP
 
 ## Known usage
-This Software was originally developed for _SBB AG Switzerland, Personenverkehr, Customer Information_ by Peter Hirzel (Software Architect Journey-Planner) for experimental reasons:
+
+This Software was originally developed for _SBB AG Switzerland, Personenverkehr, Customer
+Information_ by Peter Hirzel (Software Architect Journey-Planner) for experimental reasons:
 * APIs (endpoints) under [**SBB Journey-Service**](https://developer.sbb.ch/apis/journey-service/documentation) within tag **Open Journey Planner V3**
