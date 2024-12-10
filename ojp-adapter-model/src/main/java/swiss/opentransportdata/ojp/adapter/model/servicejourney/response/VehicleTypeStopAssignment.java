@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jdk.jfr.Experimental;
 import lombok.Builder;
 import lombok.Value;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
 
 /**
  * Transmodel specialisation of {@link StopAssignment}
@@ -30,7 +30,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology
 @Value
 @Experimental(/*Future use: StopAssignment*/)
 public class VehicleTypeStopAssignment implements
-    swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourneyassignment.VehicleTypeStopAssignment {
+    swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourneyassignment.VehicleTypeStopAssignment {
 
     // see CompoundTrain::operationalOrientation -> makes probably no sense to redefine yet, cause no data in /trips
 }

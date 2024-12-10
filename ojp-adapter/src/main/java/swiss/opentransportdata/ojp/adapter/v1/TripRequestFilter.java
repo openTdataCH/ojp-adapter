@@ -23,8 +23,7 @@ import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequest;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequest;
 
 /**
  * A filter to apply for a Trip search.
@@ -60,7 +59,7 @@ public class TripRequestFilter implements TripRequest, PTModeRequestFilter {
      * Passive OJP: simple Stop UIC like "8507000".
      * <p>
      * Active OJP: "OJP:STOP:SBB:8503424|Schaffhausen"
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripOriginPlace
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripOriginPlace
      */
     @NonNull
     String origin;
@@ -70,7 +69,7 @@ public class TripRequestFilter implements TripRequest, PTModeRequestFilter {
      * Passive OJP: simple Stop UIC like "8507000".
      * <p>
      * Active OJP: "OJP:STOP:SBB:8503424|Schaffhausen"
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripDestinationPlace
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripDestinationPlace
      */
     @NonNull
     String destination;
@@ -88,7 +87,7 @@ public class TripRequestFilter implements TripRequest, PTModeRequestFilter {
 
     /**
      * 100% considered average standard speed.
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripMobilityFilter
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripMobilityFilter
      */
     @Builder.Default
     @NonNull Integer walkSpeed = WALK_SPEED_DEFAULT;

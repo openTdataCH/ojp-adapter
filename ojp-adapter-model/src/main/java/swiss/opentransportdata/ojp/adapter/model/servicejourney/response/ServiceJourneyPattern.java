@@ -17,8 +17,8 @@
 package swiss.opentransportdata.ojp.adapter.model.servicejourney.response;
 
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.datedjourney.DatedVehicleJourney;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.datedjourney.DatedVehicleJourney;
 
 /**
  * Essential pattern for a (partial) Public Transport (PT) journey by a specific vehicle.
@@ -26,17 +26,17 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformation
  * Conventions (tricky!!!):
  * <ul>
  *     <li>We consider {@link JourneyPattern} a core element in PT routing!</li>
- *     <li>We design our own pragmatic specialisation of {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ServiceJourneyPattern} which inherits from {@link JourneyPattern}.</li>
+ *     <li>We design our own pragmatic specialisation of {@link swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ServiceJourneyPattern} which inherits from {@link JourneyPattern}.</li>
  *     <li>A {@link JourneyPattern} relates to {@link DatedVehicleJourney} which is essential in OJP DatedJourney.</li>
  * </ul>
  *
  * @author Peter Hirzel
  * @see JourneyPattern
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ServiceJourneyPattern
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ServiceJourneyPattern
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney
  * @see DatedVehicleJourney
  */
-public interface ServiceJourneyPattern extends swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ServiceJourneyPattern {
+public interface ServiceJourneyPattern extends swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ServiceJourneyPattern {
 
     @NonNull
     ServiceJourney getServiceJourney();

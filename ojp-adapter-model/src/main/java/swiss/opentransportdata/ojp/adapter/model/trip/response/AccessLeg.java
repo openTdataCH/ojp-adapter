@@ -22,14 +22,14 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.transportmode.AccessMode;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.AccessMode;
 
 /**
  * An AccessLeg represents typically a footpath (dependencies to ROKAS routing).
  * <p>
  * OJP: ContinuousLeg (de: nicht an einen Fahrplan gebunden)
  *
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.AccessLeg
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.AccessLeg
  * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#ContinuousLegStructure">OJP ContinuousLeg</a>
  */
 @Schema(allOf = Leg.class, description =
@@ -39,7 +39,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.re
         + ModelDoc.HINT_INHERITED_LEG)
 @Builder
 @Value
-public class AccessLeg implements Leg, swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.AccessLeg {
+public class AccessLeg implements Leg, swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.AccessLeg {
 
     /**
      * If used in a PT Trip Context: AccessLeg::mode

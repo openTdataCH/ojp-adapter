@@ -17,7 +17,7 @@
 package swiss.opentransportdata.ojp.adapter.model.situation.request;
 
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationAffectedScope;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationAffectedScope;
 
 /**
  * The size/heaviness of the situation.

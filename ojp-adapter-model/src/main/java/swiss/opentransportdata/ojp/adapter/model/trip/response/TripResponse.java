@@ -25,7 +25,7 @@ import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
 import swiss.opentransportdata.ojp.adapter.model.common.response.PaginationCursor;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripDelivery;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripDelivery;
 
 /**
  * We do not use Transmodel TripPattern, therefore we don't use TripDelivery - TripPattern[0..3] - Trip[1..*] as well.

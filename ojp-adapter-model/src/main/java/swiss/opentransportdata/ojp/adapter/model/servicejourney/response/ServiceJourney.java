@@ -29,7 +29,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.LineString;
 import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
 import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingDay;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingDay;
 
 /**
  * Transmodel:
@@ -44,7 +44,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.re
 @Schema(description = "A passenger carrying vehicle journey for one specified operation day.")
 @Builder
 @Value
-public class ServiceJourney implements Route, swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney,
+public class ServiceJourney implements Route, swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney,
     OperatingDay {
 
     @Schema(description = ModelDoc.JOURNEY_REFERENCE_DESCRIPTION +
@@ -80,7 +80,7 @@ public class ServiceJourney implements Route, swiss.opentransportdata.ojp.adapte
     List<Notice> notices;
 
     /**
-     * see {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationConsequenceScope}
+     * see {@link swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationConsequenceScope}
      */
     @ArraySchema(schema = @Schema(description = "An extent impacted by the PT situation-consequence (for e.g. construction sites) on the `ServiceJourney` resp. `ServiceProduct` (aka HIM)."
         + " Such messages have rather describing character and should not impact routing.",

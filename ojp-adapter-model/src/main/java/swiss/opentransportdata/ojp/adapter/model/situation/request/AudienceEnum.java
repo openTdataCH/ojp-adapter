@@ -19,8 +19,8 @@ package swiss.opentransportdata.ojp.adapter.model.situation.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.additionalcommonconcepts.reusablecomponents.message.PublishingChannel;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.additionalcommonconcepts.reusablecomponents.message.TypeOfAudience;
+import swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message.PublishingChannel;
+import swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message.TypeOfAudience;
 
 /**
  * A classification of the categories a MESSAGE is intended for,  e.g. staff or passengers.

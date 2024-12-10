@@ -26,7 +26,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
     " Different times may be necessary to cover the link between these points, depending on the kind of passenger.")
 @Builder
 @Value
-public class Connection implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.Connection {
+public class Connection implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.Connection {
     // boolean transferOnly = false;
 
     @Schema(description = "Minimal transfer " + ModelDoc.DURATION + " for a mobility impaired traveller to make transfer. Relates to `includeAccessibility` other than `ALL`." +

@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.InheritanceDiscriminable;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.transportmode.Mode;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.Mode;
 
 /**
  * @author Peter Hirzel
@@ -32,7 +32,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.re
     type = "object",
     discriminatorProperty = "type",
     subTypes = {AccessLeg.class, PTRideLeg.class, ConnectionLeg.class, AlternativeModeLeg.class, PersonalLeg.class})
-public interface Leg extends InheritanceDiscriminable, swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.Leg {
+public interface Leg extends InheritanceDiscriminable, swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.Leg {
 
     @Schema(description = ModelDoc.DESCRIPTION_LEG_ID,
         requiredMode = RequiredMode.REQUIRED, example = "1")

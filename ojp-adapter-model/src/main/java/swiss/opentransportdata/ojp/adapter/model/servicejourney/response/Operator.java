@@ -37,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Schema(description = "A company providing public transport services (aka Carrier).")
 @Builder
 @Value
-public class Operator implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.transportorganisations.Operator {
+public class Operator implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportorganisations.Operator {
 
     @Schema(description =
         //TODO Ceres-Nr ? PLABE is dead

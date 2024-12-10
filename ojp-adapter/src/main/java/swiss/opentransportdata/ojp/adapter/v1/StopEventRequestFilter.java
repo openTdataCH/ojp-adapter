@@ -21,13 +21,12 @@ import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequest;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequest;
 
 /**
  * A filter to apply for a StopEventRequest.
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequestContentFilter
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequestPolicy
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequestContentFilter
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequestPolicy
  */
 @Data
 @Builder

@@ -32,7 +32,7 @@ import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 @Schema(description = "Stop point on a `PTConnectionLeg`.")
 @Builder
 @Value
-public class ConnectionEnd implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ConnectionEnd {
+public class ConnectionEnd implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ConnectionEnd {
 
     @Schema(description = "`StopPlace` of this stop point, where time relates to `PTConnectionLeg::start/::end` role.",
         requiredMode = RequiredMode.REQUIRED)

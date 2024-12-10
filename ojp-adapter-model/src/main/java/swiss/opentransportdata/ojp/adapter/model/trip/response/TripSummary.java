@@ -26,7 +26,7 @@ import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.AccessibilityBoardingAlighting;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ScheduledStopPoint;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.TripPattern;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.TripPattern;
 
 /**
  * Transmodel TripPattern:

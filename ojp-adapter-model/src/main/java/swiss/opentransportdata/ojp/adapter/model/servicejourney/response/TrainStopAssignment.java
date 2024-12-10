@@ -22,7 +22,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.trainstopassignment.response.CompoundTrain;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
 
 /**
  * Transmodel specialisation of {@link StopAssignment}
@@ -30,7 +30,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology
 @Schema(description = "The association of a `TrainComponent` at a `ScheduledStopPoint` with a specific `StopPlace` and also possibly a `Quay` and `BoardingPosition`.")
 @Builder
 @Value
-public class TrainStopAssignment implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.TrainStopAssignment {
+public class TrainStopAssignment implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.TrainStopAssignment {
 
     /**
      * KIB and Journey-Planner relevant.

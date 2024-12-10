@@ -26,7 +26,7 @@ import lombok.Value;
 @Schema(description = "A location within a `Quay` from which passengers may directly board, or onto which passengers may directly alight from a vehicle.")
 @Builder
 @Value
-public class BoardingPosition implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.stopplace.BoardingPosition {
+public class BoardingPosition implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.stopplace.BoardingPosition {
 
     /**
      * Coming from inheritance to Zone (could be id of Edge, like SLOID within StopPlace)

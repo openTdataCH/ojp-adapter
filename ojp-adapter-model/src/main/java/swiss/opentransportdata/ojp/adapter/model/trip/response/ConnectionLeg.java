@@ -37,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Notice;
     + ModelDoc.HINT_INHERITED_LEG)
 @Builder
 @Value
-public class ConnectionLeg implements Leg, swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.ConnectionLeg {
+public class ConnectionLeg implements Leg, swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.ConnectionLeg {
 
     /**
      * see Transmodel UML "MODE diagramm notes"

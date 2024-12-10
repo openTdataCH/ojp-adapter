@@ -36,7 +36,7 @@ import swiss.opentransportdata.ojp.adapter.model.trip.request.TrainStopAssignmen
 @Schema(allOf = Leg.class, description = "Public-Transportation Leg (aka OJP TimedLeg)." + ModelDoc.HINT_INHERITED_LEG)
 @Builder
 @Value
-public class PTRideLeg implements Leg, ServiceJourneyPattern, swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.PTRideLeg {
+public class PTRideLeg implements Leg, ServiceJourneyPattern, swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.PTRideLeg {
 
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "PTRideLeg")

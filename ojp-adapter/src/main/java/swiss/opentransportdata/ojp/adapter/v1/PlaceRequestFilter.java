@@ -22,13 +22,12 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.locationquery.LocationRequest;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationRequest;
 
 /**
  * A filter to apply for a Place request (Location is still an ambiguous OJP 1.x noun, though Transmodel delivers PLACE).
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.locationquery.LocationPlaceFilter
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.locationquery.LocationRequestPolicy
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationPlaceFilter
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationRequestPolicy
  */
 @Data
 @Builder

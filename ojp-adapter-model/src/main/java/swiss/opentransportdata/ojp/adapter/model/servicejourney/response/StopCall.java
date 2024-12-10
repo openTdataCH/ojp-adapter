@@ -24,16 +24,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingDay;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.PassengerStopAssignment;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.passingtime.TimetabledPassingTime;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Call;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingDay;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.PassengerStopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.passingtime.TimetabledPassingTime;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Call;
 
 /**
  * Class is scoped due to conventions, Transmodel, OJP, OSDM all have their own interpretations of this original NeTeX {@link Call} VIEW.
  * <p>
- * {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.stopplace.Quay} for e.g. is also known to be given on {@link PassengerStopAssignment}
+ * {@link swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.stopplace.Quay} for e.g. is also known to be given on {@link PassengerStopAssignment}
  * <p>
  * aka OSDM TimedLeg::start (Board), ::end (Alight)
  */

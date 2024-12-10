@@ -33,7 +33,7 @@ import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Vehicle
 @Schema(description = "An extent directly involved in the PT situation such as a set of `ServiceJourney` or `StopPlace`.")
 @Builder
 @Value
-public class PTSituationAffectedScope implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationAffectedScope {
+public class PTSituationAffectedScope implements swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationAffectedScope {
 
     // List<Operator> operators; -> not given
 

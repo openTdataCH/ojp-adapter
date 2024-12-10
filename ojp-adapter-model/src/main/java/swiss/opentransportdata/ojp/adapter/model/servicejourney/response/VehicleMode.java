@@ -24,7 +24,7 @@ import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
 import swiss.opentransportdata.ojp.adapter.model.standards.CorporateIdentity;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourney.TypeOfProductCategory;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourney.TypeOfProductCategory;
 
 /**
  * Aka TransportMode, and be aware TAP-TSI/UIC contains a sensible subset of SIRI Transport Modes.
@@ -37,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformation
     + "Whether only `id` is given or submode as well depends on available data.")
 @Builder
 @Value
-public class VehicleMode implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.transportmode.VehicleMode, CorporateIdentity {
+public class VehicleMode implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.VehicleMode, CorporateIdentity {
 
     public static final String VEHICLEMODEENUM_TRAIN = "TRAIN";
 

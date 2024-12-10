@@ -27,7 +27,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Schema(description = "Additional information on operating Vehicle. The information may be usable for passenger. Relates to `includeNoticeAttributes`.")
 @Builder
 @Value
-public class Notice implements RouteIndexInterval, swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.notice.Notice {
+public class Notice implements RouteIndexInterval, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.notice.Notice {
 
     public static final Integer DEFAULT_PRIORITY = 100;
 
@@ -58,7 +58,7 @@ public class Notice implements RouteIndexInterval, swiss.opentransportdata.ojp.a
     String /*JsonExtensibleEnum: NoticeType*/ type;
 
     /**
-     * see {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.additionalcommonconcepts.reusablecomponents.message.MessagePriority}
+     * see {@link swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message.MessagePriority}
      */
     @Schema(description = "A lower priority value means a higher importance (default=100).", requiredMode = RequiredMode.REQUIRED)
     @JsonProperty(required = true)

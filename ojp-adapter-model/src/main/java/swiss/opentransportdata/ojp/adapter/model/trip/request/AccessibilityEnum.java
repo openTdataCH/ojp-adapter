@@ -18,7 +18,7 @@ package swiss.opentransportdata.ojp.adapter.model.trip.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericaccessibility.PassengerAccessibilityNeed;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericaccessibility.PassengerAccessibilityNeed;
 
 /**
  * This enum contains request enums to enforce accessibility hints.

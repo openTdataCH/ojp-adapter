@@ -25,9 +25,9 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
 import swiss.opentransportdata.ojp.adapter.model.standards.CorporateIdentity;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.PassengerAccessibilityNeed;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericaccessibility.AccessibilityAssessment;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericaccessibility.AccessibilityLimitation;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.equipmentdescription.localserviceequipment.AssistanceService;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericaccessibility.AccessibilityAssessment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericaccessibility.AccessibilityLimitation;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.equipmentdescription.localserviceequipment.AssistanceService;
 
 /**
  * Many scenarios for handicaped people on their Journey might be relevant. This part is just about Boarding/Alighting of a Vehicle.
