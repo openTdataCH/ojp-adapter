@@ -28,7 +28,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
         + ModelDoc.HINT_INHERITED_LEG)
 @Builder
 @Value
-public class PersonalLeg implements Leg, swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.PersonalLeg {
+public class PersonalLeg implements Leg, swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.PersonalLeg {
 
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "PersonalLeg")

@@ -24,7 +24,7 @@ import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.standards.SwissLocationId;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.PassengerStopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.PassengerStopAssignment;
 
 /**
  * @see PassengerStopAssignment may contain Quay info, opts for StopCall yet.
@@ -34,7 +34,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology
     "related to a `ServiceProduct::vehicleMode`.")
 @Builder
 @Value
-public class Quay implements SwissLocationId, /* Positionable (future use), */ swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.stopplace.Quay {
+public class Quay implements SwissLocationId, /* Positionable (future use), */ swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.stopplace.Quay {
 
     // could represent future SLOID
     @Schema(description = "Non-formal id provided, see `swissLocationId`.", example = "8507000_12")

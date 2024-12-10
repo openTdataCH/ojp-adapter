@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney;
 
 /**
  * @see swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus per whole Trip

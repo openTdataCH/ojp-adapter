@@ -29,7 +29,7 @@ import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleE
 @JsonExtensibleEnum
 @Schema(enumAsRef = true)
 public enum PassengerAccessibilityNeed implements
-    swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericaccessibility.PassengerAccessibilityNeed {
+    swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericaccessibility.PassengerAccessibilityNeed {
 
     /**
      * Request only.

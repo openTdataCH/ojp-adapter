@@ -20,14 +20,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.model.common.response.InheritanceDiscriminable;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.topographicplace.AddressablePlace;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.topographicplace.AddressablePlace;
 
 /**
  * @author Peter Hirzel
  */
 @Schema(description = "**Abstract Superclass** of concrete inherited sub-classes such as **`StopPlace`, `Address`, `PointOfInterest`**.",
     type = "object", discriminatorProperty = "type", subTypes = {StopPlace.class, Address.class, PointOfInterest.class})
-public interface Place extends InheritanceDiscriminable, Positionable, swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericplace.Place, AddressablePlace {
+public interface Place extends InheritanceDiscriminable, Positionable, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericplace.Place, AddressablePlace {
 
     /**
      * Transmodel Zone::id

@@ -36,7 +36,7 @@ import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.request.RealtimeModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.utils.LocalTimeToHourMinuteSerializer;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestFilter;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestFilter;
 
 /**
  * @author u210875 (Peter Hirzel)
@@ -60,9 +60,9 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
      */
 
     /**
-     * The first point of a {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern} is the origin.
+     * The first point of a {@link swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern} is the origin.
      *
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripOriginPlace
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripOriginPlace
      */
     @Schema(description = "Starting point of the trip at origin (departure). See v3 **PlaceReference** in " + PublicLinks.DEV_MANUAL_HINT_COMPLEX_PARAMETER,
         type = "string",
@@ -72,9 +72,9 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     String origin;
 
     /**
-     * The last point of a {@link swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern} is the destination.
+     * The last point of a {@link swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.journeypattern.JourneyPattern} is the destination.
      *
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripDestinationPlace
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripDestinationPlace
      */
     @Schema(description = "Ending point of the trip at destination (arrival). See **PlaceReference** in " + PublicLinks.DEV_MANUAL_HINT_COMPLEX_PARAMETER,
         type = "string",
@@ -156,7 +156,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
 
     public static final AccessibilityEnum DEFAULT_INCLUDE_ACCESSIBILITY = AccessibilityEnum.ALL;
     /**
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::includeAccessibility
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::includeAccessibility
      */
     @Schema(description = "Sets Accessibility (de:BFR/BAIM) on each `ScheduledStopPoint::accessibilityBoardingAlighting` for better handicap support using vehicles. " +
         "This is especially relevant on first (boarding) and last (alighting) of each `PTRideLeg::serviceJourney::stopPoints` (implicitely affects transfers).<br>" +
@@ -214,7 +214,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
 
     public static final Boolean DEFAULT_INCLUDE_ROUTE_PROJECTION = Boolean.FALSE;
     /**
-     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::inlcludeRouteProjection, ::includeLegProjection
+     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::inlcludeRouteProjection, ::includeLegProjection
      */
     @Schema(description = "With or without a plottable polyline for each vehicle-journey (if available)." + ModelDoc.HINT_PERFORMANCE,
         type = "boolean", defaultValue = "false")

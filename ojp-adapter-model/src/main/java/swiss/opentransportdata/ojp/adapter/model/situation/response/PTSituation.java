@@ -27,13 +27,13 @@ import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.situation.request.SituationCauseEnum;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.basesituation.SituationReason;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationConsequenceScope;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.basesituation.SituationReason;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationConsequenceScope;
 
 @Schema(description = "A disruption (fort e.g. an incident or a deviation (aka de:Störungs-, Ereignismeldung)) affecting planned PT `ServiceProduct's` in certain edges and/or regions.")
 @Builder
 @Value
-public class PTSituation implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituation {
+public class PTSituation implements swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituation {
 
     /**
      * @see SituationCauseEnum

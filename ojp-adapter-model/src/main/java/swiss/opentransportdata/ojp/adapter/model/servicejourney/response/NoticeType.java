@@ -18,7 +18,7 @@ package swiss.opentransportdata.ojp.adapter.model.servicejourney.response;
 
 import lombok.experimental.UtilityClass;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.notice.TypeOfNotice;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.notice.TypeOfNotice;
 
 @UtilityClass
 @JsonExtensibleEnum

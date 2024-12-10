@@ -36,7 +36,7 @@ import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
  * @see <a href="https://www.allianceswisspass.ch/de/Themen/TarifeVorschriften/V580/Produkte-der-V580-FIScommun-1">v580 Verkehrsmittellisten</a>
  * @see <a href="https://opentransportdata.swiss/de/dataset/vm-liste">Transportmodes table</a>
  * @see <a href="https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/TransportMode.md>About Transportmode</a>
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part10.alternativemodes.reusablecomponents.vehicletype.VehicleType
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part10.alternativemodes.reusablecomponents.vehicletype.VehicleType
  */
 @UtilityClass
 public final class TransportModeData {

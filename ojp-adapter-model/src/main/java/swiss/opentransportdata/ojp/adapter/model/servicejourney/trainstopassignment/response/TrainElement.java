@@ -30,7 +30,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Schema(description = "An elementary component of a `Train` (for e.g. a wagon/car/locomotive or in general 'carriage') with rather permanent properties, see `TrainComponent` for its instance on a concrete journey.")
 @Builder
 @Value
-public class TrainElement implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.train.TrainElement {
+public class TrainElement implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.train.TrainElement {
 
     @Schema(description = "Aka car-UIC, which is potentially mapped to beacons installed. " +
         "`/v3/vehicles/by-vehicle/{vehicleId}` may detect a `Train` composing a `TrainElement` (mainly for SBB operated `VehicleMode` TRAIN) is on its way within a certain `ServiceJourney` (null means not present).",

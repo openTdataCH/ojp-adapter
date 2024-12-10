@@ -25,7 +25,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourneyPattern;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.networkdescription.route.Route;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.networkdescription.route.Route;
 
 /**
  * @author Peter Hirzel

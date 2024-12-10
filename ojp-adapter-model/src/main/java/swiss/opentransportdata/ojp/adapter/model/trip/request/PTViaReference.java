@@ -25,7 +25,7 @@ import lombok.NonNull;
 import lombok.ToString;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.request.StopPlaceReference;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripViaPlace;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripViaPlace;
 
 /**
  * Request JSON structure.

@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.Connection;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
 
 /**
  * Transmodel specialisation of {@link StopAssignment}
@@ -30,7 +30,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology
     "Currently a **transfer-hint is given for handicaped people** at alighting at `PTRideLeg`s` last/alighting `ScheduledStopPoint` when transfering to next vehicle for boarding.")
 @Builder
 @Value
-public class NavigationPathAssignment implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.pathassignment.NavigationPathAssignment {
+public class NavigationPathAssignment implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.pathassignment.NavigationPathAssignment {
 
     // in TRM [0..1] currently @NonNull as long as it is the only info, future use ?
     @Schema(description = "Relevant hints about the path connecting towards next vehicle to board.")

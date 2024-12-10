@@ -17,7 +17,7 @@
 package swiss.opentransportdata.ojp.adapter.model.servicejourney.response;
 
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.LineString;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.LegTrack;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.LegTrack;
 
 public interface PlottableProjection {
 

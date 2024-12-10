@@ -24,9 +24,9 @@ import lombok.ToString;
 /**
  * @see <a href="https://app.swaggerhub.com/apis-docs/schlpbch/uic-90918_10_osdm">OSDM TripSearchCriteria ::ptModeFilter</a>
  * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#TripMobilityFilterGroup>OJP TripMobilityFilter</a>
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.Connection
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.interchange.Interchange
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.routingconstraint.TransferRestriction
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.Connection
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.interchange.Interchange
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.routingconstraint.TransferRestriction
  */
 @Schema(description = "Parameters to restrict the transfer options - particularly for interchanging `PTRideLeg's` by passenger (de: Individuelles Umsteigeverhalten).\n" +
     // OpenApi hack -> this description wins over local redefinition at usage!
@@ -35,7 +35,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @ToString
-public class TripMobilityFilter implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripMobilityFilter {
+public class TripMobilityFilter implements swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripMobilityFilter {
 
     public static final int DEFAULT_MAX_TRANSFERS = 11 /*TODO verify OJP possibilites*/;
     public static final int DEFAULT_ADDITIONAL_TRANSFER_TIME = 0;

@@ -22,20 +22,16 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationRequest;
 
 /**
  * A filter to apply for a Place request (Location is still an ambiguous OJP 1.x noun, though Transmodel delivers PLACE).
- * <p>
- * Transmodel:
- * <ul>
- *     <li>"LOCATION PLACE FILTER" Filter parameters used to limit the PLACE related results of the LOCATION REQUEST.</li>
- *     <li>"LOCATION REQUEST POLICY" Optimisation criteria to be used to when finding and decorating trip stops.</li>
- * </ul>
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationPlaceFilter
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationRequestPolicy
  */
 @Data
 @Builder
-public class PlaceRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
+public class PlaceRequestFilter implements LocationRequest, PTModeRequestFilter {
 
     public static final int LIMIT_DEFAULT = 10;
 

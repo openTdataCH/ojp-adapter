@@ -24,7 +24,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventDelivery;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventDelivery;
 
 /**
  * @author Peter Hirzel

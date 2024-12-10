@@ -29,7 +29,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Schema(description = "A period during which the situation should be published.")
 @Builder
 @Value
-public class PublicationWindow implements swiss.opentransportdata.ojp.adapter.transmodel.v6.additionalcommonconcepts.reusablecomponents.message.PublicationWindow {
+public class PublicationWindow implements swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message.PublicationWindow {
 
     @Schema(description = "Local start date of situation (related to `startTime`).", example = ModelDoc.SAMPLE_DATE)
     @JsonProperty

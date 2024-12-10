@@ -25,10 +25,10 @@ import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
 import swiss.opentransportdata.ojp.adapter.model.standards.CorporateIdentity;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.networkdescription.route.Line;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourney.TrainNumber;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourney.TypeOfProductCategory;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.networkdescription.route.Line;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.servicejourney.ServiceJourney;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourney.TrainNumber;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.vehiclejourney.TypeOfProductCategory;
 
 /**
  * A concrete {@link ServiceJourney} may have n concrete ServiceProduct's.

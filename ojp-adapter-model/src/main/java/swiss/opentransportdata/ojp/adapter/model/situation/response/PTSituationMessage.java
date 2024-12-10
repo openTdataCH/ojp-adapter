@@ -27,10 +27,10 @@ import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.Links;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.additionalcommonconcepts.reusablecomponents.message.MessagePart;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.additionalcommonconcepts.reusablecomponents.message.MessagePriority;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.basesituation.Situation;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationConsequence;
+import swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message.MessagePart;
+import swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message.MessagePriority;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.basesituation.Situation;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationConsequence;
 
 /**
  * SIRI PtSituationsElementStructure
@@ -44,7 +44,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitor
     "Situations might be caused by a disruption (like an incident, construction site, deviation etc) and typically relate to some area (geofence) and passing `ServiceProduct` resp. concrete `ServiceJourney's`.")
 @Builder
 @Value
-public class PTSituationMessage implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationMessage, MessagePriority {
+public class PTSituationMessage implements swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.situation.ptsituation.PTSituationMessage, MessagePriority {
 
     @Schema(description = "Identity of message (aka HIM ID).", requiredMode = RequiredMode.REQUIRED, example = "x944292")
     @JsonProperty(required = true)

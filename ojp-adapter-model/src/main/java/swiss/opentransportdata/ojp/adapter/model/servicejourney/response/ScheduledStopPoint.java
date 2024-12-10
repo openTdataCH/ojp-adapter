@@ -25,13 +25,13 @@ import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
 import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericplace.AccessEnd;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.stopplace.StopPlaceSpace;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.coupledjourney.JourneyPart;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Arrival;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Call;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Departure;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part8.managementinformationandstatistics.recordedobjects.BoardingAndAlighting;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericplace.AccessEnd;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.stopplace.StopPlaceSpace;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.coupledjourney.JourneyPart;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Arrival;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Call;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part4.operationsmonitoringandcontrol.oc_call.om_call.Departure;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part8.managementinformationandstatistics.recordedobjects.BoardingAndAlighting;
 
 /**
  * Transmodel TRM6-v56: ScheduledStoPoint NeTEx: Call OJP: StopPoint
@@ -45,7 +45,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part8.managementinforma
 @Schema(description = "Passenger relevant stop-point on a `ServiceJourney`. Some properties may further by distinguished on either `arrival` and/or `departure StopCall` aspects.")
 @Builder
 @Value
-public class ScheduledStopPoint implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ScheduledStopPoint, Call {
+public class ScheduledStopPoint implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.servicepattern.ScheduledStopPoint, Call {
 
     @Schema(description = "Concrete `StopPlace` at stop point on the journey.", requiredMode = RequiredMode.REQUIRED)
     @JsonProperty(required = true)

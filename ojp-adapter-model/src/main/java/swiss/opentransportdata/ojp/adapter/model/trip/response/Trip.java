@@ -25,7 +25,7 @@ import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.PTTrip;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.PTTrip;
 
 /**
  * We think the Transmodel subtypes "PT TRIP", "NON-PT TRIP" and "MIXED TRIP" of "TRIP" with a strong conceptual focus on PLANNING (at creation time) are more confusing than helping with realtime
@@ -35,13 +35,13 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformat
  *
  * @author Peter Hirzel
  * @see <a href="http://www.transmodel-cen.eu/model/index.htm">Trip: Transmodel Part6 - Passenger Information(PI)</a>
- * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.Trip
+ * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.Trip
  * @see PTTrip
  */
 @Schema(description = "A customer journey describing the movement of a passenger from one Place of any sort to another. A Trip may consist of one or more consecutive Leg's having some common characteristics.")
 @Builder
 @Value
-public class Trip implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.tripdescription.passengertrip.Trip {
+public class Trip implements swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip.Trip {
 
     /* Transmodel does inherit -> we ignore this yet (future use, if other Non-PT scenarios are being implemented?)
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED, description = "Aka (Transmodel PTTrip).")

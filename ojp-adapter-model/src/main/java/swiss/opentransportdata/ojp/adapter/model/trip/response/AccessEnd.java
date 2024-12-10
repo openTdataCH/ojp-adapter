@@ -32,7 +32,7 @@ import swiss.opentransportdata.ojp.adapter.model.place.response.Place;
 @Schema(description = "Stop point on an `AccessLeg`.")
 @Builder
 @Value
-public class AccessEnd implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.genericframework.genericplace.AccessEnd {
+public class AccessEnd implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.genericframework.genericplace.AccessEnd {
 
     @Schema(description = "Place of this stop point, where one end of the `AccessLeg::start/::end` role must be a `StopPlace`.",
         requiredMode = RequiredMode.REQUIRED)

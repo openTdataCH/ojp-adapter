@@ -28,7 +28,7 @@ import lombok.Value;
 @Schema(description = "Direction of Vehicle (typically shown on Vehicle-display or Display at Quay).")
 @Builder
 @Value
-public class Direction implements swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.networkdescription.route.Direction, RouteIndexInterval {
+public class Direction implements swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.networkdescription.route.Direction, RouteIndexInterval {
 
     @Schema(description = "StopPlace::name or any direction-name.",
         requiredMode = RequiredMode.REQUIRED, example = "Basel SBB")

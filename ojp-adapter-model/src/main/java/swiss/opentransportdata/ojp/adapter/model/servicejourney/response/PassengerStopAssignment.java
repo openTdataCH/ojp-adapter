@@ -20,8 +20,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jdk.jfr.Experimental;
 import lombok.Builder;
 import lombok.Value;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.fixedobject.flexiblestopplace.FlexibleStopAssignment;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.flexiblestopplace.FlexibleStopAssignment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
 
 /**
  * Transmodel specialisation of {@link StopAssignment}

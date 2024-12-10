@@ -25,7 +25,7 @@ import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
-import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.schedulequery.ScheduleDelivery;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.schedulequery.ScheduleDelivery;
 
 /**
  * Bi-temporal routing data.
@@ -35,7 +35,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformat
 @Schema(description = "Available planned journey calendar to span the whole time range covered by underlying systems for various Journey-Planner data.")
 @Builder
 @Value
-public class ServiceCalendar implements JsonResponse, swiss.opentransportdata.ojp.adapter.transmodel.v6.part1.commonconcepts.reusablecomponents.servicecalendar.ServiceCalendar, ScheduleDelivery {
+public class ServiceCalendar implements JsonResponse, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.ServiceCalendar, ScheduleDelivery {
 
     @Schema(description = "Informational reference name." + ModelDoc.TRANSLATED_TEXT,
         requiredMode = RequiredMode.REQUIRED,

@@ -7,7 +7,7 @@ target/
 *.ipr
 
 #secrets
-ojp-adapter-integration/src/main/resources/ojp.properties
+ojp-adapter-test/src/main/resources/ojp.properties
 
 application-local.yml
 logback-local.xml
