@@ -21,20 +21,17 @@ import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequest;
+import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
 /**
  * A filter to apply for a StopEventRequest.
- * <p>
- * Transmodel:
- * <ul>
- *     <li>"STOP EVENT REQUEST CONTENT FILTER" Filter parameters used to limit the results of the "STOP EVENT REQUESTs".</li>
- *     <li>"STOP EVENT REQUEST POLICY" Optimisation criteria to be used to when computing and decorating "STOP EVENT REQUEST" results.</li>
- * </ul>
+ * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequestContentFilter
+ * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventRequestPolicy
  */
 @Data
 @Builder
-public class StopEventRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
+public class StopEventRequestFilter implements StopEventRequest, PTModeRequestFilter {
 
     private static int LIMIT_DEFAULT = 20;
 

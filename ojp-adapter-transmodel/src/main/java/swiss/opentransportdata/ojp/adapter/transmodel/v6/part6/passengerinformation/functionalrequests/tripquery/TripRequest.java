@@ -26,6 +26,10 @@ public interface TripRequest extends PIRequest {
 
     // List<TripRequestFilter>
 
+    // TripOriginPlace
+
+    // TripDestinationPlace
+
     // List<TripViaPlace>
 
     // TripAccessConstraint

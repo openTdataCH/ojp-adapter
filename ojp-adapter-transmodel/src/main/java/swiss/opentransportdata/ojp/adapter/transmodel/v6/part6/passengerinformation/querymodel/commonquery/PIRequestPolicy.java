@@ -16,9 +16,18 @@
 
 package swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.querymodel.commonquery;
 
+import java.util.Locale;
+
 /**
  * Optimisation criteria to be used when computing and decorating the results for the PI REQUEST.
  */
 public interface PIRequestPolicy {
+    // boolean includeAccessibility
+    // boolean includeNotices
+    // boolean includeFacilities
 
+    /***
+     * @return Preferred Language in which to return results.
+     */
+    Locale getPreferredLanguage();
 }

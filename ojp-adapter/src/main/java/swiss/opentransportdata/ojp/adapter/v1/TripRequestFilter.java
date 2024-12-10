@@ -23,7 +23,8 @@ import java.util.Locale;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequest;
+import swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
 /**
  * A filter to apply for a Trip search.
@@ -36,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.transmodel.passengerinformation.query
  */
 @Data
 @Builder
-public class TripRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
+public class TripRequestFilter implements TripRequest, PTModeRequestFilter {
 
     static final int TRANSFER_LIMIT_MAX = 11;
     static final int WALK_SPEED_DEFAULT = 100;
@@ -59,6 +60,7 @@ public class TripRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
      * Passive OJP: simple Stop UIC like "8507000".
      * <p>
      * Active OJP: "OJP:STOP:SBB:8503424|Schaffhausen"
+     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripOriginPlace
      */
     @NonNull
     String origin;
@@ -68,6 +70,7 @@ public class TripRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
      * Passive OJP: simple Stop UIC like "8507000".
      * <p>
      * Active OJP: "OJP:STOP:SBB:8503424|Schaffhausen"
+     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripDestinationPlace
      */
     @NonNull
     String destination;
@@ -85,6 +88,7 @@ public class TripRequestFilter implements PIRequestPolicy, PTModeRequestFilter {
 
     /**
      * 100% considered average standard speed.
+     * @see swiss.opentransportdata.ojp.adapter.transmodel.v6.part6.passengerinformation.functionalrequests.tripquery.TripMobilityFilter
      */
     @Builder.Default
     @NonNull Integer walkSpeed = WALK_SPEED_DEFAULT;
