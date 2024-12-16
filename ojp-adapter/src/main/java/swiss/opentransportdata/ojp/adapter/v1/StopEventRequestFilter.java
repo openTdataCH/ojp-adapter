@@ -16,6 +16,7 @@
 package swiss.opentransportdata.ojp.adapter.v1;
 
 import de.vdv.ojp.PtModeFilterStructure;
+import de.vdv.ojp.release2.model.ModeFilterStructure;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import lombok.Builder;
@@ -30,7 +31,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
  */
 @Data
 @Builder
-public class StopEventRequestFilter implements StopEventRequest, PTModeRequestFilter {
+public class StopEventRequestFilter implements StopEventRequest, ModeRequestFilter {
 
     private static int LIMIT_DEFAULT = 20;
 
@@ -40,7 +41,8 @@ public class StopEventRequestFilter implements StopEventRequest, PTModeRequestFi
     @NonNull
     Integer limit = LIMIT_DEFAULT;
 
-    PtModeFilterStructure ptModeFilterStructure;
+    PtModeFilterStructure modeFilterStructure;
+    ModeFilterStructure modeFilterStructure2;
 
     /**
      * false: depart at dateTime (default); true: arrive at dateTime

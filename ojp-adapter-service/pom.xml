@@ -6,7 +6,7 @@
     <parent>
         <groupId>swiss.opentransportdata.ojp</groupId>
         <artifactId>ojp-adapter-parent</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>ojp-adapter-service</artifactId>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>swiss.opentransportdata.ojp</groupId>
             <artifactId>ojp-adapter-model</artifactId>
-            <version>0.9.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

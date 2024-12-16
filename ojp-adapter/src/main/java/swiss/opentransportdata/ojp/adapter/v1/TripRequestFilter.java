@@ -17,6 +17,7 @@ package swiss.opentransportdata.ojp.adapter.v1;
 
 import de.vdv.ojp.PtModeFilterStructure;
 import de.vdv.ojp.TripViaStructure;
+import de.vdv.ojp.release2.model.ModeFilterStructure;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -36,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
  */
 @Data
 @Builder
-public class TripRequestFilter implements TripRequest, PTModeRequestFilter {
+public class TripRequestFilter implements TripRequest, ModeRequestFilter {
 
     static final int TRANSFER_LIMIT_MAX = 11;
     static final int WALK_SPEED_DEFAULT = 100;
@@ -45,7 +46,8 @@ public class TripRequestFilter implements TripRequest, PTModeRequestFilter {
 
     Integer limit;
 
-    PtModeFilterStructure ptModeFilterStructure;
+    PtModeFilterStructure modeFilterStructure;
+    ModeFilterStructure modeFilterStructure2;
 
     /**
      * false: depart at dateTime (default); true: arrive at dateTime

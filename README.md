@@ -3,15 +3,16 @@ Licence: [Apache License, Version 2.0](https://opensource.org/license/apache-2-0
 
 # About OJP-Adapter
 
-This is a simple OJP-Adapter _library_ to request Public-Transportation queries against the **swiss public [_Open Journey-Planner (SKI)_](https://opentransportdata.swiss/de/dataset/ojp2020)**.
+This is a simple OJP-Adapter _library_ to request Public-Transportation queries against the **swiss public [_Open Journey-Planner (SKI)_](https://opentransportdata.swiss/de/dataset/ojp2-0)**.
 
-Remark about **OJP SKI**
+Remark about **OJP SKI+**
 * Public Transportation router commissioned by [BAV](https://www.bav.admin.ch/bav/de/home.html)
 * Usage for e.g. by [öv-info.ch](https://www.öv-info.ch/de)
+* [OJP-Demo shell and XML insights](https://tools.odpch.ch/beta-ojp-demo/search)
 
 ## Goals
 
-Abstracting the complex [VDV OJP v1.0.1 Schema](https://github.com/VDVde/OJP) by Java POJOs, map response properly and provide low-level error-handling.
+Abstracting the complex [VDV OJP.xsd Schema](https://github.com/VDVde/OJP) by Java POJOs, map response properly and provide low-level error-handling.
 
 Anyone (for e.g. public transport-organisation) who plans to use the Swiss OJP router (or other european OJP instances supporting the same protocol version) may try this library to setup a quick working starting point.
 
@@ -26,10 +27,10 @@ The author hopes using this OJP-Adapter library may "abstract" the above steps m
   * open-source [bliksemlabs](https://github.com/bliksemlabs/ojp-java-model) or Maven
   * dependency [ojp-java-model](https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1)
 * Further documentation:
-  * Swiss [OJP cookbook](https://opentransportdata.swiss/de/cookbook/)
+  * Swiss [OJP cookbook](https://opentransportdata.swiss/en/cookbook/open-journey-planner-ojp/)
   * [OJP/Transmodel mapping](https://github.com/VDVde/OJP/blob/develop/docs/transmodel_ojp_mapping/Mapping_OJP_TRANSMODEL_V3.0.xlsx)
   * Semantic model
-    description [OJP - Open API for distributed Journey Planning by jmaerki](https://jmaerki.github.io/OJP/generated/OJP.html)
+    description [OJP v1 - Open API for distributed Journey Planning by jmaerki](https://jmaerki.github.io/OJP/generated/OJP.html)
 
 The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if configured well (by means your own access token):
 * use _OJPAadapter_ for raw native XML handling in conversation with OJP protocol.
@@ -37,8 +38,8 @@ The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if config
 ## Run it
 1. Download repository
 2. mvn clean install
-3. copy ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties to ojp.properties and add your own key for SKI+ OJP Instance from [opentransportdata.swiss **passive instance**](https://opentransportdata.swiss/de/dataset/ojp2020) _"Manage the API key"_
-4. run swiss.opentransportdata.ojp.adapter.v1.OJPAdapterAccessTest (to try out native OJP XML based request/response)
+3. copy ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties to ojp.properties and add your own key for SKI+ OJP Instance from [opentransportdata.swiss **passive instance** v2]( https://opentransportdata.swiss/de/dataset/ojp2-0) _"Manage the API key"_
+4. run swiss.opentransportdata.ojp.adapter.**.OJPAdapterAccessTest (to try out native OJP XML based request/response)
 5. run swiss.opentransportdata.ojp.adapter.service.application.**OJPWebApplication** and
    open [OpenAPI 3 Swagger-UI](http://localhost:8082/swagger-ui/index.html)
 
@@ -53,25 +54,14 @@ Remark:
 
 ### Module "ojp-adapter"
 
-#### OJP 1.0 implementation
-
-OK: Covers **Place, Trip, DatedVehicleJourney (including Departures/Arrivals)**
-
-* **Currently, OJPAdapter deals with one SINGLE Journey-Planner request at a time**, though MULTIPLE
-  requests could be performed at once.
-* Complete OJP set of request-filters (currently the most relevant filters are adapted).
-* Complete OJP response mapping (currently the most relevant properties are implemented).
-* Implement further details marked by _TODO_
-* Quality tests for correctly mapped output should be verified and confirmed by SKI+.
-
 #### OJP 2.0 implementation
 
 Planned upgrade to use OJP 2.0 API.
 See:
 
+* [VDV OJP 2.0 Model](https://github.com/VDVde/OJP) base for Java model [Doc](https://vdvde.github.io/OJP/index.html)
 * [OJP 2.0 Cookbook](https://opentransportdata.swiss/de/cookbook/ojp2entwicklung/)
-* [OJP SDK](https://github.com/openTdataCH/ojp-sdk?tab=readme-ov-file)
-  * [VDV OJP 2.0 Model](https://github.com/VDVde/OJP) base for Java model
+* [OJP Demo v2.0](https://tools.odpch.ch/ojp-demo-v2/search)
 
 ### Module "ojp-transmodel" & "Swagger-UI"
 
@@ -83,6 +73,17 @@ See:
   * Model mapper between VDV specification to the Transmodel like implementaiton model
   * Simple [OpenApi 3](https://swagger.io/blog/news/whats-new-in-openapi-3-0/) REST API based
     application offering a Swagger UI to execute requests against OJP
+
+#### ~~OJP v1.0 implementation (DEPRECATED)~~
+
+OK: Covers **Place, Trip, DatedVehicleJourney (including Departures/Arrivals)**
+
+* **Currently, OJPAdapter deals with one SINGLE Journey-Planner request at a time**, though MULTIPLE
+  requests could be performed at once.
+* Complete OJP set of request-filters (currently the most relevant filters are adapted).
+* Complete OJP response mapping (currently the most relevant properties are implemented).
+* Implement further details marked by _TODO_
+* Quality tests for correctly mapped output should be verified and confirmed by SKI+.
 
 ## Known usage
 

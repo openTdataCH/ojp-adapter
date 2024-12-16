@@ -15,18 +15,14 @@
  */
 package swiss.opentransportdata.ojp.adapter.v1.converter;
 
-import de.vdv.ojp.AbstractOJPServiceRequestStructure;
-import de.vdv.ojp.InitialLocationInputStructure;
 import de.vdv.ojp.InternationalTextStructure;
 import de.vdv.ojp.JourneyRefStructure;
-import de.vdv.ojp.OJPLocationInformationRequestStructure;
 import de.vdv.ojp.OJPStopEventRequestStructure;
 import de.vdv.ojp.OJPTripInfoRequestStructure;
 import de.vdv.ojp.OJPTripRequestStructure;
 import de.vdv.ojp.ObjectFactory;
 import de.vdv.ojp.OperatingDayRefStructure;
 import de.vdv.ojp.PlaceContextStructure;
-import de.vdv.ojp.PlaceParamStructure;
 import de.vdv.ojp.PlaceRefStructure;
 import de.vdv.ojp.StopEventParamStructure;
 import de.vdv.ojp.StopEventTypeEnumeration;
@@ -39,6 +35,10 @@ import de.vdv.ojp.model.OJPRequestStructure;
 import de.vdv.ojp.model.ParticipantRefStructure;
 import de.vdv.ojp.model.ServiceRequest;
 import de.vdv.ojp.model.ServiceRequestContextStructure;
+import de.vdv.ojp.release2.model.AbstractOJPServiceRequestStructure;
+import de.vdv.ojp.release2.model.InitialLocationInputStructure;
+import de.vdv.ojp.release2.model.OJPLocationInformationRequestStructure;
+import de.vdv.ojp.release2.model.PlaceParamStructure;
 import jakarta.xml.bind.JAXBElement;
 import java.math.BigInteger;
 import java.time.Duration;
@@ -63,7 +63,9 @@ import swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter;
 public class OJPFactory {
 
     // JAXB Element factory
+    @Deprecated(since = "OJP v2")
     private final ObjectFactory objectFactory;
+    private final de.vdv.ojp.release2.model.ObjectFactory objectFactory2;
     private final String participantReference;
 
     /**
@@ -82,6 +84,7 @@ public class OJPFactory {
 
     public OJPFactory(@NonNull String participantReference) {
         this.objectFactory = new ObjectFactory();
+        this.objectFactory2 = new de.vdv.ojp.release2.model.ObjectFactory();
         this.participantReference = participantReference;
     }
 
@@ -110,7 +113,7 @@ public class OJPFactory {
      * @see <a href="https://opentransportdata.swiss/de/cookbook/ojplocationinformationrequest/">OJP LocationInformationRequest</a>
      */
     @NonNull
-    public OJP createOjpWithLocationInformationRequest(@NonNull InitialLocationInputStructure initialLocationInputStructure, @NonNull PlaceRequestFilter filter) {
+    public de.vdv.ojp.release2.model.OJP createOjpWithLocationInformationRequest(@NonNull InitialLocationInputStructure initialLocationInputStructure, @NonNull PlaceRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
 
         final OJPLocationInformationRequestStructure ojpLocationInformationRequestStructure = new OJPLocationInformationRequestStructure();
@@ -135,12 +138,12 @@ public class OJPFactory {
              */
         }
         placeParamStructure.setNumberOfResults(java.math.BigInteger.valueOf(filter.getLimit()));
-        placeParamStructure.setPtModes(filter.getPtModeFilterStructure());
+        placeParamStructure.setModes(filter.getModeFilterStructure2());
         // placeParamStructure.setUsage(PlaceUsageEnumeration.VIA);
         // placeParamStructure.setContinueAt();
         ojpLocationInformationRequestStructure.setRestrictions(placeParamStructure);
 
-        return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactory.createOJPLocationInformationRequest(ojpLocationInformationRequestStructure));
+        return createSingleRequestV2(dateTime, filter.getPreferredLanguage(), objectFactory2.createOJPLocationInformationRequest(ojpLocationInformationRequestStructure));
     }
 
     @NonNull
@@ -166,7 +169,7 @@ public class OJPFactory {
             tripParamStructure.setNumberOfResults(BigInteger.valueOf(filter.getLimit()));
         }
 
-        tripParamStructure.setPtModeFilter(filter.getPtModeFilterStructure());
+        tripParamStructure.setPtModeFilter(filter.getModeFilterStructure());
         // tripParamStructure.setPrivateModeFilter(PrivateModeFilterStructure);
         tripParamStructure.setIgnoreRealtimeData(filter.isExcludeRealtime());
         // Whether the result should include accessibility information. Further specifyable: ..noRamp, noElevator, ..
@@ -210,10 +213,21 @@ public class OJPFactory {
      * @param jaxbElement specific query params
      * @return complete OJP request
      */
-    OJP createSingleRequest(ZonedDateTime requestTimestamp, Locale preferredLanguage, JAXBElement<? extends AbstractOJPServiceRequestStructure> jaxbElement) {
+    @Deprecated(since = "OJP v2")
+    OJP createSingleRequest(ZonedDateTime requestTimestamp, Locale preferredLanguage, JAXBElement<? extends de.vdv.ojp.AbstractOJPServiceRequestStructure> jaxbElement) {
         final OJP ojp = new OJP();
         ojp.setOJPRequest(new OJPRequestStructure());
         ojp.getOJPRequest().setServiceRequest(createServiceRequest(requestTimestamp, preferredLanguage));
+
+        // singleton or collection possible
+        ojp.getOJPRequest().getServiceRequest().withAbstractFunctionalServiceRequest(jaxbElement);
+        return ojp;
+    }
+
+    de.vdv.ojp.release2.model.OJP createSingleRequestV2(ZonedDateTime requestTimestamp, Locale preferredLanguage, JAXBElement<? extends AbstractOJPServiceRequestStructure> jaxbElement) {
+        final de.vdv.ojp.release2.model.OJP ojp = new de.vdv.ojp.release2.model.OJP();
+        ojp.setOJPRequest(new de.vdv.ojp.release2.model.OJPRequestStructure());
+        ojp.getOJPRequest().setServiceRequest(createServiceRequest2(requestTimestamp, preferredLanguage));
 
         // singleton or collection possible
         ojp.getOJPRequest().getServiceRequest().withAbstractFunctionalServiceRequest(jaxbElement);
@@ -225,6 +239,7 @@ public class OJPFactory {
      * @param preferredLanguage Accept-Language
      * @return General Service container for an OJP request
      */
+    @Deprecated(since = "OJP v2.0")
     ServiceRequest createServiceRequest(ZonedDateTime requestTimestamp, Locale preferredLanguage) {
         final ServiceRequest serviceRequest = new ServiceRequest();
         serviceRequest.setRequestTimestamp(requestTimestamp);
@@ -239,6 +254,34 @@ public class OJPFactory {
 
         final ServiceRequestContextStructure serviceRequestContextStructure = new ServiceRequestContextStructure();
         serviceRequestContextStructure.setLanguage(preferredLanguage.getLanguage());
+        serviceRequestContextStructure.setRequestTimeout(Duration.ofMillis(29000));
+        serviceRequestContextStructure.setDistanceUnits("m");
+        // serviceRequestContextStructure.setGmlCoordinateFormat(???);
+        // serviceRequestContextStructure.setWgsDecimalDegrees(???);
+        serviceRequest.setServiceRequestContext(serviceRequestContextStructure);
+
+        return serviceRequest;
+    }
+
+    /**
+     * @param requestTimestamp timestamp for request
+     * @param preferredLanguage Accept-Language
+     * @return General Service container for an OJP request
+     */
+    uk.org.siri.siri.ServiceRequest createServiceRequest2(ZonedDateTime requestTimestamp, Locale preferredLanguage) {
+        final uk.org.siri.siri.ServiceRequest serviceRequest = new uk.org.siri.siri.ServiceRequest();
+        serviceRequest.setRequestTimestamp(requestTimestamp);
+        final uk.org.siri.siri.ParticipantRefStructure participantRefStructure = new uk.org.siri.siri.ParticipantRefStructure();
+        participantRefStructure.setValue(participantReference);
+        serviceRequest.setRequestorRef(participantRefStructure);
+        /*
+        final MessageQualifierStructure messageQualifierStructure = new MessageQualifierStructure();
+        messageQualifierStructure.setValue("4711");
+        serviceRequest.setMessageIdentifier(messageQualifierStructure);
+         */
+
+        final uk.org.siri.siri.ServiceRequestContextStructure serviceRequestContextStructure = new uk.org.siri.siri.ServiceRequestContextStructure();
+        //TODO serviceRequestContextStructure.setLanguage(preferredLanguage.getLanguage());
         serviceRequestContextStructure.setRequestTimeout(Duration.ofMillis(29000));
         serviceRequestContextStructure.setDistanceUnits("m");
         // serviceRequestContextStructure.setGmlCoordinateFormat(???);
@@ -314,7 +357,7 @@ public class OJPFactory {
         stopEventParamStructure.setIncludeOperatingDays(true);
         stopEventParamStructure.setIncludeRealtimeData(true);
         stopEventParamStructure.setNumberOfResults(BigInteger.valueOf(filter.getLimit()));
-        stopEventParamStructure.setPtModeFilter(filter.getPtModeFilterStructure());
+        stopEventParamStructure.setPtModeFilter(filter.getModeFilterStructure());
 
         /*
         stopEventParamStructure.setLineFilter();

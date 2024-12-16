@@ -18,17 +18,17 @@ package swiss.opentransportdata.ojp.adapter.v1;
 import static org.springframework.http.MediaType.APPLICATION_XML;
 import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 
-import de.vdv.ojp.GeoCircleStructure;
-import de.vdv.ojp.GeoRestrictionsStructure;
-import de.vdv.ojp.InitialLocationInputStructure;
 import de.vdv.ojp.InternationalTextStructure;
-import de.vdv.ojp.OJPLocationInformationDeliveryStructure;
 import de.vdv.ojp.OJPStopEventDeliveryStructure;
 import de.vdv.ojp.OJPTripDeliveryStructure;
 import de.vdv.ojp.OJPTripInfoDeliveryStructure;
 import de.vdv.ojp.model.AbstractServiceDeliveryStructure;
-import de.vdv.ojp.model.LocationStructure;
 import de.vdv.ojp.model.OJP;
+import de.vdv.ojp.release2.model.GeoCircleStructure;
+import de.vdv.ojp.release2.model.GeoRestrictionsStructure;
+import de.vdv.ojp.release2.model.InitialLocationInputStructure;
+import de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure;
+import de.vdv.ojp.release2.model.PlaceStructure;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
@@ -51,6 +51,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.v1.converter.OJPFactory;
+import uk.org.siri.siri.LocationStructure;
 
 /**
  * Making access to OJP v1.x XML API easier.
@@ -112,8 +113,28 @@ public class OJPAdapter {
      * @return specific delivery structure related to request-query (might still contain specific error)
      * @throws OJPException
      */
+    @Deprecated(since = "OJP v2.0")
     private static AbstractServiceDeliveryStructure extractFirstDeliveryStructure(List<JAXBElement<? extends AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
         final AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.get(0).getValue();
+        if (firstDeliveryStructure == null) {
+            // unexpected
+            throw new OJPException("AbstractServiceDeliveryStructure is null");
+        }
+
+        return firstDeliveryStructure;
+    }
+
+    /**
+     * Since this assistant focuses one query per HTTP-request, there is always 1 matching response object.
+     * <p>
+     * (OJP could also treat multi-queries in one HTTP-request.)
+     *
+     * @param abstractServiceDeliveryStructures
+     * @return specific delivery structure related to request-query (might still contain specific error)
+     * @throws OJPException
+     */
+    private static uk.org.siri.siri.AbstractServiceDeliveryStructure extractFirstDeliveryStructure2(List<JAXBElement<? extends uk.org.siri.siri.AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
+        final uk.org.siri.siri.AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.get(0).getValue();
         if (firstDeliveryStructure == null) {
             // unexpected
             throw new OJPException("AbstractServiceDeliveryStructure is null");
@@ -127,10 +148,10 @@ public class OJPAdapter {
      * @return first data-object of interest
      * @see #requestPlaces(OJPAccessor, PlaceRequestFilter)
      */
-    public static OJPLocationInformationDeliveryStructure mapToFirstOJPLocationInformationDeliveryStructure(OJP ojpResponse) {
-        final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
+    public static de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure mapToFirstOJPLocationInformationDeliveryStructure(de.vdv.ojp.release2.model.OJP ojpResponse) {
+        final uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure2(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
-        if (hasFailure(deliveryStructure)) {
+        if (hasFailure2(deliveryStructure)) {
             if ((deliveryStructure.getErrorCondition() != null) && "LOCATION_NORESULTS" .equals(deliveryStructure.getErrorCondition().getDescription().getValue())) {
                 log.debug("no hits");
             } else {
@@ -206,6 +227,7 @@ public class OJPAdapter {
      * @param deliveryStructure part of OJP response
      * @return deliveryStructure::isStatus is not ok (if false further examination by caller needs to be done!)
      */
+    @Deprecated(since = "OJP v2.0")
     private static boolean hasFailure(AbstractServiceDeliveryStructure deliveryStructure) {
         if (deliveryStructure.isStatus()) {
             if (deliveryStructure.getErrorCondition() != null) {
@@ -218,12 +240,49 @@ public class OJPAdapter {
         return !deliveryStructure.isStatus();
     }
 
+    /**
+     * OJP signals potential errors by status and/or errorCondition.
+     *
+     * @param deliveryStructure part of OJP response
+     * @return deliveryStructure::isStatus is not ok (if false further examination by caller needs to be done!)
+     */
+    private static boolean hasFailure2(uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure) {
+        if (Boolean.TRUE.equals(deliveryStructure.isStatus())) {
+            if (deliveryStructure.getErrorCondition() != null) {
+                // by experience: like a 400 Bad Parameter (by means a value does not please OJP and passive/active instance may behave differently)
+                throw new OJPException("Specific AbstractServiceDeliveryStructure::status=true, ::errorCondition BAD: " + deliveryStructure);
+            }
+
+            // proper delivery object is given, but may still contain "errors" to deal with
+            return !deliveryStructure.isStatus();
+        }
+
+        return false;
+    }
+
+    @Deprecated(since = "OJP v2.0")
     public static String getText(InternationalTextStructure internationalTextStructure) {
         if ((internationalTextStructure == null) || (internationalTextStructure.getText() == null) || StringUtils.isBlank(internationalTextStructure.getText().getValue())) {
             return null;
         }
         //log.debug("InternationalTextStructure::textId={}", internationalTextStructure.getTextId());
         return internationalTextStructure.getText().getValue().trim();
+    }
+
+    public static String getText2(de.vdv.ojp.release2.model.InternationalTextStructure internationalTextStructure) {
+        if ((internationalTextStructure == null) || CollectionUtils.isEmpty(internationalTextStructure.getText())) {
+            return null;
+        }
+        if (internationalTextStructure.getText().size() > 1) {
+            //TODO what is the expected one?
+            log.warn("InternationalTextStructure::text has multiple entries -> fallback first={}", internationalTextStructure.getText());
+        }
+        if (StringUtils.isBlank(internationalTextStructure.getText().get(0).getValue())) {
+            log.warn("InternationalTextStructure::text[0] empty: {}", internationalTextStructure.getText().get(0));
+            return null;
+        }
+
+        return internationalTextStructure.getText().get(0).getValue().trim();
     }
 
     /**
@@ -238,14 +297,14 @@ public class OJPAdapter {
         this.callerReference = callerReference;
 
         try {
-            ojpJaxbContext = JAXBContext.newInstance(OJP.class);
+            ojpJaxbContext = JAXBContext.newInstance(de.vdv.ojp.release2.model.OJP.class);
         } catch (JAXBException ex) {
             throw new OJPException("JAXBContext could not be initialized", ex);
         }
     }
 
     /**
-     * Perform an OJP "LocationInformationRequest" with a single query. Extract response by {@link #mapToFirstOJPLocationInformationDeliveryStructure(OJP)}.
+     * Perform an OJP "LocationInformationRequest" with a single query. Extract response by {@link #mapToFirstOJPLocationInformationDeliveryStructure(de.vdv.ojp.release2.model.OJP)}.
      *
      * @param ojpAccessor configuration to access OJP
      * @param filter request/search parameters
@@ -258,14 +317,14 @@ public class OJPAdapter {
      * @see <a href="https://jmaerki.github.io/OJP/generated/OJP.html#TopographicPlaceStructure">OJP TopographicPlaceStructure</a>
      */
     @NonNull
-    public OJP requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull PlaceRequestFilter filter) throws OJPException {
+    public de.vdv.ojp.release2.model.OJP requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull PlaceRequestFilter filter) throws OJPException {
         if (StringUtils.isBlank(filter.getPlaceName()) && (filter.getCentroid() == null)) {
             throw new IllegalArgumentException("Either placeName and/or centroid must be set.");
         }
 
         try {
             final InitialLocationInputStructure initialLocationInputStructure = new InitialLocationInputStructure();
-            initialLocationInputStructure.setLocationName(filter.getPlaceName());
+            initialLocationInputStructure.setName(filter.getPlaceName());
             if (filter.getCentroid() != null) {
                 final LocationStructure locationStructure = new LocationStructure();
                 locationStructure.setLongitude(BigDecimal.valueOf(filter.getCentroid().getLongitude()));
@@ -284,8 +343,8 @@ public class OJPAdapter {
                     initialLocationInputStructure.setGeoRestriction(geoRestrictionsStructure);
                 }
             }
-            final OJP ojpRequest = ojpFactory.createOjpWithLocationInformationRequest(initialLocationInputStructure, filter);
-            return request(ojpAccessor, ojpRequest);
+            final de.vdv.ojp.release2.model.OJP ojpRequest = ojpFactory.createOjpWithLocationInformationRequest(initialLocationInputStructure, filter);
+            return request2(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") LocationInformation request failed" + ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -386,6 +445,7 @@ public class OJPAdapter {
      * @param ojpRequest OJP body
      * @return OJP response (might still contain specific error)
      */
+    @Deprecated(since = "OJP v2.0")
     private OJP request(OJPAccessor ojpAccessor, OJP ojpRequest) {
         final String body = marshalRequest(ojpRequest);
 
@@ -403,6 +463,30 @@ public class OJPAdapter {
         return unmarshalBody(response);
     }
 
+    /**
+     * Perform a concrete OJP call.
+     *
+     * @param ojpAccessor configuration to access OJP
+     * @param ojpRequest OJP body
+     * @return OJP response (might still contain specific error)
+     */
+    private de.vdv.ojp.release2.model.OJP request2(OJPAccessor ojpAccessor, de.vdv.ojp.release2.model.OJP ojpRequest) {
+        final String body = marshalRequest(ojpRequest);
+
+        log.debug("POST {}, body={}", ojpAccessor.getEndpoint(), body);
+        final String response = webClient.post()
+            .uri(ojpAccessor.getEndpoint())
+            .contentType(APPLICATION_XML)
+            .body(fromValue(marshalRequest(ojpRequest)))
+            .headers(headers -> headers.addAll(createOjpHeaders(ojpAccessor)))
+            .retrieve()
+            .bodyToMono(String.class)
+            .blockOptional()
+            .orElseThrow();
+
+        return unmarshalBody2(response);
+    }
+
     private HttpHeaders createOjpHeaders(OJPAccessor ojpAccessor) {
         final HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
@@ -412,7 +496,7 @@ public class OJPAdapter {
     }
 
     // by JAXB serialization
-    private String marshalRequest(OJP ojpRequest) {
+    private String marshalRequest(Object ojpRequest) {
         try {
             final StringWriter writer = new StringWriter();
             ojpJaxbContext.createMarshaller().marshal(ojpRequest, writer);
@@ -436,6 +520,7 @@ public class OJPAdapter {
      * @param responseEntity
      * @return Generic OJP container with a delivery part
      */
+    @Deprecated(since = "OJP v2.0")
     public OJP unmarshalResponse(ResponseEntity<String> responseEntity) throws OJPException {
         if (HttpStatus.OK.isSameCodeAs(responseEntity.getStatusCode())) {
             log.debug("OJP response: {}", responseEntity);
@@ -450,13 +535,59 @@ public class OJPAdapter {
     }
 
     /**
+     * @param responseEntity
+     * @return Generic OJP container with a delivery part
+     */
+    public de.vdv.ojp.release2.model.OJP unmarshalResponse2(ResponseEntity<String> responseEntity) throws OJPException {
+        if (HttpStatus.OK.isSameCodeAs(responseEntity.getStatusCode())) {
+            log.debug("OJP response: {}", responseEntity);
+            if (responseEntity.getBody() == null) {
+                throw new OJPException("Unexpected OJP response-body is null");
+            }
+
+            return unmarshalBody2(responseEntity.getBody());
+        } else {
+            throw new OJPException("Unexpected error: " + responseEntity.getStatusCode() + " " + responseEntity.getBody());
+        }
+    }
+
+    /**
      * @param responseBody OJP 1.0 xml-instance
      * @return OJP response structure
      */
+    @Deprecated(since="OJP v2.0")
     private OJP unmarshalBody(String responseBody) {
         final OJP ojpResponse;
         try {
             ojpResponse = (OJP) ojpJaxbContext.createUnmarshaller().unmarshal(new StringReader(responseBody));
+        } catch (JAXBException ex) {
+            throw new OJPException("Response mapping failed", ex);
+        }
+        if (ojpResponse.getOJPResponse() == null) {
+            throw new OJPException("Expected response element is expected: " + ojpResponse);
+        }
+        if (ojpResponse.getOJPResponse().getServiceDelivery() == null) {
+            throw new OJPException("Expected ServiceDelivery content is expected: " + ojpResponse.getOJPResponse());
+        }
+        if (ojpResponse.getOJPResponse().getServiceDelivery().getErrorCondition() != null) {
+            // general fault: OJP failed to treat request (whether single- or multi-query)
+            throw new OJPException(ojpResponse.getOJPResponse().getServiceDelivery());
+        }
+        if (CollectionUtils.isEmpty(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery())) {
+            // unexpected
+            throw new OJPException("ServiceDelivery::abstractFunctionalServiceDelivery is empty for: " + ojpResponse.getOJPResponse().getServiceDelivery());
+        }
+        return ojpResponse;
+    }
+
+    /**
+     * @param responseBody OJP 1.0 xml-instance
+     * @return OJP response structure
+     */
+    private de.vdv.ojp.release2.model.OJP unmarshalBody2(String responseBody) {
+        final de.vdv.ojp.release2.model.OJP ojpResponse;
+        try {
+            ojpResponse = (de.vdv.ojp.release2.model.OJP) ojpJaxbContext.createUnmarshaller().unmarshal(new StringReader(responseBody));
         } catch (JAXBException ex) {
             throw new OJPException("Response mapping failed", ex);
         }

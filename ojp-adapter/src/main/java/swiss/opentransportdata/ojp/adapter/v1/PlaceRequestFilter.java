@@ -17,6 +17,7 @@ package swiss.opentransportdata.ojp.adapter.v1;
 
 import de.vdv.ojp.PlaceTypeEnumeration;
 import de.vdv.ojp.PtModeFilterStructure;
+import de.vdv.ojp.release2.model.ModeFilterStructure;
 import java.util.Locale;
 import java.util.Set;
 import lombok.Builder;
@@ -31,7 +32,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.loc
  */
 @Data
 @Builder
-public class PlaceRequestFilter implements LocationRequest, PTModeRequestFilter {
+public class PlaceRequestFilter implements LocationRequest, ModeRequestFilter {
 
     public static final int LIMIT_DEFAULT = 10;
 
@@ -41,14 +42,14 @@ public class PlaceRequestFilter implements LocationRequest, PTModeRequestFilter 
     @NonNull
     Integer limit = LIMIT_DEFAULT;
 
-    PtModeFilterStructure ptModeFilterStructure;
+    ModeFilterStructure modeFilterStructure2;
 
     /**
      * Default: {@link PlaceTypeEnumeration#STOP} only
      */
     @NonNull
     @Builder.Default
-    Set<PlaceTypeEnumeration> placeTypes = Set.of(PlaceTypeEnumeration.STOP);
+    Set<de.vdv.ojp.release2.model.PlaceTypeEnumeration> placeTypes = Set.of(de.vdv.ojp.release2.model.PlaceTypeEnumeration.STOP);
 
     String placeName;
 

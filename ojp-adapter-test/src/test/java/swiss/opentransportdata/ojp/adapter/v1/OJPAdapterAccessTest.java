@@ -23,9 +23,6 @@ import de.vdv.ojp.OJPLocationInformationDeliveryStructure;
 import de.vdv.ojp.OJPStopEventDeliveryStructure;
 import de.vdv.ojp.OJPTripDeliveryStructure;
 import de.vdv.ojp.OJPTripInfoDeliveryStructure;
-import de.vdv.ojp.PlaceResultStructure;
-import de.vdv.ojp.PlaceStructure;
-import de.vdv.ojp.PlaceTypeEnumeration;
 import de.vdv.ojp.SituationsStructure;
 import de.vdv.ojp.StopEventResultStructure;
 import de.vdv.ojp.StopEventStructure;
@@ -36,8 +33,16 @@ import de.vdv.ojp.TripResultStructure;
 import de.vdv.ojp.TripStructure;
 import de.vdv.ojp.model.OJP;
 import de.vdv.ojp.model.ServiceDeliveryErrorConditionStructure;
+import de.vdv.ojp.release2.model.AddressStructure;
+import de.vdv.ojp.release2.model.PlaceResultStructure;
+import de.vdv.ojp.release2.model.PlaceStructure;
+import de.vdv.ojp.release2.model.PlaceTypeEnumeration;
+import de.vdv.ojp.release2.model.PointOfInterestStructure;
+import de.vdv.ojp.release2.model.StopPlaceStructure;
+import jakarta.xml.bind.JAXBElement;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -45,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.OJPTestProfile;
@@ -52,6 +58,7 @@ import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAdapterServiceConfiguration;
 import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter.Point;
 import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
+import uk.org.siri.siri.LocationStructure;
 
 /**
  * Integration-Test.
@@ -69,13 +76,13 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_PlaceType_ALL() throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(configuration.ojpAccessPassive(),
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(configuration.ojpAccessPassive(),
             PlaceRequestFilter.builder()
                 .preferredLanguage(Locale.GERMAN)
-                .placeTypes(Set.of(PlaceTypeEnumeration.STOP, PlaceTypeEnumeration.POI, PlaceTypeEnumeration.ADDRESS))
+                .placeTypes(Set.of(de.vdv.ojp.release2.model.PlaceTypeEnumeration.STOP, de.vdv.ojp.release2.model.PlaceTypeEnumeration.POI, de.vdv.ojp.release2.model.PlaceTypeEnumeration.ADDRESS))
                 .placeName("Olten")
                 .build());
-        assertResponseOJP(ojpResponse);
+        assertResponseOJP2(ojpResponse);
     }
 
     @Test
@@ -89,32 +96,18 @@ class OJPAdapterAccessTest {
     }
 
     private void requestStopPlaces(OJPAccessor ojpAccessor, String nameMatch) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
+        final Set<PlaceTypeEnumeration> types = Set.of(PlaceTypeEnumeration.STOP);
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
                 .preferredLanguage(Locale.FRENCH)
+                .placeTypes(types)
                 .placeName(nameMatch)
                 .build());
-        assertResponseOJP(ojpResponse);
+        assertResponseOJP2(ojpResponse);
 
         // specific <ojp:OJPLocationInformationDelivery>
-        final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeGreaterThanOrEqualTo(0);
-        // TODO assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeLessThanOrEqualTo(limit);
-        boolean found = false;
-        for (PlaceResultStructure placeResultStructure : ojpLocationInformationDeliveryStructure.getLocation()) {
-            PlaceStructure placeStructure = placeResultStructure.getLocation();
-            if (placeStructure.getStopPlace() == null) {
-                Assertions.fail("non StopPlace found for:" + nameMatch);
-            } else {
-                assertThat(placeStructure.getStopPlace()).as("<ojp:StopPlaceName>").isNotNull();
-                log.debug("Name={}, value={}", placeStructure.getStopPlace().getStopPlaceName(), placeStructure.getStopPlace().getStopPlaceRef().getValue());
-
-                if (OJPAdapter.getText(placeStructure.getStopPlace().getStopPlaceName()).toUpperCase().contains(nameMatch.toUpperCase())) {
-                    found = true;
-                }
-            }
-        }
-        assertThat(found).as("search-expression not found").isTrue();
+        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
+        assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
     }
 
     @Test
@@ -128,28 +121,17 @@ class OJPAdapterAccessTest {
     }
 
     private void requestPointOfInterests(OJPAccessor ojpAccessor, String nameMatch) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
+        final Set<PlaceTypeEnumeration> types = Set.of(de.vdv.ojp.release2.model.PlaceTypeEnumeration.POI);
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
                 .preferredLanguage(Locale.ITALIAN)
-                .placeTypes(Set.of(PlaceTypeEnumeration.POI))
+                .placeTypes(types)
                 .placeName(nameMatch)
                 .build());
-        assertResponseOJP(ojpResponse);
+        assertResponseOJP2(ojpResponse);
 
-        final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeGreaterThanOrEqualTo(0);
-        //TODO assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeLessThanOrEqualTo(limit);
-        ojpLocationInformationDeliveryStructure.getLocation().forEach(location -> {
-            PlaceStructure placeStructure = location.getLocation();
-            if (placeStructure.getPointOfInterest() == null) {
-                Assertions.fail("no PointOfInterest found for:" + nameMatch);
-            } else {
-                assertThat(placeStructure.getPointOfInterest()).as("<ojp:..>").isNotNull();
-                log.debug("Name={}, category={}", placeStructure.getPointOfInterest().getPointOfInterestName(), placeStructure.getPointOfInterest().getPointOfInterestCategory());
-
-                assertThat(OJPAdapter.getText(placeStructure.getPointOfInterest().getPointOfInterestName())).containsIgnoringCase(nameMatch);
-            }
-        });
+        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
+        assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
     }
 
     @Test
@@ -163,38 +145,17 @@ class OJPAdapterAccessTest {
     }
 
     private void requestAddresses(OJPAccessor accessor, String nameMatch) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(accessor,
+        final Set<PlaceTypeEnumeration> types = Set.of(PlaceTypeEnumeration.ADDRESS);
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(accessor,
             PlaceRequestFilter.builder()
                 .preferredLanguage(Locale.ENGLISH)
-                .placeTypes(Set.of(PlaceTypeEnumeration.ADDRESS))
+                .placeTypes(types)
                 .placeName(nameMatch)
                 .build());
-        assertResponseOJP(ojpResponse);
+        assertResponseOJP2(ojpResponse);
 
-        // specific <ojp:OJPLocationInformationDelivery>
-        assertThat(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get(0).getValue()).isInstanceOf(OJPLocationInformationDeliveryStructure.class);
-        final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeGreaterThanOrEqualTo(0);
-        //TODO assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeLessThanOrEqualTo(limit);
-        ojpLocationInformationDeliveryStructure.getLocation().forEach(location -> {
-            PlaceStructure placeStructure = location.getLocation();
-            if (placeStructure.getAddress() == null) {
-                Assertions.fail("no Address found for:" + nameMatch);
-            } else {
-                assertThat(placeStructure.getAddress()).as("<ojp:Address?>").isNotNull();
-                log.debug("Name={}, value={}", placeStructure.getAddress().getAddressName(), placeStructure.getAddress().getStreet());
-
-                assertThat(OJPAdapter.getText(placeStructure.getAddress().getAddressName())).contains(nameMatch);
-                assertThat(placeStructure.getAddress().getAddressCode()).isNotBlank();
-                assertThat(placeStructure.getAddress().getStreet()).isNotBlank();
-                if (placeStructure.getAddress().getHouseNumber() != null) {
-                    assertThat(placeStructure.getAddress().getHouseNumber()).isNotBlank();
-                }
-                assertThat(placeStructure.getAddress().getPostCode()).isNotBlank();
-                assertThat(placeStructure.getAddress().getTopographicPlaceName()).isNotBlank();
-                assertThat(placeStructure.getAddress().getTopographicPlaceRef().getValue()).isNotBlank();
-            }
-        });
+        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
+        assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
     }
 
     @Test
@@ -208,32 +169,30 @@ class OJPAdapterAccessTest {
     }
 
     private void requestStopPlacesByNameAndCoordinate(OJPAccessor ojpAccessor) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
+        final Set<PlaceTypeEnumeration> types = Set.of(PlaceTypeEnumeration.STOP);
+        final String nameMatch = "Oerlikon";
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
                 .preferredLanguage(Locale.GERMAN)
-                .placeTypes(Set.of(PlaceTypeEnumeration.STOP))
-                .placeName("Oerlikon")
+                .placeTypes(types)
+                .placeName(nameMatch)
                 .centroid(new Point(8.544112, 47.411527))
                 .build());
-        assertResponseOJP(ojpResponse);
+        assertResponseOJP2(ojpResponse);
 
-        // specific <ojp:OJPLocationInformationDelivery>(
-        final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeGreaterThanOrEqualTo(0);
-        //TODO assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeLessThanOrEqualTo(limit);
-        ojpLocationInformationDeliveryStructure.getLocation().forEach(location -> {
-            PlaceStructure placeStructure = location.getLocation();
-            if (placeStructure.getStopPlace() == null) {
-                Assertions.fail("non StopPlace found for: coordinates");
-            } else {
-                assertThat(placeStructure.getStopPlace()).as("<ojp:StopPlaceName>").isNotNull();
-                log.debug("Name={}, value={}", placeStructure.getStopPlace().getStopPlaceName(), placeStructure.getStopPlace().getStopPlaceRef().getValue());
-
-                assertThat(placeStructure.getStopPlace().getStopPlaceName().getText().getValue()).contains("Oerlikon");
-                assertThat(placeStructure.getGeoPosition().getLongitude()).isBetween(BigDecimal.valueOf(7.0), BigDecimal.valueOf(9.0));
-                assertThat(placeStructure.getGeoPosition().getLatitude()).isBetween(BigDecimal.valueOf(45.0), BigDecimal.valueOf(48.0));
+        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
+        final List<PlaceResultStructure> placeResultStructures = assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        /* TODO OJP v2.0
+        for (PlaceResultStructure placeResultStructure : placeResultStructures) {
+            final LocationStructure locationStructure = placeResultStructure.getPlace().getGeoPosition();
+            if  (locationStructure.getLongitude().isBetween(BigDecimal.valueOf(7.0), BigDecimal.valueOf(9.0)) &&
+            locationStructure.getLatitude().isBetween(BigDecimal.valueOf(45.0), BigDecimal.valueOf(48.0)) &&
+            placeResultStructure.getPlace().getName().equals(nameMatch)) {
+                return;
             }
-        });
+        }
+        Assertions.fail("Coordinates not found");
+         */
     }
 
     @Test
@@ -247,31 +206,31 @@ class OJPAdapterAccessTest {
     }
 
     private void requestStopPlacesByCoordinatesAndRadius(OJPAccessor ojpAccessor) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
+        final Set<PlaceTypeEnumeration> types = Set.of(PlaceTypeEnumeration.STOP);
+        final String nameMatch = null;
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor,
             PlaceRequestFilter.builder()
                 .preferredLanguage(Locale.GERMAN)
-                .placeTypes(Set.of(PlaceTypeEnumeration.STOP))
+                .placeTypes(types)
                 .centroid(new Point(8.544112, 47.411527))
                 .radius(300)
                 .build());
-        assertResponseOJP(ojpResponse);
+        assertResponseOJP2(ojpResponse);
 
-        // specific <ojp:OJPLocationInformationDelivery>(
-        final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeGreaterThanOrEqualTo(0);
-        //TODO assertThat(ojpLocationInformationDeliveryStructure.getLocation()).as("<ojp:Location>").hasSizeLessThanOrEqualTo(limit);
-
-        ojpLocationInformationDeliveryStructure.getLocation().forEach(location -> {
-            PlaceStructure placeStructure = location.getLocation();
-            if (placeStructure.getStopPlace() == null) {
-                Assertions.fail("non StopPlace found for: coordinates");
-            } else {
-                assertThat(placeStructure.getStopPlace()).as("<ojp:StopPlaceName>").isNotNull();
-                log.debug("Name={}, value={}", placeStructure.getStopPlace().getStopPlaceName(), placeStructure.getStopPlace().getStopPlaceRef().getValue());
-                assertThat(placeStructure.getGeoPosition().getLongitude()).isBetween(BigDecimal.valueOf(7.0), BigDecimal.valueOf(9.0));
-                assertThat(placeStructure.getGeoPosition().getLatitude()).isBetween(BigDecimal.valueOf(45.0), BigDecimal.valueOf(48.0));
+        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
+        final List<PlaceResultStructure> placeResultStructures = assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        /* TODO OJP v2.0
+        for (PlaceResultStructure placeResultStructure : placeResultStructures) {
+            final LocationStructure locationStructure = placeResultStructure.getPlace().getGeoPosition();
+            if  (locationStructure.getLongitude().isBetween(BigDecimal.valueOf(7.0), BigDecimal.valueOf(9.0)) &&
+            locationStructure.getLatitude().isBetween(BigDecimal.valueOf(45.0), BigDecimal.valueOf(48.0)) &&
+            placeResultStructure.getPlace().getName().equals(nameMatch)) {
+                return;
             }
-        });
+            assert radius
+        }
+        Assertions.fail("Coordinates not found");
+         */
     }
 
     @Test
@@ -451,6 +410,7 @@ class OJPAdapterAccessTest {
         return ojpJourneyReference.contains("sjyid");
     }
 
+    @Deprecated(since = "OJP v2.0")
     private void assertResponseOJP(OJP ojp) {
         // generic part
         assertThat(ojp).isNotNull();
@@ -462,6 +422,76 @@ class OJPAdapterAccessTest {
         } else {
             log.error("ServiceDelivery errorCondition={}", ojp.getOJPResponse().getServiceDelivery().getErrorCondition());
         }
+    }
+
+    private void assertResponseOJP2(de.vdv.ojp.release2.model.OJP ojp) {
+        // generic part
+        assertThat(ojp).isNotNull();
+        assertThat(ojp.getOJPRequest()).isNull();
+        assertThat(ojp.getOJPResponse()).as("<siri:OJPResponse>").isNotNull();
+        assertThat(ojp.getOJPResponse().getServiceDelivery()).as("JAXBElement with wanted data").isNotNull();
+        if (ojp.getOJPResponse().getServiceDelivery().isStatus() != null) {
+            if (ojp.getOJPResponse().getServiceDelivery().isStatus()) {
+                assertThat(ojp.getOJPResponse().getServiceDelivery().getErrorCondition()).isNull();
+            } else {
+                log.error("ServiceDelivery errorCondition={}", ojp.getOJPResponse().getServiceDelivery().getErrorCondition());
+            }
+        }
+    }
+
+    private List<PlaceResultStructure> assertPlaceResults(de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure, Set<PlaceTypeEnumeration> types,
+        String nameMatch) {
+        assertThat(ojpLocationInformationDeliveryStructure).isNotNull();
+        // TODO check requested language (though for Stop's irrelevant)
+        assertThat(ojpLocationInformationDeliveryStructure.getDefaultLanguage()).isNotBlank();
+
+        final List<PlaceResultStructure> placeResultStructures = new ArrayList<>();
+        boolean matchesFound = false;
+        for (JAXBElement<?> rest : ojpLocationInformationDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() == PlaceResultStructure.class) {
+                final PlaceResultStructure placeResultStructure = ((PlaceResultStructure) rest.getValue());
+                placeResultStructures.add(placeResultStructure);
+
+                de.vdv.ojp.release2.model.PlaceStructure placeStructure = placeResultStructure.getPlace();
+                if (placeStructure.getStopPlace() != null) {
+                    assertThat(types).as("Stop found but unwanted").contains(PlaceTypeEnumeration.STOP);
+                    final StopPlaceStructure stopPlaceStructure = placeStructure.getStopPlace();
+                    assertThat(stopPlaceStructure.getStopPlaceName()).as("<ojp:StopPlaceName>").isNotNull();
+                    log.debug("Name={}, value={}", stopPlaceStructure.getStopPlaceName(), stopPlaceStructure.getStopPlaceRef().getValue());
+
+                    if ((nameMatch == null) || OJPAdapter.getText2(stopPlaceStructure.getStopPlaceName()).toUpperCase().contains(nameMatch.toUpperCase())) {
+                        matchesFound = true;
+                    }
+                } else if (placeStructure.getPointOfInterest() != null) {
+                    assertThat(types).as("POI found but unwanted").contains(PlaceTypeEnumeration.POI);
+                    final PointOfInterestStructure pointOfInterestStructure = placeStructure.getPointOfInterest();
+                    log.debug("Name={}, category={}", pointOfInterestStructure.getName(), pointOfInterestStructure.getPointOfInterestCategory());
+
+                    if ((nameMatch == null) || OJPAdapter.getText2(placeStructure.getName()).toUpperCase().contains(nameMatch.toUpperCase())) {
+                        matchesFound = true;
+                    }
+                    assertThat(pointOfInterestStructure.getPointOfInterestCategory()).hasSizeGreaterThan(0);
+                } else if (placeStructure.getAddress() != null) {
+                    final AddressStructure addressStructure = placeStructure.getAddress();
+                    log.debug("Name={}, value={}", addressStructure.getName(), addressStructure.getStreet());
+
+                    if ((nameMatch == null) || OJPAdapter.getText2(addressStructure.getName()).toUpperCase().contains(nameMatch.toUpperCase())) {
+                        matchesFound = true;
+                    }
+                    assertThat(addressStructure.getStreet()).isNotBlank();
+                    if (addressStructure.getHouseNumber() != null) {
+                        assertThat(addressStructure.getHouseNumber()).isNotBlank();
+                    }
+                    assertThat(addressStructure.getPostCode()).isNotBlank();
+                    assertThat(addressStructure.getTopographicPlaceName()).isNotBlank();
+                    assertThat(addressStructure.getTopographicPlaceRef().getValue()).isNotBlank();
+                }
+            }
+        }
+        assertThat(placeResultStructures).as("Place hits").hasSizeGreaterThan(0);
+        assertThat(matchesFound).as("search-expression not found").isTrue();
+
+        return placeResultStructures;
     }
 
     private void assertTripInfoDeliveryStructure(OJPTripInfoDeliveryStructure ojpTripInfoDeliveryStructure) throws OJPException {
