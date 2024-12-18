@@ -19,7 +19,6 @@ package swiss.opentransportdata.ojp.adapter.v1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.vdv.ojp.DatedJourneyStructure;
-import de.vdv.ojp.OJPLocationInformationDeliveryStructure;
 import de.vdv.ojp.OJPStopEventDeliveryStructure;
 import de.vdv.ojp.OJPTripDeliveryStructure;
 import de.vdv.ojp.OJPTripInfoDeliveryStructure;
@@ -35,12 +34,10 @@ import de.vdv.ojp.model.OJP;
 import de.vdv.ojp.model.ServiceDeliveryErrorConditionStructure;
 import de.vdv.ojp.release2.model.AddressStructure;
 import de.vdv.ojp.release2.model.PlaceResultStructure;
-import de.vdv.ojp.release2.model.PlaceStructure;
 import de.vdv.ojp.release2.model.PlaceTypeEnumeration;
 import de.vdv.ojp.release2.model.PointOfInterestStructure;
 import de.vdv.ojp.release2.model.StopPlaceStructure;
 import jakarta.xml.bind.JAXBElement;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +47,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.OJPTestProfile;
@@ -58,7 +54,6 @@ import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAdapterServiceConfiguration;
 import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter.Point;
 import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
-import uk.org.siri.siri.LocationStructure;
 
 /**
  * Integration-Test.
