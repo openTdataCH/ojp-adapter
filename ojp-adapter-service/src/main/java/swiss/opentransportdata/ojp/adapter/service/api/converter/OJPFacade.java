@@ -158,7 +158,7 @@ public class OJPFacade {
      */
     @NonNull
     public PlaceResponse requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull PlaceRequestFilter filter) throws OJPException {
-        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, filter);
+        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, filter);
         return placeConverter.convertToDTO(ojpResponse);
     }
 

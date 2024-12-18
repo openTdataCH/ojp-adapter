@@ -16,13 +16,14 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.InternationalTextStructure;
-import de.vdv.ojp.OJPLocationInformationDeliveryStructure;
-import de.vdv.ojp.PlaceStructure;
-import de.vdv.ojp.PointOfInterestCategoryStructure;
-import de.vdv.ojp.StopPlaceStructure;
-import de.vdv.ojp.model.LocationStructure;
-import de.vdv.ojp.model.OJP;
+import de.vdv.ojp.release2.model.AddressStructure;
+import de.vdv.ojp.release2.model.InternationalTextStructure;
+import de.vdv.ojp.release2.model.OJP;
+import de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure;
+import de.vdv.ojp.release2.model.PlaceResultStructure;
+import de.vdv.ojp.release2.model.PlaceStructure;
+import de.vdv.ojp.release2.model.PointOfInterestCategoryStructure;
+import de.vdv.ojp.release2.model.StopPlaceStructure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,13 +40,14 @@ import swiss.opentransportdata.ojp.adapter.model.place.response.PointOfInterestC
 import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
 import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
+import uk.org.siri.siri.LocationStructure;
 
 /**
  * @author Peter Hirzel
  */
 @Slf4j
 @Component("OJPPlaceConverter")
-public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
+public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.OJP, PlaceResponse> {
 
     PlaceConverter() {
         super();
@@ -55,7 +57,7 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
      * Converter Function
      */
     @Override
-    public PlaceResponse convertToDTO(OJP ojpResponse) {
+    public PlaceResponse convertToDTO(de.vdv.ojp.release2.model.OJP ojpResponse) {
         if ((ojpResponse == null) || (ojpResponse.getOJPResponse() == null)) {
             throw new OJPException("ojpResponse must not be null");
         }
@@ -72,35 +74,34 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
         final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
 
         final List<Place> places = new ArrayList<>();
-        // "<ojp:Location>"
-        ojpLocationInformationDeliveryStructure.getLocation().forEach(ojpLocation -> {
-            final PlaceStructure placeStructure = ojpLocation.getLocation();
-            if (placeStructure.getStopPlace() != null) {
-                final StopPlaceStructure stopPlaceStructure = placeStructure.getStopPlace();
-                log.debug("non StopPlace: {}", stopPlaceStructure);
-                places.add(createStopPlace(stopPlaceStructure.getStopPlaceRef().getValue(),
-                    placeStructure.getStopPlace().getStopPlaceName(),
-                    placeStructure.getGeoPosition()));
-            } else if (placeStructure.getPointOfInterest() != null) {
-                log.debug("value={}", placeStructure.getPointOfInterest());
-                places.add(createPointOfInterest(placeStructure.getPointOfInterest().getPointOfInterestCode(),
-                    OJPAdapter.getText(placeStructure.getPointOfInterest().getPointOfInterestName()),
-                    placeStructure.getPointOfInterest().getPointOfInterestCategory(),
-                    placeStructure.getGeoPosition()));
-            } else if (placeStructure.getAddress() != null) {
-                log.debug("value={}", placeStructure.getAddress());
-                places.add(Address.builder()
-                    .id(placeStructure.getAddress().getAddressCode())
-                    .name(/*TODO prefix .getPostCode() ?*/ OJPAdapter.getText(placeStructure.getAddress().getAddressName()))
-                    .centroid(toPoint(placeStructure.getGeoPosition()))
-                    /*
-                    .getTopographicPlaceName()
-                    .getTopographicPlaceRef()
-                     */
-                    .build());
+        // v1 "<ojp:Location>"
+        ojpLocationInformationDeliveryStructure.getRest().stream()
+            .filter(rest -> rest.getDeclaredType() == PlaceResultStructure.class)
+            .forEach(rest -> {
+            final PlaceResultStructure placeResultStructure = ((PlaceResultStructure) rest.getValue());
+            if (placeResultStructure.getPlace() != null) {
+                final PlaceStructure placeStructure = placeResultStructure.getPlace();
+                if (placeStructure.getStopPlace() != null) {
+                    final StopPlaceStructure stopPlaceStructure = placeStructure.getStopPlace();
+                    log.debug("non StopPlace: {}", stopPlaceStructure);
+                    places.add(createStopPlace(stopPlaceStructure.getStopPlaceRef().getValue(),
+                        stopPlaceStructure.getStopPlaceName(),
+                        placeStructure.getGeoPosition()));
+                } else if (placeStructure.getPointOfInterest() != null) {
+                    log.debug("value={}", placeStructure.getPointOfInterest());
+                    places.add(createPointOfInterest(placeStructure.getPointOfInterest().getPublicCode(),
+                        OJPAdapter.getText2(placeStructure.getPointOfInterest().getName()),
+                        placeStructure.getPointOfInterest().getPointOfInterestCategory(),
+                        placeStructure.getGeoPosition()));
+                } else if (placeStructure.getAddress() != null) {
+                    log.debug("value={}", placeStructure.getAddress());
+                    places.add(mapToAddress(placeStructure.getAddress(), placeStructure.getGeoPosition()));
+                } else {
+                    // for e.g. TopographicPlace
+                    throw new OJPException("untreated PlaceRef: " + placeResultStructure);
+                }
             } else {
-                // TopographicPlace
-                throw new OJPException("untreated PlaceRef: " + placeStructure);
+                throw new OJPException("PlaceResultStructure::place==null: " + placeResultStructure);
             }
         });
 
@@ -109,13 +110,13 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
             .build();
     }
 
-    static StopPlace createStopPlace(String id, InternationalTextStructure internationalTextStructure, LocationStructure geoPosition) {
+    static StopPlace createStopPlace(String id, InternationalTextStructure internationalTextStructure, uk.org.siri.siri.LocationStructure geoPosition) {
         return createStopPlace(id,
-            OJPAdapter.getText(internationalTextStructure),
+            OJPAdapter.getText2(internationalTextStructure),
             geoPosition);
     }
 
-    private static StopPlace createStopPlace(String id, String name, LocationStructure geoPosition) {
+    private static StopPlace createStopPlace(String id, String name, uk.org.siri.siri.LocationStructure geoPosition) {
         return StopPlace.builder()
             .id(id)
             .name(name)
@@ -134,7 +135,7 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
     }
 
     static PointOfInterest createPointOfInterest(String poiCode, String name, List<PointOfInterestCategoryStructure> pointOfInterestCategoryStructures, LocationStructure locationStructure) {
-        Set<PointOfInterestCategory> categories = pointOfInterestCategoryStructures.stream()
+        final Set<PointOfInterestCategory> categories = pointOfInterestCategoryStructures.stream()
             // categories: depends on whether OJP uses ROKAS journey-poi service (current PoC), OSM or other
             .map(pointOfInterestCategoryStructure -> PointOfInterestCategory.builder()
                 .type(pointOfInterestCategoryStructure.getOsmTag().get(0).getTag())
@@ -149,7 +150,20 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
             .build();
     }
 
-    static Point toPoint(LocationStructure locationStructure) {
+    static Address mapToAddress(AddressStructure addressStructure,  LocationStructure locationStructure) {
+        return Address.builder()
+            .id(OJPAdapter.getText2(addressStructure.getName()))
+            // TODO check not blank
+            .name(addressStructure.getPostCode() + " " /*TODO + addressStructure.getCity()*/ + ", " + addressStructure.getStreet() + " " + addressStructure.getHouseNumber())
+            .centroid(toPoint(locationStructure))
+            /*
+            .getTopographicPlaceName()
+            .getTopographicPlaceRef()
+             */
+            .build();
+    }
+
+    static Point toPoint(uk.org.siri.siri.LocationStructure locationStructure) {
         if (locationStructure == null) {
             return null;
         }

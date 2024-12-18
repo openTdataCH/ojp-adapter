@@ -23,7 +23,6 @@ import de.vdv.ojp.LegBoardStructure;
 import de.vdv.ojp.LegIntermediateStructure;
 import de.vdv.ojp.OJPTripDeliveryStructure;
 import de.vdv.ojp.OJPTripInfoDeliveryStructure;
-import de.vdv.ojp.PlaceRefStructure;
 import de.vdv.ojp.TimedLegStructure;
 import de.vdv.ojp.TransferLegStructure;
 import de.vdv.ojp.TripInfoResponseContextStructure;
@@ -32,6 +31,7 @@ import de.vdv.ojp.TripLegStructure;
 import de.vdv.ojp.TripResultStructure;
 import de.vdv.ojp.TripSummaryStructure;
 import de.vdv.ojp.model.OJP;
+import de.vdv.ojp.release2.model.PlaceRefStructure;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -269,10 +269,10 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             .build();
     }
 
-    private ConnectionEnd createConnectionEnd(PlaceRefStructure placeRefStructure, ZonedDateTime dateTime) {
+    private ConnectionEnd createConnectionEnd(de.vdv.ojp.release2.model.PlaceRefStructure placeRefStructure, ZonedDateTime dateTime) {
         return ConnectionEnd.builder()
             .place(PlaceConverter.createStopPlace(placeRefStructure.getStopPointRef().getValue(),
-                placeRefStructure.getLocationName(),
+                placeRefStructure.getName(),
                 placeRefStructure.getGeoPosition()))
             .timeAimed(ServiceJourneyConverter.toOffsetDateTime(dateTime))
             .build();
@@ -282,7 +282,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         final Place place;
         if (placeRefStructure.getStopPointRef() != null) {
             place = PlaceConverter.createStopPlace(placeRefStructure.getStopPointRef().getValue(),
-                placeRefStructure.getLocationName(),
+                placeRefStructure.getName(),
                 placeRefStructure.getGeoPosition());
         } else if (placeRefStructure.getAddressRef() != null) {
             // TODO PlaceConverter.createAddress()

@@ -104,10 +104,7 @@ class OJPAdapterAccessTest {
                 .placeName(nameMatch)
                 .build());
         assertResponseOJP2(ojpResponse);
-
-        // specific <ojp:OJPLocationInformationDelivery>
-        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        assertPlaceResults(ojpResponse, types, nameMatch);
     }
 
     @Test
@@ -129,9 +126,7 @@ class OJPAdapterAccessTest {
                 .placeName(nameMatch)
                 .build());
         assertResponseOJP2(ojpResponse);
-
-        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        assertPlaceResults(ojpResponse, types, nameMatch);
     }
 
     @Test
@@ -153,9 +148,7 @@ class OJPAdapterAccessTest {
                 .placeName(nameMatch)
                 .build());
         assertResponseOJP2(ojpResponse);
-
-        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        assertPlaceResults(ojpResponse, types, nameMatch);
     }
 
     @Test
@@ -180,8 +173,7 @@ class OJPAdapterAccessTest {
                 .build());
         assertResponseOJP2(ojpResponse);
 
-        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        final List<PlaceResultStructure> placeResultStructures = assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        final List<PlaceResultStructure> placeResultStructures = assertPlaceResults(ojpResponse, types, nameMatch);
         /* TODO OJP v2.0
         for (PlaceResultStructure placeResultStructure : placeResultStructures) {
             final LocationStructure locationStructure = placeResultStructure.getPlace().getGeoPosition();
@@ -217,8 +209,7 @@ class OJPAdapterAccessTest {
                 .build());
         assertResponseOJP2(ojpResponse);
 
-        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
-        final List<PlaceResultStructure> placeResultStructures = assertPlaceResults(ojpLocationInformationDeliveryStructure, types, nameMatch);
+        final List<PlaceResultStructure> placeResultStructures = assertPlaceResults(ojpResponse, types, nameMatch);
         /* TODO OJP v2.0
         for (PlaceResultStructure placeResultStructure : placeResultStructures) {
             final LocationStructure locationStructure = placeResultStructure.getPlace().getGeoPosition();
@@ -439,9 +430,12 @@ class OJPAdapterAccessTest {
         }
     }
 
-    private List<PlaceResultStructure> assertPlaceResults(de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure, Set<PlaceTypeEnumeration> types,
+    private List<PlaceResultStructure> assertPlaceResults(de.vdv.ojp.release2.model.OJP ojpResponse, Set<PlaceTypeEnumeration> types,
         String nameMatch) {
+
+        final de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
         assertThat(ojpLocationInformationDeliveryStructure).isNotNull();
+
         // TODO check requested language (though for Stop's irrelevant)
         assertThat(ojpLocationInformationDeliveryStructure.getDefaultLanguage()).isNotBlank();
 
