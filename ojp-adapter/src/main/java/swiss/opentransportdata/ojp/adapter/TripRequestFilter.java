@@ -39,6 +39,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
 @Builder
 public class TripRequestFilter implements TripRequest, ModeRequestFilter {
 
+    private static int LIMIT_DEFAULT = 5;
     static final int TRANSFER_LIMIT_MAX = 11;
     static final int WALK_SPEED_DEFAULT = 100;
 
@@ -49,7 +50,7 @@ public class TripRequestFilter implements TripRequest, ModeRequestFilter {
      */
     @NonNull
     @Builder.Default
-    Integer limit = 5;
+    Integer limit = LIMIT_DEFAULT;
 
     ModeFilterStructure modeFilterStructure;
 
