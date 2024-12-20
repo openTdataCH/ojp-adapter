@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1.converter;
+
+package swiss.opentransportdata.ojp.adapter.converter;
 
 import de.vdv.ojp.GeneralAttributeStructure;
 import de.vdv.ojp.InternationalTextStructure;
@@ -29,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 
 /**
  * Nasty class, due to OJP's XML generic structure.
@@ -92,16 +93,16 @@ public final class JAXBElementContentContainer {
                 if (isOjpNamespace(jaxbElement)) {
                     if ("PublishedLineName".equals(jaxbElement.getName().getLocalPart())) {
                         // scope: class de.vdv.ojp.DatedJourneyStructure
-                        publishedLineNames.add(OJPAdapter.getText(((InternationalTextStructure) jaxbElement.getValue())));
+                        publishedLineNames.add(OJPAdapter.getText(((de.vdv.ojp.release2.model.InternationalTextStructure) jaxbElement.getValue())));
                     } else if ("OriginText".equals(jaxbElement.getName().getLocalPart())) {
                         // scope: class de.vdv.ojp.DatedJourneyStructure
-                        originTexts.add(OJPAdapter.getText(((InternationalTextStructure) jaxbElement.getValue())));
+                        originTexts.add(OJPAdapter.getText(((de.vdv.ojp.release2.model.InternationalTextStructure) jaxbElement.getValue())));
                     } else if ("DestinationText".equals(jaxbElement.getName().getLocalPart())) {
                         // scope: class de.vdv.ojp.DatedJourneyStructure
-                        destinationTexts.add(OJPAdapter.getText(((InternationalTextStructure) jaxbElement.getValue())));
+                        destinationTexts.add(OJPAdapter.getText(((de.vdv.ojp.release2.model.InternationalTextStructure) jaxbElement.getValue())));
                     } else if ("DestinationStopPointRef".equals(jaxbElement.getName().getLocalPart())) {
                         // scope: class de.vdv.ojp.DatedJourneyStructure
-                        destinationStopPointRefTexts.add(OJPAdapter.getText(((InternationalTextStructure) jaxbElement.getValue())));
+                        destinationStopPointRefTexts.add(OJPAdapter.getText(((de.vdv.ojp.release2.model.InternationalTextStructure) jaxbElement.getValue())));
                     } else {
                         //TODO JAXBElement unknown InternationalTextStructure=[text=[lang=de,value=Basel SBB]]
                         log.debug("JAXBElement unknown OJP::InternationalTextStructure={}", jaxbElement.getValue());

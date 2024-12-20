@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
 import swiss.opentransportdata.ojp.adapter.model.place.response.Address;
@@ -39,7 +40,6 @@ import swiss.opentransportdata.ojp.adapter.model.place.response.PointOfInterest;
 import swiss.opentransportdata.ojp.adapter.model.place.response.PointOfInterestCategory;
 import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 import uk.org.siri.siri.LocationStructure;
 
 /**
@@ -90,7 +90,7 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
                 } else if (placeStructure.getPointOfInterest() != null) {
                     log.debug("value={}", placeStructure.getPointOfInterest());
                     places.add(createPointOfInterest(placeStructure.getPointOfInterest().getPublicCode(),
-                        OJPAdapter.getText2(placeStructure.getPointOfInterest().getName()),
+                        OJPAdapter.getText(placeStructure.getPointOfInterest().getName()),
                         placeStructure.getPointOfInterest().getPointOfInterestCategory(),
                         placeStructure.getGeoPosition()));
                 } else if (placeStructure.getAddress() != null) {
@@ -112,7 +112,7 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
 
     static StopPlace createStopPlace(String id, InternationalTextStructure internationalTextStructure, uk.org.siri.siri.LocationStructure geoPosition) {
         return createStopPlace(id,
-            OJPAdapter.getText2(internationalTextStructure),
+            OJPAdapter.getText(internationalTextStructure),
             geoPosition);
     }
 
@@ -152,7 +152,7 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
 
     static Address mapToAddress(AddressStructure addressStructure,  LocationStructure locationStructure) {
         return Address.builder()
-            .id(OJPAdapter.getText2(addressStructure.getName()))
+            .id(OJPAdapter.getText(addressStructure.getName()))
             // TODO check not blank
             .name(addressStructure.getPostCode() + " " /*TODO + addressStructure.getCity()*/ + ", " + addressStructure.getStreet() + " " + addressStructure.getHouseNumber())
             .centroid(toPoint(locationStructure))

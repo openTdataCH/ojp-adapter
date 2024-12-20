@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1;
+
+package swiss.opentransportdata.ojp.adapter;
 
 import java.time.LocalDate;
 import java.util.Locale;

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1;
+
+package swiss.opentransportdata.ojp.adapter;
 
 import de.vdv.ojp.PlaceTypeEnumeration;
-import de.vdv.ojp.PtModeFilterStructure;
 import de.vdv.ojp.release2.model.ModeFilterStructure;
 import java.util.Locale;
 import java.util.Set;
@@ -42,7 +42,7 @@ public class PlaceRequestFilter implements LocationRequest, ModeRequestFilter {
     @NonNull
     Integer limit = LIMIT_DEFAULT;
 
-    ModeFilterStructure modeFilterStructure2;
+    ModeFilterStructure modeFilterStructure;
 
     /**
      * Default: {@link PlaceTypeEnumeration#STOP} only

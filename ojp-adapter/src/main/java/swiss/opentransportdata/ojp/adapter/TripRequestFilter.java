@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1;
 
-import de.vdv.ojp.PtModeFilterStructure;
-import de.vdv.ojp.TripViaStructure;
+package swiss.opentransportdata.ojp.adapter;
+
 import de.vdv.ojp.release2.model.ModeFilterStructure;
+import de.vdv.ojp.release2.model.TripViaStructure;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -44,10 +44,14 @@ public class TripRequestFilter implements TripRequest, ModeRequestFilter {
 
     Locale preferredLanguage;
 
-    Integer limit;
+    /**
+     * Empty limit results into error!
+     */
+    @NonNull
+    @Builder.Default
+    Integer limit = 5;
 
-    PtModeFilterStructure modeFilterStructure;
-    ModeFilterStructure modeFilterStructure2;
+    ModeFilterStructure modeFilterStructure;
 
     /**
      * false: depart at dateTime (default); true: arrive at dateTime
@@ -115,6 +119,6 @@ public class TripRequestFilter implements TripRequest, ModeRequestFilter {
     /**
      * Default: false, all trips are calculated by realtime data; true: planned data only
      */
-    @Builder.Default
+    @Builder.Default // TODO rename closer to UseRealtimeDataEnumeration
     boolean excludeRealtime = false;
 }

@@ -61,7 +61,8 @@ See:
 
 * [VDV OJP 2.0 Model](https://github.com/VDVde/OJP) base for Java model [Doc](https://vdvde.github.io/OJP/index.html)
 * [OJP 2.0 Cookbook](https://opentransportdata.swiss/de/cookbook/ojp2entwicklung/)
-* [OJP Demo v2.0](https://tools.odpch.ch/ojp-demo-v2/search)
+* [OJP 2.0 Demo](https://tools.odpch.ch/ojp-demo-v2/search)
+* [OJP 2.0 API Explorer](https://opentdatach.github.io/api-explorer2/#/default/OJP2.0)
 
 ### Module "ojp-transmodel" & "Swagger-UI"
 

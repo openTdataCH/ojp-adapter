@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1;
 
-import de.vdv.ojp.PtModeFilterStructure;
+package swiss.opentransportdata.ojp.adapter;
+
 import de.vdv.ojp.release2.model.ModeFilterStructure;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.querymodel.commonquery.PIRequestFilter;
 
@@ -28,11 +28,7 @@ public interface ModeRequestFilter extends PIRequestFilter {
      * Included or excluded public-transport modes.
      * @see swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.Mode
      */
-    @Deprecated(since = "OJP v2.0")
-    default PtModeFilterStructure getModeFilterStructure() {
-        return null;
-    }
-    ModeFilterStructure getModeFilterStructure2();
+    ModeFilterStructure getModeFilterStructure();
 
     /**
      * Greater than 0, if set.

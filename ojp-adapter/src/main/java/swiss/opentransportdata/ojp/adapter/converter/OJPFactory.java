@@ -13,23 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1.converter;
 
-import de.vdv.ojp.InternationalTextStructure;
-import de.vdv.ojp.JourneyRefStructure;
-import de.vdv.ojp.OJPStopEventRequestStructure;
-import de.vdv.ojp.OJPTripInfoRequestStructure;
-import de.vdv.ojp.OJPTripRequestStructure;
+package swiss.opentransportdata.ojp.adapter.converter;
+
 import de.vdv.ojp.ObjectFactory;
-import de.vdv.ojp.OperatingDayRefStructure;
-import de.vdv.ojp.PlaceContextStructure;
-import de.vdv.ojp.PlaceRefStructure;
-import de.vdv.ojp.StopEventParamStructure;
-import de.vdv.ojp.StopEventTypeEnumeration;
-import de.vdv.ojp.StopPlaceRefStructure;
-import de.vdv.ojp.TripInfoParamStructure;
-import de.vdv.ojp.TripParamStructure;
-import de.vdv.ojp.model.NaturalLanguageStringStructure;
 import de.vdv.ojp.model.OJP;
 import de.vdv.ojp.model.OJPRequestStructure;
 import de.vdv.ojp.model.ParticipantRefStructure;
@@ -37,8 +24,22 @@ import de.vdv.ojp.model.ServiceRequest;
 import de.vdv.ojp.model.ServiceRequestContextStructure;
 import de.vdv.ojp.release2.model.AbstractOJPServiceRequestStructure;
 import de.vdv.ojp.release2.model.InitialLocationInputStructure;
+import de.vdv.ojp.release2.model.InternationalTextStructure;
+import de.vdv.ojp.release2.model.JourneyRefStructure;
 import de.vdv.ojp.release2.model.OJPLocationInformationRequestStructure;
+import de.vdv.ojp.release2.model.OJPStopEventRequestStructure;
+import de.vdv.ojp.release2.model.OJPTripInfoRequestStructure;
+import de.vdv.ojp.release2.model.OJPTripRequestStructure;
+import de.vdv.ojp.release2.model.OperatingDayRefStructure;
+import de.vdv.ojp.release2.model.PlaceContextStructure;
 import de.vdv.ojp.release2.model.PlaceParamStructure;
+import de.vdv.ojp.release2.model.PlaceRefStructure;
+import de.vdv.ojp.release2.model.StopEventParamStructure;
+import de.vdv.ojp.release2.model.StopEventTypeEnumeration;
+import de.vdv.ojp.release2.model.StopPlaceRefStructure;
+import de.vdv.ojp.release2.model.TripInfoParamStructure;
+import de.vdv.ojp.release2.model.TripParamStructure;
+import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import jakarta.xml.bind.JAXBElement;
 import java.math.BigInteger;
 import java.time.Duration;
@@ -46,13 +47,16 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import lombok.NonNull;
 import org.springframework.util.CollectionUtils;
-import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.StopEventRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.TripLegRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter;
+import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter;
+import swiss.opentransportdata.ojp.adapter.StopEventRequestFilter;
+import swiss.opentransportdata.ojp.adapter.TripLegRequestFilter;
+import swiss.opentransportdata.ojp.adapter.TripRequestFilter;
+import uk.org.siri.siri.NaturalLanguageStringStructure;
 
 /**
  * Helper to create some OJP specific structures declared by ojp.xsd.
@@ -88,20 +92,20 @@ public class OJPFactory {
         this.participantReference = participantReference;
     }
 
-    public static PlaceRefStructure createPlaceReferenceStructure(@NonNull String stopPlaceId) {
+    public static de.vdv.ojp.release2.model.PlaceRefStructure createPlaceReferenceStructure(@NonNull String stopPlaceId) {
         // stopName seems redundant, but OJP needs it probably (given in samples)
-        final NaturalLanguageStringStructure naturalLanguageStringStructure = new NaturalLanguageStringStructure();
+        final uk.org.siri.siri.NaturalLanguageStringStructure naturalLanguageStringStructure = new NaturalLanguageStringStructure();
         //TODO ? naturalLanguageStringStructure.setLang(locale.getLanguage());
         naturalLanguageStringStructure.setValue(DUMMY_LOCATION_NAME);
-        final InternationalTextStructure textStructure = new InternationalTextStructure();
-        textStructure.setText(naturalLanguageStringStructure);
+        final de.vdv.ojp.release2.model.InternationalTextStructure textStructure = new InternationalTextStructure();
+        textStructure.withText(naturalLanguageStringStructure);
 
-        final StopPlaceRefStructure stopPointRefStructure = new StopPlaceRefStructure();
+        final de.vdv.ojp.release2.model.StopPlaceRefStructure stopPointRefStructure = new StopPlaceRefStructure();
         stopPointRefStructure.setValue(stopPlaceId);
 
-        final PlaceRefStructure placeRefStructure = new PlaceRefStructure();
+        final de.vdv.ojp.release2.model.PlaceRefStructure placeRefStructure = new PlaceRefStructure();
         placeRefStructure.setStopPlaceRef(stopPointRefStructure);
-        placeRefStructure.setLocationName(textStructure);
+        placeRefStructure.setName(textStructure);
 
         return placeRefStructure;
     }
@@ -138,24 +142,24 @@ public class OJPFactory {
              */
         }
         placeParamStructure.setNumberOfResults(java.math.BigInteger.valueOf(filter.getLimit()));
-        placeParamStructure.setModes(filter.getModeFilterStructure2());
+        placeParamStructure.setModes(filter.getModeFilterStructure());
         // placeParamStructure.setUsage(PlaceUsageEnumeration.VIA);
         // placeParamStructure.setContinueAt();
         ojpLocationInformationRequestStructure.setRestrictions(placeParamStructure);
 
-        return createSingleRequestV2(dateTime, filter.getPreferredLanguage(), objectFactory2.createOJPLocationInformationRequest(ojpLocationInformationRequestStructure));
+        return createSingleRequest2(dateTime, filter.getPreferredLanguage(), objectFactory2.createOJPLocationInformationRequest(ojpLocationInformationRequestStructure));
     }
 
     @NonNull
-    public OJP createOjpWithTripRequest(@NonNull TripRequestFilter filter) {
+    public de.vdv.ojp.release2.model.OJP createOjpWithTripRequest(@NonNull TripRequestFilter filter) {
         final ZonedDateTime timestamp = createTimestamp();
 
-        final OJPTripRequestStructure ojpTripRequestStructure = new OJPTripRequestStructure();
+        final de.vdv.ojp.release2.model.OJPTripRequestStructure ojpTripRequestStructure = new OJPTripRequestStructure();
         ojpTripRequestStructure.setRequestTimestamp(timestamp);
         ojpTripRequestStructure.withOrigin(createPlaceContextStructure(filter.getOrigin(), filter.isSearchForArrival() ? null : filter.getDateTime()));
         ojpTripRequestStructure.withDestination(createPlaceContextStructure(filter.getDestination(), filter.isSearchForArrival() ? filter.getDateTime() : null));
 
-        final TripParamStructure tripParamStructure = new TripParamStructure();
+        final de.vdv.ojp.release2.model.TripParamStructure tripParamStructure = new TripParamStructure();
         // tripParamStructure.setAcceptDeferredDelivery();
         tripParamStructure.setBikeTransport(filter.isIncludeBikeCarriage());
         // tripParamStructure.setImmediateTripStart();
@@ -169,11 +173,12 @@ public class OJPFactory {
             tripParamStructure.setNumberOfResults(BigInteger.valueOf(filter.getLimit()));
         }
 
-        tripParamStructure.setPtModeFilter(filter.getModeFilterStructure());
+        //TODO OJP 2.0 tripParamStructure.setModeFilter(filter.getModeFilterStructure());
         // tripParamStructure.setPrivateModeFilter(PrivateModeFilterStructure);
-        tripParamStructure.setIgnoreRealtimeData(filter.isExcludeRealtime());
+        tripParamStructure.setUseRealtimeData(filter.isExcludeRealtime() ? UseRealtimeDataEnumeration.NONE : UseRealtimeDataEnumeration.EXPLANATORY);
         // Whether the result should include accessibility information. Further specifyable: ..noRamp, noElevator, ..
-        tripParamStructure.setIncludeAccessibility(filter.isIncludeAccessibility());
+        tripParamStructure.setIncludeAllRestrictedLines(true /*like OJP sample*/);
+        //tripParamStructure.setIncludeAccessibility(filter.isIncludeAccessibility());
         tripParamStructure.setIncludeIntermediateStops(filter.isIncludeIntermediateStops());
         tripParamStructure.setIncludeFare(false /*NOVA post-pricing approach for CH*/);
         tripParamStructure.setIncludeLegProjection(filter.isIncludeLegProjection());
@@ -192,11 +197,11 @@ public class OJPFactory {
 
         ojpTripRequestStructure.setParams(tripParamStructure);
 
-        return createSingleRequest(timestamp, filter.getPreferredLanguage(), objectFactory.createOJPTripRequest(ojpTripRequestStructure));
+        return createSingleRequest2(timestamp, filter.getPreferredLanguage(), objectFactory2.createOJPTripRequest(ojpTripRequestStructure));
     }
 
-    static PlaceContextStructure createPlaceContextStructure(String stopPlaceUic, ZonedDateTime departureArrivalDateTime) {
-        final PlaceContextStructure placeContextStructure = new PlaceContextStructure();
+    static de.vdv.ojp.release2.model.PlaceContextStructure createPlaceContextStructure(String stopPlaceUic, ZonedDateTime departureArrivalDateTime) {
+        final de.vdv.ojp.release2.model.PlaceContextStructure placeContextStructure = new PlaceContextStructure();
         placeContextStructure.setPlaceRef(createPlaceReferenceStructure(stopPlaceUic));
 
         if (departureArrivalDateTime != null) {
@@ -224,7 +229,7 @@ public class OJPFactory {
         return ojp;
     }
 
-    de.vdv.ojp.release2.model.OJP createSingleRequestV2(ZonedDateTime requestTimestamp, Locale preferredLanguage, JAXBElement<? extends AbstractOJPServiceRequestStructure> jaxbElement) {
+    de.vdv.ojp.release2.model.OJP createSingleRequest2(ZonedDateTime requestTimestamp, Locale preferredLanguage, JAXBElement<? extends AbstractOJPServiceRequestStructure> jaxbElement) {
         final de.vdv.ojp.release2.model.OJP ojp = new de.vdv.ojp.release2.model.OJP();
         ojp.setOJPRequest(new de.vdv.ojp.release2.model.OJPRequestStructure());
         ojp.getOJPRequest().setServiceRequest(createServiceRequest2(requestTimestamp, preferredLanguage));
@@ -281,7 +286,7 @@ public class OJPFactory {
          */
 
         final uk.org.siri.siri.ServiceRequestContextStructure serviceRequestContextStructure = new uk.org.siri.siri.ServiceRequestContextStructure();
-        //TODO serviceRequestContextStructure.setLanguage(preferredLanguage.getLanguage());
+        serviceRequestContextStructure.withLanguage(preferredLanguage.getLanguage());
         serviceRequestContextStructure.setRequestTimeout(Duration.ofMillis(29000));
         serviceRequestContextStructure.setDistanceUnits("m");
         // serviceRequestContextStructure.setGmlCoordinateFormat(???);
@@ -292,10 +297,10 @@ public class OJPFactory {
     }
 
     @NonNull
-    public OJP createOjpWithTripInfoRequest(@NonNull TripLegRequestFilter filter) {
+    public de.vdv.ojp.release2.model.OJP createOjpWithTripInfoRequest(@NonNull TripLegRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
 
-        final TripInfoParamStructure tripInfoParamStructure = new TripInfoParamStructure();
+        final de.vdv.ojp.release2.model.TripInfoParamStructure tripInfoParamStructure = new TripInfoParamStructure();
         tripInfoParamStructure.setIncludeCalls(true);
         tripInfoParamStructure.setIncludeTrackSections(INCLUDE_TRACK_SECTIONS);
         // 'service' information be added to the results!
@@ -309,21 +314,24 @@ public class OJPFactory {
         tripInfoParamStructure.setUseTimetabledDataOnly();
         */
 
-        final JourneyRefStructure journeyRefStructure = new JourneyRefStructure();
+        final de.vdv.ojp.release2.model.JourneyRefStructure journeyRefStructure = new JourneyRefStructure();
         journeyRefStructure.setValue(filter.getJourneyReference());
 
-        final OperatingDayRefStructure operatingDayRefStructure = new OperatingDayRefStructure();
+        final de.vdv.ojp.release2.model.OperatingDayRefStructure operatingDayRefStructure = new OperatingDayRefStructure();
         operatingDayRefStructure.setValue(formatDate(filter.getOperatingDay()));
 
-        final OJPTripInfoRequestStructure ojpTripInfoRequestStructure = new OJPTripInfoRequestStructure();
-        ojpTripInfoRequestStructure.setRequestTimestamp(dateTime);
-        ojpTripInfoRequestStructure.setParams(tripInfoParamStructure);
-        ojpTripInfoRequestStructure.setJourneyRef(journeyRefStructure);
-        ojpTripInfoRequestStructure.setOperatingDayRef(operatingDayRefStructure);
+        final List<JAXBElement<?>> rest = new ArrayList<>();
+        rest.add(objectFactory2.createOJPTripInfoRequestStructureParams(tripInfoParamStructure));
+        rest.add(objectFactory2.createJourneyRef(journeyRefStructure));
+        rest.add(objectFactory2.createOperatingDayRef(operatingDayRefStructure));
         // ojpTripInfoRequestStructure.setTimeOfOperation();
         // ojpTripInfoRequestStructure.setVehicleRef();
 
-        return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactory.createOJPTripInfoRequest(ojpTripInfoRequestStructure));
+        final de.vdv.ojp.release2.model.OJPTripInfoRequestStructure ojpTripInfoRequestStructure = new OJPTripInfoRequestStructure();
+        ojpTripInfoRequestStructure.setRequestTimestamp(dateTime);
+        ojpTripInfoRequestStructure.withRest(rest);
+
+        return createSingleRequest2(dateTime, filter.getPreferredLanguage(), objectFactory2.createOJPTripInfoRequest(ojpTripInfoRequestStructure));
     }
 
     /**
@@ -340,12 +348,12 @@ public class OJPFactory {
     }
 
     @NonNull
-    public OJP createOjpWithStopEventRequest(@NonNull StopEventRequestFilter filter) {
+    public de.vdv.ojp.release2.model.OJP createOjpWithStopEventRequest(@NonNull StopEventRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
-        final StopEventParamStructure stopEventParamStructure = new StopEventParamStructure();
+        final de.vdv.ojp.release2.model.StopEventParamStructure stopEventParamStructure = new StopEventParamStructure();
 
         if (filter.isSearchForArrival()) {
-            stopEventParamStructure.setStopEventType(StopEventTypeEnumeration.ARRIVAL);
+            stopEventParamStructure.setStopEventType(de.vdv.ojp.release2.model.StopEventTypeEnumeration.ARRIVAL);
             stopEventParamStructure.setIncludePreviousCalls(true);
             stopEventParamStructure.setIncludeOnwardCalls(false);
         } else {
@@ -355,9 +363,9 @@ public class OJPFactory {
             stopEventParamStructure.setIncludeOnwardCalls(true /*'true' means the future stops of each line are shown as well*/);
         } // or BOTH -> not possible by Hafas
         stopEventParamStructure.setIncludeOperatingDays(true);
-        stopEventParamStructure.setIncludeRealtimeData(true);
+        //v1 only ? stopEventParamStructure.setIncludeRealtimeData(true);
         stopEventParamStructure.setNumberOfResults(BigInteger.valueOf(filter.getLimit()));
-        stopEventParamStructure.setPtModeFilter(filter.getModeFilterStructure());
+        stopEventParamStructure.setModeFilter(filter.getModeFilterStructure());
 
         /*
         stopEventParamStructure.setLineFilter();
@@ -370,11 +378,11 @@ public class OJPFactory {
         TODO ? operatingDayRefStructure.setValue(DateTimeUtils.formatDate(operatingDay));
         */
 
-        final OJPStopEventRequestStructure ojpStopEventRequestStructure = new OJPStopEventRequestStructure();
+        final de.vdv.ojp.release2.model.OJPStopEventRequestStructure ojpStopEventRequestStructure = new OJPStopEventRequestStructure();
         ojpStopEventRequestStructure.setRequestTimestamp(dateTime);
         ojpStopEventRequestStructure.setParams(stopEventParamStructure);
         ojpStopEventRequestStructure.setLocation(createPlaceContextStructure(filter.getStopPlaceReference(), filter.getDepartureArrivalDateTime()));
 
-        return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactory.createOJPStopEventRequest(ojpStopEventRequestStructure));
+        return createSingleRequest2(dateTime, filter.getPreferredLanguage(), objectFactory2.createOJPStopEventRequest(ojpStopEventRequestStructure));
     }
 }

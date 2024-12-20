@@ -16,22 +16,23 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.CallAtStopStructure;
-import de.vdv.ojp.ContinuousLegStructure;
-import de.vdv.ojp.LegAlightStructure;
-import de.vdv.ojp.LegBoardStructure;
-import de.vdv.ojp.LegIntermediateStructure;
-import de.vdv.ojp.OJPTripDeliveryStructure;
-import de.vdv.ojp.OJPTripInfoDeliveryStructure;
-import de.vdv.ojp.TimedLegStructure;
-import de.vdv.ojp.TransferLegStructure;
 import de.vdv.ojp.TripInfoResponseContextStructure;
-import de.vdv.ojp.TripInfoResultStructure;
 import de.vdv.ojp.TripLegStructure;
-import de.vdv.ojp.TripResultStructure;
-import de.vdv.ojp.TripSummaryStructure;
-import de.vdv.ojp.model.OJP;
+import de.vdv.ojp.release2.model.CallAtStopStructure;
+import de.vdv.ojp.release2.model.ContinuousLegStructure;
+import de.vdv.ojp.release2.model.LegAlightStructure;
+import de.vdv.ojp.release2.model.LegBoardStructure;
+import de.vdv.ojp.release2.model.LegIntermediateStructure;
+import de.vdv.ojp.release2.model.LegStructure;
+import de.vdv.ojp.release2.model.OJP;
+import de.vdv.ojp.release2.model.OJPTripDeliveryStructure;
+import de.vdv.ojp.release2.model.OJPTripInfoDeliveryStructure;
 import de.vdv.ojp.release2.model.PlaceRefStructure;
+import de.vdv.ojp.release2.model.TimedLegStructure;
+import de.vdv.ojp.release2.model.TransferLegStructure;
+import de.vdv.ojp.release2.model.TripInfoResultStructure;
+import de.vdv.ojp.release2.model.TripResultStructure;
+import de.vdv.ojp.release2.model.TripSummaryStructure;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,7 +46,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.converter.JAXBElementContentContainer;
 import swiss.opentransportdata.ojp.adapter.model.place.response.Place;
 import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response.DatedVehicleJourney;
@@ -62,8 +65,6 @@ import swiss.opentransportdata.ojp.adapter.model.trip.response.TripSummary;
 import swiss.opentransportdata.ojp.adapter.service.api.converter.ServiceJourneyConverter.ModeOJP;
 import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
 import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
 
 /**
  * Converts OJP {@link TripResponse}.
@@ -100,7 +101,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         // assumption: given for PTRideLeg::origin::departure and destination::arrival (as by Hafas) -> calculate for ConnectionLeg and AccessLeg by their Duration
         for (TripResultStructure resultStructure : ojpTripDeliveryStructure.getTripResult()) {
             final List<Leg> legs = new ArrayList<>();
-            for (TripLegStructure tripLegStructure : resultStructure.getTrip().getTripLeg()) {
+            for (LegStructure tripLegStructure : resultStructure.getTrip().getTripLeg()) {
                 if (tripLegStructure.getTimedLeg() != null) {
                     legs.add(mapToPTRideLeg(tripLegStructure));
                 } else if (tripLegStructure.getContinuousLeg() != null) {
@@ -149,7 +150,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             .build();
     }
 
-    private PTRideLeg mapToPTRideLeg(TripLegStructure tripLegStructure) {
+    private PTRideLeg mapToPTRideLeg(LegStructure tripLegStructure) {
         final TimedLegStructure timedLegStructure = tripLegStructure.getTimedLeg();
 
         final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
@@ -269,7 +270,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             .build();
     }
 
-    private ConnectionEnd createConnectionEnd(de.vdv.ojp.release2.model.PlaceRefStructure placeRefStructure, ZonedDateTime dateTime) {
+    private ConnectionEnd createConnectionEnd(PlaceRefStructure placeRefStructure, ZonedDateTime dateTime) {
         return ConnectionEnd.builder()
             .place(PlaceConverter.createStopPlace(placeRefStructure.getStopPointRef().getValue(),
                 placeRefStructure.getName(),

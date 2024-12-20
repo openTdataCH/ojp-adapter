@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package swiss.opentransportdata.ojp.adapter.v1;
 
-import de.vdv.ojp.PtModeFilterStructure;
+package swiss.opentransportdata.ojp.adapter;
+
 import de.vdv.ojp.release2.model.ModeFilterStructure;
 import java.time.ZonedDateTime;
 import java.util.Locale;
@@ -41,8 +41,7 @@ public class StopEventRequestFilter implements StopEventRequest, ModeRequestFilt
     @NonNull
     Integer limit = LIMIT_DEFAULT;
 
-    PtModeFilterStructure modeFilterStructure;
-    ModeFilterStructure modeFilterStructure2;
+    ModeFilterStructure modeFilterStructure;
 
     /**
      * false: depart at dateTime (default); true: arrive at dateTime

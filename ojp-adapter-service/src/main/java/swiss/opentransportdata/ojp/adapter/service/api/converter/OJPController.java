@@ -50,7 +50,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter;
+import swiss.opentransportdata.ojp.adapter.StopEventRequestFilter;
+import swiss.opentransportdata.ojp.adapter.TripLegRequestFilter;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
@@ -87,10 +91,6 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestFilter;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationPlaceFilter;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationRequest;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.StopEventRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.TripLegRequestFilter;
 
 /**
  * Transmodel oriented APIs against the underlying router OJP.
@@ -605,7 +605,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 "only '" + AccessibilityEnum.ALL_AS_STRING + "' or '" + AccessibilityEnum.NONE_AS_STRING + "' supported by OJP yet");
         }
 
-        swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter.TripRequestFilterBuilder tripRequestFilterBuilder = swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter.builder()
+        swiss.opentransportdata.ojp.adapter.TripRequestFilter.TripRequestFilterBuilder tripRequestFilterBuilder = swiss.opentransportdata.ojp.adapter.TripRequestFilter.builder()
             .preferredLanguage(getRequestContext().getAcceptLocale())
             .searchForArrival(ObjectUtils.defaultIfNull(body.getForArrival(), TripsByOriginAndDestinationRequestBody.DEFAULT_FOR_ARRIVAL))
             .origin(startPlaceReference.getPlaceId())

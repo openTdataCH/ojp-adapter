@@ -16,17 +16,16 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.CallAtNearStopStructure;
-import de.vdv.ojp.CallAtStopStructure;
-import de.vdv.ojp.GeneralAttributeStructure;
-import de.vdv.ojp.InternationalTextStructure;
-import de.vdv.ojp.ModeStructure;
-import de.vdv.ojp.OJPStopEventDeliveryStructure;
-import de.vdv.ojp.SituationsStructure;
-import de.vdv.ojp.StopEventResultStructure;
-import de.vdv.ojp.StopEventStructure;
-import de.vdv.ojp.model.OJP;
-import de.vdv.ojp.model.StopPointRefStructure;
+import de.vdv.ojp.release2.model.CallAtNearStopStructure;
+import de.vdv.ojp.release2.model.CallAtStopStructure;
+import de.vdv.ojp.release2.model.GeneralAttributeStructure;
+import de.vdv.ojp.release2.model.InternationalTextStructure;
+import de.vdv.ojp.release2.model.ModeStructure;
+import de.vdv.ojp.release2.model.OJP;
+import de.vdv.ojp.release2.model.OJPStopEventDeliveryStructure;
+import de.vdv.ojp.release2.model.SituationsStructure;
+import de.vdv.ojp.release2.model.StopEventResultStructure;
+import de.vdv.ojp.release2.model.StopEventStructure;
 import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
@@ -43,7 +42,9 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.converter.JAXBElementContentContainer;
 import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Direction;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.LinkedText;
@@ -62,9 +63,8 @@ import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
 import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
 import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
 import swiss.opentransportdata.ojp.adapter.service.opentransportdata.transportmode.TransportModeData;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
 import uk.org.ifopt.ifopt.Extensions;
+import uk.org.siri.siri.StopPointRefStructure;
 
 /**
  * @author Peter Hirzel
@@ -225,7 +225,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                     .type(NoticeType.ATTRIBUTE)
                     .name(key)
                     .text(LinkedText.builder()
-                        .template(OJPAdapter.getText(attributeStructure.getText()))
+                        .template(OJPAdapter.getText(attributeStructure.getUserText()))
                         .arguments(new LinkedTextMap())
                         .build())
                     .priority(Notice.DEFAULT_PRIORITY)
@@ -233,7 +233,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                     //.routeIndexTo()
                     .build());
             } else if (attributeStructure.getCode().contains("InfoCall")) {
-                if (attributeStructure.getText().getText().getValue().contains("Aussteigeseite")) {
+                if (attributeStructure.getUserText().getText().getFirst().getValue().contains("Aussteigeseite")) {
                 /*TODO set on each ScheduledStopPoint::exitSide:
                    "[code=ojp91006HR_InfoCall450_106514_1,text=[text=[lang=de,value=Aussteigeseite: Rechts]]]"
                    "[code=ojp91006HR_InfoCall450_111055_1,text=[text=[lang=de,value=Aussteigeseite: Links]]]"
