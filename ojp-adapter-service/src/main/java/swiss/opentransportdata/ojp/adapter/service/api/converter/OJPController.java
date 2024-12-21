@@ -216,7 +216,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         try {
             final PlaceRequestFilter placeRequestFilter = PlaceRequestFilter.builder()
                 .preferredLanguage(getPreferredLanguage())
-                .placeTypes(OJPFacade.mapToPlaceTypes2(types))
+                .placeTypes(OJPFacade.mapToPlaceTypes(types))
                 .placeName(nameMatch)
                 .centroid(centroid)
                 .radius(centroidRadius)

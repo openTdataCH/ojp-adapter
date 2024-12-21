@@ -29,8 +29,6 @@ import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 
 /**
  * Generic AbstractPlace reference as a result of String parsing. Actually not a JsonObject at all.
- * <p/>
- * Precise instantiation can be done through journey-service-b2c, see PlaceReferenceHelper.
  *
  * @see <a href="https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/v3/JSON-Objects.md#placereference">Corresponds to developer manual for PlaceReference as
  *     Request-Parameter</a>

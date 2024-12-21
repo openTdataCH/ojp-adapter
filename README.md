@@ -36,15 +36,22 @@ The provided **OJPAdapter** is able to query Swiss SKI+ OJP instances, if config
 * use _OJPAadapter_ for raw native XML handling in conversation with OJP protocol.
 
 ## Run it
+
+### OJP-Adapter <library>
 1. Download repository
 2. mvn clean install
 3. copy ojp-adapter-integration/src/main/resources/ojp-SAMPLE.properties to ojp.properties and add your own key for SKI+ OJP Instance from [opentransportdata.swiss **passive instance** v2]( https://opentransportdata.swiss/de/dataset/ojp2-0) _"Manage the API key"_
 4. run swiss.opentransportdata.ojp.adapter.**.OJPAdapterAccessTest (to try out native OJP XML based request/response)
-5. run swiss.opentransportdata.ojp.adapter.service.application.**OJPWebApplication** and
-   open [OpenAPI 3 Swagger-UI](http://localhost:8082/swagger-ui/index.html)
+
+### OJPWebApplication <service>
+
+1. clone ojp-adapter-service/main/resources/application.yml to application-local.yml and set '
+   ojp.authorization'
+2. run swiss.opentransportdata.ojp.adapter.service.application.**OJPWebApplication** with 'VM
+   Options'=-Dspring.profiles.active=local
+3. open [OpenAPI 3 Swagger-UI](http://localhost:8082/swagger-ui/index.html)
 
 Remark:
-
 * At least the OJP passive key should be easy to get.
 * For the OJP active instance key you probably need to contact the operation-responsibles.
 * If your just interested in Open API 3 Swagger-UI resulting out of ojp-adapter-service/../*
@@ -62,7 +69,7 @@ See:
 * [VDV OJP 2.0 Model](https://github.com/VDVde/OJP) base for Java model [Doc](https://vdvde.github.io/OJP/index.html)
 * [OJP 2.0 Cookbook](https://opentransportdata.swiss/de/cookbook/ojp2entwicklung/)
 * [OJP 2.0 Demo](https://tools.odpch.ch/ojp-demo-v2/search)
-* [OJP 2.0 API Explorer](https://opentdatach.github.io/api-explorer2/#/default/OJP2.0)
+* [OJP 2.0 API Explorer (OpenApi 3)](https://opentdatach.github.io/api-explorer2/#/default/OJP2.0)
 
 ### Module "ojp-transmodel" & "Swagger-UI"
 

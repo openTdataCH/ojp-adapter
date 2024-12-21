@@ -14,14 +14,7 @@
         this one.
     </description>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <springdoc-openapi-starter-webmvc-api.version>2.3.0
-        </springdoc-openapi-starter-webmvc-api.version>
-    </properties>
+    <properties/>
 
     <dependencies>
         <dependency>
@@ -34,12 +27,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.16.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-            <version>${springdoc-openapi-starter-webmvc-api.version}</version>
         </dependency>
 
         <dependency>

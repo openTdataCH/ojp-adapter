@@ -66,7 +66,6 @@ import swiss.opentransportdata.ojp.adapter.model.trip.request.PTViaReference;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus;
-import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
 import swiss.opentransportdata.ojp.adapter.service.utils.DateTimeUtils;
 import uk.org.siri.siri.VehicleModesOfTransportEnumeration;
 
@@ -115,7 +114,7 @@ public class OJPFacade {
         return !date.isAfter(LocalDate.now().minusDays(JOURNEY_PLANNER_PAST_DAYS_TO_SUPPORT));
     }
 
-    static Set<PlaceTypeEnumeration> mapToPlaceTypes2(Set<PlaceTypeEnum> types) {
+    static Set<PlaceTypeEnumeration> mapToPlaceTypes(Set<PlaceTypeEnum> types) {
         if (CollectionUtils.isEmpty(types) || types.contains(PlaceTypeEnum.ALL) || (types.size() >= PlaceTypeEnum.values().length - 1)) {
             // not supported yet: PlaceTypeEnumeration.COORD, PlaceTypeEnumeration.TOPOGRAPHIC_PLACE
             return Set.of(de.vdv.ojp.release2.model.PlaceTypeEnumeration.STOP, de.vdv.ojp.release2.model.PlaceTypeEnumeration.ADDRESS, de.vdv.ojp.release2.model.PlaceTypeEnumeration.POI);
@@ -204,18 +203,13 @@ public class OJPFacade {
     }
 
     // TODO refactor to stricter Builder usage (current goal: just make sure all OJP "XML structures of the same" result into same data)
-    static ServiceJourney createServiceJourney(@NonNull List<JourneyRefStructure> journeyRefStructures, @NonNull List<ScheduledStopPoint> scheduledStopPoints,
+    static ServiceJourney createServiceJourney(@NonNull JourneyRefStructure journeyRefStructure, @NonNull List<ScheduledStopPoint> scheduledStopPoints,
         @NonNull List<ServiceProduct> serviceProducts,
         @NonNull List<Direction> directions, @NonNull List<Notice> notices, @NonNull List<PTSituation> situations, @NonNull ServiceAlteration serviceAlteration,
         List<OperatingPeriod> operatingPeriods) {
 
-        if (journeyRefStructures.isEmpty()) {
-            throw new DeveloperException("OJP PTRideLeg has no journeyReference");
-        } else if (journeyRefStructures.size() > 1) {
-            log.info("unexpected > 1 PTRideLeg::id -> {}", journeyRefStructures);
-        }
         return ServiceJourney.builder()
-            .id(journeyRefStructures.get(0).getValue())
+            .id(journeyRefStructure.getValue())
             // TODO might not be the exact operatingDay!
             .operatingDay(scheduledStopPoints.get(0).getDeparture().getTimeAimed().toLocalDate())
             .stopPoints(scheduledStopPoints)

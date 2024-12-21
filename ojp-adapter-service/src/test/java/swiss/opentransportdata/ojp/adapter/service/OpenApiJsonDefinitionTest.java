@@ -33,13 +33,13 @@ import swiss.opentransportdata.ojp.adapter.service.application.OJPWebApplication
 import swiss.opentransportdata.ojp.adapter.service.application.configuration.SwaggerConfiguration;
 
 /**
- * UNIT-TEST  booting Journey-Service and generating OpenApi 3 specific JSON definition files out of Springdoc annotations.
+ * UNIT-TEST  booting OJPWebApplication and generating OpenApi 3 specific JSON definition files out of Springdoc annotations.
  * <p>
  * DO NOT disable or skip this Test!!!
  * <p>
  * In general, to consider all "*Test.java" files not being critical for a successful build, SHOULD be a valid assumption.
  * <p>
- * The generatad JSON-definition files are needed to build <b>journey-service-client:
+ * The generatad JSON-definition files are needed to build the OpenApi 3 client:
  * <ul>
  *     <li>from version 2.20.0 OpenAPI3/Springdoc</li>
  * </ul>
@@ -72,9 +72,7 @@ class OpenApiJsonDefinitionTest {
     private int port;
 
     /**
-     * Generates journey-service-client/openapi3/journey-service-definition.json specification containing all versions.
-     * <p>
-     * See <b>journey-service-client/pom.xml</b> which generates ApiClient out of this definition.
+     * Generates ojp-adapter-service-definition.json specification containing all versions.
      *
      * @throws IOException with json file generation
      */
@@ -83,11 +81,10 @@ class OpenApiJsonDefinitionTest {
         createSwaggerApiDoc(SwaggerConfiguration.SERVICE_NAME + "-api",
             /*
              * see Jenkins build:
-             * [INFO] --- openapi-generator-maven-plugin:5.2.1:generate (journey-service-client-v1) @ journey-service-client ---
-             * [WARNING] Exception while reading:
-             * io.swagger.v3.parser.exception.ReadContentException: Unable to read location `/var/data/jenkins/workspace/y-service_feature_spring_upgrade/journey-service-client/openapi3/journey-service-definition.json`
+             * [INFO] --- openapi-generator-maven-plugin:5.2.1:generate (OpenApi 3 client)
              */
-            /*"../ojp-adapter-service-client/"*/ "./" + CLIENT_PATH + "/journey-service-definition.json");
+            //TODO move to target or ojp-adapter-client modul when being read
+            "./src/test/resources/" + CLIENT_PATH + "/ojp-adapter-service-definition.json");
     }
 
     private void createSwaggerApiDoc(String group, String path) throws IOException {

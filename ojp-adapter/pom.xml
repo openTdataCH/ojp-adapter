@@ -36,7 +36,7 @@
 
         <dependency>
             <!-- open-source provided by https://github.com/bliksemlabs/ojp-java-model (containing POJO for https://github.com/VDVde/OJP) -->
-            <!-- https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1 -->
+            <!-- TODO OJP 2.0 upgrade and remove local POJO in Modul "ojp-adapter" https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1 -->
             <groupId>de.vdv</groupId>
             <artifactId>ojp-java-model</artifactId>
             <version>1.0.3.1</version>
