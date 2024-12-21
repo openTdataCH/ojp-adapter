@@ -383,7 +383,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
 
             final DepartureResponse departureResponse = ojpFacade.requestDepartures(createOJPAccessor(), filter);
             // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(departureResponse, filter.getPreferredLanguage() /*TODO*/);
+            return responseFactory.createOkResponse(departureResponse, filter.getPreferredLanguage());
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {

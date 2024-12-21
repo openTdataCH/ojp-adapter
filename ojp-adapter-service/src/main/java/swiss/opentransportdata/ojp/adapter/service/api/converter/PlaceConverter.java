@@ -138,8 +138,8 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
         final Set<PointOfInterestCategory> categories = pointOfInterestCategoryStructures.stream()
             // categories: depends on whether OJP uses ROKAS journey-poi service (current PoC), OSM or other
             .map(pointOfInterestCategoryStructure -> PointOfInterestCategory.builder()
-                .type(pointOfInterestCategoryStructure.getOsmTag().get(0).getTag())
-                .name(pointOfInterestCategoryStructure.getOsmTag().get(0).getValue())
+                .type(pointOfInterestCategoryStructure.getOsmTag().getFirst().getTag())
+                .name(pointOfInterestCategoryStructure.getOsmTag().getFirst().getValue())
                 .build())
             .collect(Collectors.toSet());
         return PointOfInterest.builder()

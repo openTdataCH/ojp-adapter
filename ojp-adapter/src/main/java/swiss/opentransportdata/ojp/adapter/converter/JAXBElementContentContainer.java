@@ -74,8 +74,10 @@ public final class JAXBElementContentContainer {
     Boolean unplanned;
 
     /**
+     * TODO remove OJP 1.0 way or still needed
      * @param jaxbElements generic list of JAXBElement's
      */
+    @Deprecated(since = "OJP 2.0")
     public JAXBElementContentContainer(List<JAXBElement<?>> jaxbElements) {
 
         for (JAXBElement<?> jaxbElement : jaxbElements) {

@@ -98,7 +98,6 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
 
         final List<Trip> trips = new ArrayList<>();
         // assumption: given for PTRideLeg::origin::departure and destination::arrival (as by Hafas) -> calculate for ConnectionLeg and AccessLeg by their Duration
-        final List<TripResultStructure> tripResults = new ArrayList<>();
         for (JAXBElement<?> rest : ojpTripDeliveryStructure.getRest()) {
             if (rest.getDeclaredType() == ResponseContextStructure.class) {
                 // some kind of overview?

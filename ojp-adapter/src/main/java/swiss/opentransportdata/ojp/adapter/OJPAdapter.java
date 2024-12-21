@@ -114,7 +114,7 @@ public class OJPAdapter {
     private static uk.org.siri.siri.AbstractServiceDeliveryStructure extractFirstDeliveryStructure(
         List<JAXBElement<? extends uk.org.siri.siri.AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
 
-        final uk.org.siri.siri.AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.get(0).getValue();
+        final uk.org.siri.siri.AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.getFirst().getValue();
         if (firstDeliveryStructure == null) {
             // unexpected
             throw new OJPException("AbstractServiceDeliveryStructure is null");
@@ -233,12 +233,12 @@ public class OJPAdapter {
             //TODO what is the expected one?
             log.warn("InternationalTextStructure::text has multiple entries -> fallback first={}", internationalTextStructure.getText());
         }
-        if (StringUtils.isBlank(internationalTextStructure.getText().get(0).getValue())) {
-            log.warn("InternationalTextStructure::text[0] empty: {}", internationalTextStructure.getText().get(0));
+        if (StringUtils.isBlank(internationalTextStructure.getText().getFirst().getValue())) {
+            log.warn("InternationalTextStructure::text[0] empty: {}", internationalTextStructure.getText().getFirst());
             return null;
         }
 
-        return internationalTextStructure.getText().get(0).getValue().trim();
+        return internationalTextStructure.getText().getFirst().getValue().trim();
     }
 
     /**

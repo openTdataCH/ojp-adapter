@@ -211,7 +211,7 @@ public class OJPFacade {
         return ServiceJourney.builder()
             .id(journeyRefStructure.getValue())
             // TODO might not be the exact operatingDay!
-            .operatingDay(scheduledStopPoints.get(0).getDeparture().getTimeAimed().toLocalDate())
+            .operatingDay(scheduledStopPoints.getFirst().getDeparture().getTimeAimed().toLocalDate())
             .stopPoints(scheduledStopPoints)
             .serviceProducts(serviceProducts)
             .directions(directions)

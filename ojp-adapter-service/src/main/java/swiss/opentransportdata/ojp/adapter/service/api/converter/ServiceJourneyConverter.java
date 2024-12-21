@@ -239,7 +239,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                     .build());
             } else if (attributeStructure.getCode().contains("InfoCall")) {
                 if (attributeStructure.getUserText().getText().getFirst().getValue().contains("Aussteigeseite")) {
-                /*TODO set on each ScheduledStopPoint::exitSide:
+                /*TODO OJP 2.0 set on each ScheduledStopPoint::exitSide:
                    "[code=ojp91006HR_InfoCall450_106514_1,text=[text=[lang=de,value=Aussteigeseite: Rechts]]]"
                    "[code=ojp91006HR_InfoCall450_111055_1,text=[text=[lang=de,value=Aussteigeseite: Links]]]"
                  */
@@ -360,7 +360,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
     }
 
     private static String extractExtensionTextContext(Extensions extensions, String localTagName) {
-        final NodeList nodes = extensions.getAny().get(0).getElementsByTagName(OJPAdapter.OJP_NAMESPACE + localTagName);
+        final NodeList nodes = extensions.getAny().getFirst().getElementsByTagName(OJPAdapter.OJP_NAMESPACE + localTagName);
         if (nodes.getLength() == 0) {
             return null;
         }

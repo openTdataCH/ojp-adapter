@@ -164,9 +164,7 @@ public class OJPFactory {
         tripParamStructure.setNumberOfResultsBefore();
         tripParamStructure.setNumberOfResultsAfter();
          */
-        if (filter.getLimit() != null) {
             tripParamStructure.setNumberOfResults(BigInteger.valueOf(filter.getLimit()));
-        }
 
         //TODO OJP 2.0 tripParamStructure.setModeFilter(filter.getModeFilterStructure());
         // tripParamStructure.setPrivateModeFilter(PrivateModeFilterStructure);
