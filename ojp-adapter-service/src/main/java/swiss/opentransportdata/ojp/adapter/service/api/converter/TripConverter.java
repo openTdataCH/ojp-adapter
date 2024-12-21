@@ -16,22 +16,23 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.CallAtStopStructure;
-import de.vdv.ojp.ContinuousLegStructure;
-import de.vdv.ojp.LegAlightStructure;
-import de.vdv.ojp.LegBoardStructure;
-import de.vdv.ojp.LegIntermediateStructure;
-import de.vdv.ojp.OJPTripDeliveryStructure;
-import de.vdv.ojp.OJPTripInfoDeliveryStructure;
-import de.vdv.ojp.PlaceRefStructure;
-import de.vdv.ojp.TimedLegStructure;
-import de.vdv.ojp.TransferLegStructure;
-import de.vdv.ojp.TripInfoResponseContextStructure;
-import de.vdv.ojp.TripInfoResultStructure;
-import de.vdv.ojp.TripLegStructure;
-import de.vdv.ojp.TripResultStructure;
-import de.vdv.ojp.TripSummaryStructure;
-import de.vdv.ojp.model.OJP;
+import de.vdv.ojp.release2.model.ContinuousLegStructure;
+import de.vdv.ojp.release2.model.DatedJourneyStructure;
+import de.vdv.ojp.release2.model.LegAlightStructure;
+import de.vdv.ojp.release2.model.LegBoardStructure;
+import de.vdv.ojp.release2.model.LegIntermediateStructure;
+import de.vdv.ojp.release2.model.LegStructure;
+import de.vdv.ojp.release2.model.OJP;
+import de.vdv.ojp.release2.model.OJPTripDeliveryStructure;
+import de.vdv.ojp.release2.model.OJPTripInfoDeliveryStructure;
+import de.vdv.ojp.release2.model.PlaceRefStructure;
+import de.vdv.ojp.release2.model.ResponseContextStructure;
+import de.vdv.ojp.release2.model.SituationsStructure;
+import de.vdv.ojp.release2.model.TimedLegStructure;
+import de.vdv.ojp.release2.model.TransferLegStructure;
+import de.vdv.ojp.release2.model.TripResultStructure;
+import de.vdv.ojp.release2.model.TripSummaryStructure;
+import jakarta.xml.bind.JAXBElement;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,6 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.model.place.response.Place;
 import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
@@ -62,8 +64,6 @@ import swiss.opentransportdata.ojp.adapter.model.trip.response.TripSummary;
 import swiss.opentransportdata.ojp.adapter.service.api.converter.ServiceJourneyConverter.ModeOJP;
 import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
 import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
 
 /**
  * Converts OJP {@link TripResponse}.
@@ -98,49 +98,70 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
 
         final List<Trip> trips = new ArrayList<>();
         // assumption: given for PTRideLeg::origin::departure and destination::arrival (as by Hafas) -> calculate for ConnectionLeg and AccessLeg by their Duration
-        for (TripResultStructure resultStructure : ojpTripDeliveryStructure.getTripResult()) {
-            final List<Leg> legs = new ArrayList<>();
-            for (TripLegStructure tripLegStructure : resultStructure.getTrip().getTripLeg()) {
-                if (tripLegStructure.getTimedLeg() != null) {
-                    legs.add(mapToPTRideLeg(tripLegStructure));
-                } else if (tripLegStructure.getContinuousLeg() != null) {
-                    legs.add(mapToAccessLeg(tripLegStructure));
-                } else if (tripLegStructure.getTransferLeg() != null) {
-                    legs.add(mapToPTConnectionLeg(tripLegStructure));
-                } else {
-                    throw new DeveloperException("Unexpected OJP Leg=" + tripLegStructure);
+        for (JAXBElement<?> rest : ojpTripDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() == ResponseContextStructure.class) {
+                // some kind of overview?
+                final ResponseContextStructure responseContextStructure = (ResponseContextStructure) rest.getValue();
+                responseContextStructure.getPlaces().getPlace().forEach(placeStructure -> {
+                    if (responseContextStructure.getSituations() != null) {
+                        //TODO add situations? See ServiceJourneyConverter::mapToSituations
+                        SituationsStructure situationsStructure = responseContextStructure.getSituations();
+                        log.debug("situations={}", situationsStructure);
+                    }
+                    if (placeStructure.getStopPoint() != null) {
+                        log.debug("StopPoint::id={}, ::name={}", placeStructure.getStopPoint().getStopPointRef().getValue(), OJPAdapter.getText(placeStructure.getStopPoint().getStopPointName()));
+                    } else {
+                        // Topographic..
+                        log.debug("other location: {}", placeStructure);
+                    }
+                });
+            } else if (rest.getDeclaredType() == TripResultStructure.class) {
+                final TripResultStructure tripResultStructure = (TripResultStructure) rest.getValue();
+                final List<Leg> legs = new ArrayList<>();
+                for (LegStructure legStructure : tripResultStructure.getTrip().getLeg()) {
+                    if (legStructure.getTimedLeg() != null) {
+                        legs.add(mapToPTRideLeg(legStructure));
+                    } else if (legStructure.getContinuousLeg() != null) {
+                        legs.add(mapToAccessLeg(legStructure));
+                    } else if (legStructure.getTransferLeg() != null) {
+                        legs.add(mapToPTConnectionLeg(legStructure));
+                    } else {
+                        throw new DeveloperException("Unexpected OJP Leg=" + legStructure);
+                    }
                 }
-            }
-            log.info("Trip::distance={}, TripSummary::distance={}", resultStructure.getTrip().getDistance(),
-                resultStructure.getTripSummary() == null ? null : resultStructure.getTripSummary().getDistance());
-            final List<OperatingPeriod> operatingPeriods = new ArrayList<>();
-            if (resultStructure.getTrip().getOperatingDays() != null) {
-                //TODO make dependent on TripsByOriginAndDestinationBody::includeOperatingDays
-                operatingPeriods.add(OperatingPeriod.builder()
-                    .name(OperatingPeriod.PERIOD_TRIP)
-                    .operatingDays(List.of(resultStructure.getTrip().getOperatingDays().getFrom().toLocalDate(),
-                        resultStructure.getTrip().getOperatingDays().getTo().toLocalDate()))
-                    // TODO .binary (resultStructure.getTrip().getOperatingDays().getPattern())
-                    .build());
-            }
-            trips.add(Trip.builder()
-                .id(resultStructure.getResultId())
-                .legs(legs)
-                //.alternative(tripV2.isAlternative())
-                //.valid(tripV2.isValid())
-                .fastTransfer(false)
-                .transfers(resultStructure.getTrip().getTransfers().intValue())
-                .duration(resultStructure.getTrip().getDuration().toString())
-                //.pagingChecksum(tripV2.getScrollCheckSum())
-                //.searchHint(tripV2.getSearchHint())
-                .operatingPeriods(operatingPeriods)
-                //.ecoBalance(tripV2.getEcoBalance())
-                //.archiveReliability(tripV2.getArchivedConnectionReliability() == null ? null : tripV2.getArchivedConnectionReliability().toString())
-                .status(OJPFacade.createTripStatus())
-                .summary(mapToTripSummary(resultStructure.getTripSummary()))
-                // resultStructure.getTripFare() -> probably no Data yet
+                log.info("Trip::distance={}, TripSummary::distance={}", tripResultStructure.getTrip().getDistance(),
+                    tripResultStructure.getTripSummary() == null ? null : tripResultStructure.getTripSummary().getDistance());
+                final List<OperatingPeriod> operatingPeriods = new ArrayList<>();
+                if (tripResultStructure.getTrip().getOperatingDays() != null) {
+                    //TODO make dependent on TripsByOriginAndDestinationBody::includeOperatingDays
+                    operatingPeriods.add(OperatingPeriod.builder()
+                        .name(OperatingPeriod.PERIOD_TRIP)
+                        .operatingDays(List.of(tripResultStructure.getTrip().getOperatingDays().getFrom().toLocalDate(),
+                            tripResultStructure.getTrip().getOperatingDays().getTo().toLocalDate()))
+                        // TODO .binary (resultStructure.getTrip().getOperatingDays().getPattern())
+                        .build());
+                }
+                trips.add(Trip.builder()
+                    .id(tripResultStructure.getId())
+                    .legs(legs)
+                    //.alternative(tripV2.isAlternative())
+                    //.valid(tripV2.isValid())
+                    .fastTransfer(false)
+                    .transfers(tripResultStructure.getTrip().getTransfers().intValue())
+                    .duration(tripResultStructure.getTrip().getDuration().toString())
+                    //.pagingChecksum(tripV2.getScrollCheckSum())
+                    //.searchHint(tripV2.getSearchHint())
+                    .operatingPeriods(operatingPeriods)
+                    //.ecoBalance(tripV2.getEcoBalance())
+                    //.archiveReliability(tripV2.getArchivedConnectionReliability() == null ? null : tripV2.getArchivedConnectionReliability().toString())
+                    .status(OJPFacade.createTripStatus())
+                    .summary(mapToTripSummary(tripResultStructure.getTripSummary()))
+                    // resultStructure.getTripFare() -> probably no Data yet
 
-                .build());
+                    .build());
+            } else {
+                log.debug("skip non-Trip: {}", rest.getDeclaredType());
+            }
         }
 
         return TripResponse.builder()
@@ -149,8 +170,8 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             .build();
     }
 
-    private PTRideLeg mapToPTRideLeg(TripLegStructure tripLegStructure) {
-        final TimedLegStructure timedLegStructure = tripLegStructure.getTimedLeg();
+    private PTRideLeg mapToPTRideLeg(LegStructure legStructure) {
+        final TimedLegStructure timedLegStructure = legStructure.getTimedLeg();
 
         final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
         final LegBoardStructure origin = timedLegStructure.getLegBoard();
@@ -172,7 +193,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             origin.isUnplannedStop(),
             origin.isNotServicedStop()));
 
-        for (LegIntermediateStructure legIntermediateStructure : timedLegStructure.getLegIntermediates()) {
+        for (LegIntermediateStructure legIntermediateStructure : timedLegStructure.getLegIntermediate()) {
             scheduledStopPoints.add(
                 ServiceJourneyConverter.createScheduledStopPoint(
                     legIntermediateStructure.getStopPointName(),
@@ -219,32 +240,32 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                     timedLegStructure.getOperatingDaysDescription();
                      */
 
-        final JAXBElementContentContainer serviceContentContainer = new JAXBElementContentContainer(timedLegStructure.getService().getContent());
-        final ModeOJP mode = ServiceJourneyConverter.mapToMode(serviceContentContainer.getModes());
+        final DatedJourneyStructure datedJourneyStructure = timedLegStructure.getService();
+        final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
 
         return PTRideLeg.builder()
             .mode(mode.getMode())
-            .id(tripLegStructure.getLegId())
+            .id(legStructure.getId())
             //.distance()
             .duration(null /*"TODO DurationHelper.toDuration(analog LegV2::duration) calculate cause not given toDurationString()"*/)
             // irrelevant resp. implicite by dateTime: <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
-            .serviceJourney(OJPFacade.createServiceJourney(serviceContentContainer.getJourneyRefs(),
+            .serviceJourney(OJPFacade.createServiceJourney(datedJourneyStructure.getJourneyRef(),
                 scheduledStopPoints /*PlaceReferenceHelper.mapToScheduledStopPoints(stops)*/,
-                ServiceJourneyConverter.mapToServiceProducts(serviceContentContainer, mode, (Element) timedLegStructure.getExtension()),
-                ServiceJourneyConverter.mapToDirections(serviceContentContainer),
-                ServiceJourneyConverter.mapToNotices(serviceContentContainer /*NoteConverter.mapNotices(attributes, infos)*/),
+                ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, (Element) timedLegStructure.getExtension()),
+                ServiceJourneyConverter.mapToDirections(datedJourneyStructure),
+                ServiceJourneyConverter.mapToNotices(datedJourneyStructure /*NoteConverter.mapNotices(attributes, infos)*/),
                 ServiceJourneyConverter.mapToSituations(null),
-                ServiceJourneyConverter.mapToServiceAlteration(serviceContentContainer),
+                ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure),
                 Collections.emptyList() // Hafas set on Trip but never on PTRideLeg
             ))
             .build();
     }
 
-    private AccessLeg mapToAccessLeg(TripLegStructure tripLegStructure) {
-        final ContinuousLegStructure continuousLegStructure = tripLegStructure.getContinuousLeg();
+    private AccessLeg mapToAccessLeg(LegStructure legStructure) {
+        final ContinuousLegStructure continuousLegStructure = legStructure.getContinuousLeg();
         return AccessLeg.builder()
             .mode(AccessLeg.ACCESS_MODE_FOOT /*or AccessLeg.ACCESS_MODE_ROAD*/)
-            .id(tripLegStructure.getLegId())
+            .id(legStructure.getId())
             //.distance(legV2.getDistance())
             .duration(toDurationString(continuousLegStructure.getDuration()))
             .start(createAccessEnd(continuousLegStructure.getLegStart(), continuousLegStructure.getTimeWindowStart()))
@@ -252,11 +273,11 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             .build();
     }
 
-    private ConnectionLeg mapToPTConnectionLeg(TripLegStructure tripLegStructure) {
-        final TransferLegStructure transferLegStructure = tripLegStructure.getTransferLeg();
+    private ConnectionLeg mapToPTConnectionLeg(LegStructure legStructure) {
+        final TransferLegStructure transferLegStructure = legStructure.getTransferLeg();
         return ConnectionLeg.builder()
             .mode(ConnectionLeg.MODE_TRANSFER)
-            .id(tripLegStructure.getLegId())
+            .id(legStructure.getId())
             //.distance(legV2.getDistance())
             .duration(toDurationString(transferLegStructure.getDuration()))
             /*TODO
@@ -272,7 +293,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
     private ConnectionEnd createConnectionEnd(PlaceRefStructure placeRefStructure, ZonedDateTime dateTime) {
         return ConnectionEnd.builder()
             .place(PlaceConverter.createStopPlace(placeRefStructure.getStopPointRef().getValue(),
-                placeRefStructure.getLocationName(),
+                placeRefStructure.getName(),
                 placeRefStructure.getGeoPosition()))
             .timeAimed(ServiceJourneyConverter.toOffsetDateTime(dateTime))
             .build();
@@ -282,7 +303,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         final Place place;
         if (placeRefStructure.getStopPointRef() != null) {
             place = PlaceConverter.createStopPlace(placeRefStructure.getStopPointRef().getValue(),
-                placeRefStructure.getLocationName(),
+                placeRefStructure.getName(),
                 placeRefStructure.getGeoPosition());
         } else if (placeRefStructure.getAddressRef() != null) {
             // TODO PlaceConverter.createAddress()
@@ -328,30 +349,37 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
     static DatedVehicleJourney mapToDatedVehicleJourney(OJP ojpResponseWithTripInfo) throws OJPException {
         final OJPTripInfoDeliveryStructure ojpTripInfoDeliveryStructure = OJPAdapter.mapToFirstOJPTripInfoDeliveryStructure(ojpResponseWithTripInfo);
 
-        final TripInfoResponseContextStructure ojpTripInfoResponseStructure = ojpTripInfoDeliveryStructure.getTripInfoResponseContext();
-        final TripInfoResultStructure tripInfoResultStructure = ojpTripInfoDeliveryStructure.getTripInfoResult();
-        final JAXBElementContentContainer serviceContentContainer = new JAXBElementContentContainer(tripInfoResultStructure.getService().getContent());
-        final ModeOJP mode = ServiceJourneyConverter.mapToMode(serviceContentContainer.getModes());
-
-        final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
-        for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getPreviousCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
-            scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
+        for (JAXBElement<?> rest : ojpTripInfoDeliveryStructure.getRest()) {
+            log.info("OJPTripInfoDeliveryStructure::rest element: {}", rest.getDeclaredType());
+            // TODO OJP 2.0
+            //            if (rest.getDeclaredType() == ??){
+            //                final TripInfoResponseContextStructure ojpTripInfoResponseStructure = ojpTripInfoDeliveryStructure.getTripInfoResponseContext();
+            //                final TripInfoResultStructure tripInfoResultStructure = ojpTripInfoDeliveryStructure.getTripInfoResult();
+            //                final DatedJourneyStructure datedJourneyStructure = tripInfoResultStructure.getService();
+            //                final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
+            //
+            //                final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
+            //                for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getPreviousCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
+            //                    scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
+            //                }
+            //                for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getOnwardCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
+            //                    scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
+            //                }
+            //
+            //                return DatedVehicleJourney.builder()
+            //                    .serviceJourney(OJPFacade.createServiceJourney(
+            //                        datedJourneyStructure.getJourneyRef(),
+            //                        scheduledStopPoints,
+            //                        ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, (Element) tripInfoResultStructure.getExtension()),
+            //                        ServiceJourneyConverter.mapToDirections(datedJourneyStructure),
+            //                        ServiceJourneyConverter.mapToNotices(datedJourneyStructure),
+            //                        ServiceJourneyConverter.mapToSituations(ojpTripInfoResponseStructure.getSituations()),
+            //                        ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure),
+            //                        Collections.emptyList() /*irrelevant for PTRideLeg*/))
+            //                    .build();
+            //            }
         }
-        for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getOnwardCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
-            scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
-        }
-
-        return DatedVehicleJourney.builder()
-            .serviceJourney(OJPFacade.createServiceJourney(
-                serviceContentContainer.getJourneyRefs(),
-                scheduledStopPoints,
-                ServiceJourneyConverter.mapToServiceProducts(serviceContentContainer, mode, (Element) tripInfoResultStructure.getExtension()),
-                ServiceJourneyConverter.mapToDirections(serviceContentContainer),
-                ServiceJourneyConverter.mapToNotices(serviceContentContainer),
-                ServiceJourneyConverter.mapToSituations(ojpTripInfoResponseStructure.getSituations()),
-                ServiceJourneyConverter.mapToServiceAlteration(serviceContentContainer),
-                Collections.emptyList() /*irrelevant for PTRideLeg*/))
-            .build();
+        throw new NotImplementedException("TripInfo");
     }
 
     /**

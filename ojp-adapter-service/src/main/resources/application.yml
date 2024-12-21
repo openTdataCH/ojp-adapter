@@ -53,8 +53,10 @@ ojp:
   timeoutRead: 25000
   # active instance (capable to interact with other international OJP instances)
   endpointActive: https://api.opentransportdata.swiss/ojp-la-aktiv
-  # passive instance (default)
-  endpoint: https://api.opentransportdata.swiss/ojp2020
+  # OJP v1.0 passive instance (default)
+  #endpoint: https://api.opentransportdata.swiss/ojp2020
+  # OJP v2.0 passive instance (default)
+  endpoint: https://api.opentransportdata.swiss/ojp20
   # "shared" secret-token for regular
   authorization: # see https://opentransportdata.swiss/de/cookbook/verwendung-der-api/
   # override for your scope

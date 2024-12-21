@@ -31,10 +31,10 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.service.api.ApiDocumentation;
 import swiss.opentransportdata.ojp.adapter.service.api.converter.OJPController;
 import swiss.opentransportdata.ojp.adapter.service.exchange.webclient.HttpGetExchangeStrategies;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 
 /**
  * Configuration to access OJP SKI+ Switzerland.

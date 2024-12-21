@@ -47,9 +47,6 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
 @ToString
 public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*RequestBody,*/ TripRequestFilter {
 
-    public static final String ECO_DEFAULT = "DEFAULT";
-    public static final String ECO_NONE = "NONE";
-
     /**
      * Default length in [m] for a footpath to/after a stop-place.
      */

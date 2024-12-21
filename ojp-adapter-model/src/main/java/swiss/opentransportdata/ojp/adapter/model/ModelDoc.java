@@ -207,7 +207,7 @@ public class ModelDoc {
      *
      * @see #ISO8601
      */
-    public static final String SAMPLE_OFFSETDATETIME = "2024-04-18T14:55:00+01:00";
-    public static final String SAMPLE_DATE = "2024-04-18";
+    public static final String SAMPLE_OFFSETDATETIME = "2024-12-18T14:55:00+01:00";
+    public static final String SAMPLE_DATE = "2024-12-18";
     public static final String SAMPLE_TIME = "13:07";
 }
