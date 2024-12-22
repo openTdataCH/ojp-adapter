@@ -25,6 +25,9 @@ import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.querymodel.commonquery.PIRequestFilter;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
 
+/**
+ * Filter to refresh a {@link de.vdv.ojp.release2.model.TimedLegStructure}
+ */
 @Data
 @Builder
 public class TripLegRequestFilter implements PIRequestPolicy, PIRequestFilter, RealtimeMode, IncludeProjection {

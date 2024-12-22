@@ -312,7 +312,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             // TODO PlaceConverter.createPointOfInterest(placeRefStructure.getPointOfInterestRef().getValue())
             throw new NotImplementedException("OJP: PointOfInterest mapping");
         } else if (placeRefStructure.getTopographicPlaceRef() != null) {
-            // TODO ?
+            // TODO ? TopographicPlace
             throw new NotImplementedException("OJP: TopographicPlace mapping");
         } else {
             throw new DeveloperException("OJP: Unexpected Place type: " + placeRefStructure);

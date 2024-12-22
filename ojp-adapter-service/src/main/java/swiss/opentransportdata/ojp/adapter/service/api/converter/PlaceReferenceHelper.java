@@ -67,10 +67,6 @@ public final class PlaceReferenceHelper {
         }
     }
 
-    public static StopPlaceByUic buildStopPlaceUic(@NonNull Integer uic) {
-        return new StopPlaceByUic(uic, null);
-    }
-
     public static StopPlaceByUic buildStopPlaceUic(@NonNull Integer uic, String placeId) {
         return new StopPlaceByUic(uic, placeId);
     }
