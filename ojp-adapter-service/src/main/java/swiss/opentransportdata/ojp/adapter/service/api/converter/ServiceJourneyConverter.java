@@ -113,9 +113,9 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                 mapToServiceProducts(datedJourneyStructure, mode, (Element) stopEventStructure.getExtension()),
                 mapToDirections(datedJourneyStructure),
                 mapToNotices(datedJourneyStructure),
-                mapToSituations(null /*TODO seems not contained*/),
+                mapToSituations(null /*TODO OJP 2.0 seems not contained*/),
                 mapToServiceAlteration(datedJourneyStructure),
-                Collections.emptyList() /*TODO operatingDays*/));
+                Collections.emptyList() /*TODO OJP 2.0 operatingDays*/));
         }
 
         return serviceJourneys;
@@ -123,15 +123,15 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
 
     static ScheduledStopPoint mapToScheduledStopPoint(CallAtStopStructure callAtStopStructure) {
         return createScheduledStopPoint(callAtStopStructure.getStopPointName(), callAtStopStructure.getStopPointRef(),
-            //TODO OJP seems not to distinguish between departure/arrival quay
+            //TODO OJP 2.0 seems not to distinguish between departure/arrival quay
             callAtStopStructure.getPlannedQuay(), callAtStopStructure.getEstimatedQuay(), callAtStopStructure.getPlannedQuay(), callAtStopStructure.getEstimatedQuay(),
-            // TODO not foreseen yet: callAtStopStructure.getServiceDeparture/Arrival().getEstimatedTimeHigh/Low()
+            // TODO OJP 2.0 not foreseen yet: callAtStopStructure.getServiceDeparture/Arrival().getEstimatedTimeHigh/Low()
             callAtStopStructure.getServiceDeparture() == null ? null : callAtStopStructure.getServiceDeparture().getTimetabledTime(),
             callAtStopStructure.getServiceDeparture() == null ? null : callAtStopStructure.getServiceDeparture().getEstimatedTime(),
             callAtStopStructure.getServiceArrival() == null ? null : callAtStopStructure.getServiceArrival().getTimetabledTime(),
             callAtStopStructure.getServiceArrival() == null ? null : callAtStopStructure.getServiceArrival().getEstimatedTime(),
             callAtStopStructure.getOrder(),
-            // TODO seems not given -> correct? also map Quay::swissLocationId
+            // TODO OJP 2.0 seems not given -> correct? also map Quay::swissLocationId
             callAtStopStructure.getServiceDeparture() != null,
             callAtStopStructure.getServiceArrival() != null,
             callAtStopStructure.isRequestStop(), callAtStopStructure.isUnplannedStop(), callAtStopStructure.isNotServicedStop());
@@ -162,19 +162,19 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
             stopStatus = StopStatus.NOT_SERVICED;
         }
 
-        // TODO if times are estimated there is further attributes in OJP
+        // TODO OJP 2.0 if times are estimated there are further attributes
         final String uic = stopPointRef.getValue();
         final Quay arrivalQuayAimed = mapToQuay(uic, arrivalPlannedQuay);
         final Quay arrivalQuayRt = mapToQuay(uic, arrivalEstimatedQuay);
         final StopCall arrival = ScheduledStopPointConverter.createStopCall(toOffsetDateTime(arrivalTimeAimed), toDateTimeRt(arrivalTimeAimed, arrivalTimeRt),
-            /*TODO DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
+            /*TODO OJP 2.0 DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
             arrivalQuayAimed, arrivalQuayRt,
             StopPlaceHelper.hasPlatformChanged(arrivalQuayAimed == null ? null : arrivalQuayAimed.getName(), arrivalQuayRt == null ? null : arrivalQuayRt.getName()),
             null, null);
         final Quay departureQuayAimed = mapToQuay(uic, departurePlannedQuay);
         final Quay departureQuayRt = mapToQuay(uic, departureEstimatedQuay);
         final StopCall departure = ScheduledStopPointConverter.createStopCall(toOffsetDateTime(departureTimeAimed), toDateTimeRt(departureTimeAimed, departureTimeRt),
-            /*TODO DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
+            /*TODO OJP 2.0 DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
             departureQuayAimed, departureQuayRt,
             StopPlaceHelper.hasPlatformChanged(departureQuayAimed == null ? null : departureQuayAimed.getName(), departureQuayRt == null ? null : departureQuayRt.getName()),
             null, null);
@@ -182,8 +182,8 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
             .place(StopPlace.builder()
                 .id(uic)
                 .name(OJPAdapter.getText(stopPointName))
-                //.province(stopV2.getCantonCH())
-                //.centroid(GeoJsonConverter.toPoint(stopV2))
+                //.province(stop.getCantonCH())
+                //.centroid(GeoJsonConverter.toPoint(stop))
                 //.tariffBorder(false)
                 //.distanceToSearchPosition(null)
                 //.weighting(null)
@@ -258,7 +258,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
         if (translation == null) {
             return null;
         }
-        return QuayConverter.mapToQuay(stopPlaceId, translation, null /*TODO swissLocationId*/);
+        return QuayConverter.mapToQuay(stopPlaceId, translation, null /*TODO OJP 2.0 swissLocationId*/);
     }
 
     static List<ServiceProduct> mapToServiceProducts(DatedJourneyStructure datedJourneyStructure, ModeOJP mode, Element extension) {
@@ -344,9 +344,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
 
     static ServiceAlteration mapToServiceAlteration(DatedJourneyStructure datedJourneyStructure) {
         return ServiceAlteration.builder()
-            /*TODO OJP 2.0 final JAXBElementContentContainer serviceContentContainer = new JAXBElementContentContainer(stopEventStructure.getService().getContent());
-            .redirected(Boolean.TRUE.equals(serviceContentContainer.getDeviation()))
-             */
+            .redirected(Boolean.TRUE.equals(datedJourneyStructure.isDeviation()))
             //TODO others
             .build();
     }

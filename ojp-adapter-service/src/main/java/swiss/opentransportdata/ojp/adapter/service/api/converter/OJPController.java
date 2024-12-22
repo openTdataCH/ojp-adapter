@@ -228,8 +228,8 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             if (placeResponse.getPlaces().isEmpty()) {
                 return responseFactory.createNotFoundResponse();
             }
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(placeResponse, placeRequestFilter.getPreferredLanguage() /*TODO verify with OJP response*/);
+            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
+            return responseFactory.createOkResponse(placeResponse, placeRequestFilter.getPreferredLanguage());
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -253,7 +253,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = DESCRIPTION_OJP_TOKEN, schema = @Schema(type = "string"))
         @RequestHeader(value = HEADER_OJP_TOKEN, required = false) String ojpToken,
 
-        @Parameter(description = "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.", schema = @Schema(type = "string"))
+        @Parameter(description = "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.", schema = @Schema(type = "string", example = "ch:1:sjyid:100061:2373-003"))
         @PathVariable("id") String id,
 
         @Parameter(description = "Day of operation (null defaults to TODAY).", example = ModelDoc.SAMPLE_DATE) @DateTimeFormat(iso = ISO.DATE)
@@ -387,7 +387,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .build();
 
             final DepartureResponse departureResponse = ojpFacade.requestDepartures(createOJPAccessor(), filter);
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
+            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
             return responseFactory.createOkResponse(departureResponse, filter.getPreferredLanguage());
         } catch (OJPException ex) {
             return handle(ex);
@@ -477,7 +477,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .build();
 
             final ArrivalResponse arrivalResponse = ojpFacade.requestArrivals(createOJPAccessor(), filter);
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
+            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
             return responseFactory.createOkResponse(arrivalResponse, filter.getPreferredLanguage() /*TODO if translated by OJP*/);
         } catch (OJPException ex) {
             return handle(ex);

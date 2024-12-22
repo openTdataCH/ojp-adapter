@@ -210,7 +210,7 @@ public class OJPFacade {
 
         return ServiceJourney.builder()
             .id(journeyRefStructure.getValue())
-            // TODO might not be the exact operatingDay!
+            // TODO OJP 2.0 might not be the exact operatingDay!
             .operatingDay(scheduledStopPoints.getFirst().getDeparture().getTimeAimed().toLocalDate())
             .stopPoints(scheduledStopPoints)
             .serviceProducts(serviceProducts)
@@ -220,16 +220,17 @@ public class OJPFacade {
             .situations(situations)
             .serviceAlteration(serviceAlteration)
             .operatingPeriods(operatingPeriods == null ? Collections.emptyList() : operatingPeriods)
-            //TODO J-A ProductCategory::getTranslation(locale)
+            //TODO ProductCategory::getTranslation(locale)
             .quayTypeName("Gleis")
             .quayTypeShortName("GL.")
-            // TODO .spatialProjection(GeoJsonConverter.toLineString(polylineFormatted))
+            // TODO OJP 2.0 .spatialProjection(GeoJsonConverter.toLineString(polylineFormatted))
             .build();
     }
 
     static TripStatus createTripStatus() {
         return TripStatus.builder()
-            /*TODO .valid()
+            /*TODO OJP 2.0
+            .valid()
             .cancelled()
             .partiallyCancelled()
             ...
@@ -273,7 +274,7 @@ public class OJPFacade {
 
         final EnumSet<VehicleModesOfTransportEnumeration> vehicleModesOfTransportEnumerations = EnumSet.noneOf(VehicleModesOfTransportEnumeration.class);
         for (TransportModeEnum transportModeEnum : transportModes) {
-            // TODO mapping needs to be reviewed with Matthias Günter and Andreas Glauser
+            // TODO OJP 2.0 mapping needs to be reviewed with Matthias Günter and Andreas Glauser
             switch (transportModeEnum) {
                 case REGIO -> {
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.URBAN_RAIL);

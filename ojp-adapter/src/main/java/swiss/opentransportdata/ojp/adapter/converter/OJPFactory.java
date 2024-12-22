@@ -89,7 +89,7 @@ public class OJPFactory {
     public static PlaceRefStructure createPlaceReferenceStructure(@NonNull String stopPlaceId) {
         // stopName seems redundant, but OJP needs it probably (given in samples)
         final uk.org.siri.siri.NaturalLanguageStringStructure naturalLanguageStringStructure = new NaturalLanguageStringStructure();
-        //TODO ? naturalLanguageStringStructure.setLang(locale.getLanguage());
+        //TODO OJP 2.0  naturalLanguageStringStructure.setLang(locale.getLanguage());
         naturalLanguageStringStructure.setValue(DUMMY_LOCATION_NAME);
         final InternationalTextStructure textStructure = new InternationalTextStructure();
         textStructure.withText(naturalLanguageStringStructure);
@@ -124,7 +124,7 @@ public class OJPFactory {
         if (!CollectionUtils.isEmpty(filter.getPlaceTypes())) {
             // restrict <ojp:Type>
             placeParamStructure.getType().addAll(filter.getPlaceTypes());
-            /* TODO filter POI category
+            /* TODO OJP 2.0 filter POI category
             if (placeTypes.contains(PlaceTypeEnumeration.POI)) {
                 PointOfInterestFilterStructure pointOfInterestFilterStructure = new PointOfInterestFilterStructure();
                 pointOfInterestFilterStructure.setExclude(false);
@@ -185,7 +185,7 @@ public class OJPFactory {
         // Deviation from average walk speed in percent. 100% percent is average speed. Less than 100 % slower, Greater than 150% faster.
         tripParamStructure.setWalkSpeed(BigInteger.valueOf(filter.getWalkSpeed()));
         ojpTripRequestStructure.withVia(filter.getVias());
-        // TODO ojpTripRequestStructure.withNoChangeAt(); ojpTripRequestStructure.withNotVia();
+        // TODO OJP 2.0 ojpTripRequestStructure.withNoChangeAt(); ojpTripRequestStructure.withNotVia();
 
         ojpTripRequestStructure.setParams(tripParamStructure);
 
@@ -322,7 +322,7 @@ public class OJPFactory {
         LocationStructure locationStructure = new LocationStructure();
         locationStructure.set
         OperatingDayRefStructure operatingDayRefStructure = new OperatingDayRefStructure();
-        TODO ? operatingDayRefStructure.setValue(DateTimeUtils.formatDate(operatingDay));
+        TODO OJP 2.0  operatingDayRefStructure.setValue(DateTimeUtils.formatDate(operatingDay));
         */
 
         final OJPStopEventRequestStructure ojpStopEventRequestStructure = new OJPStopEventRequestStructure();

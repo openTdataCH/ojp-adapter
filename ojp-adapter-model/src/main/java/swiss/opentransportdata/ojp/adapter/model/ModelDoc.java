@@ -49,7 +49,7 @@ public class ModelDoc {
      */
     public static final String HINT_ENUM_EXTENSIBLE = "<br>x-extensible-enum: ";
     /**
-     * TODO SBB specific yet
+     * TODO values SBB specific yet
      *
      * @see TransportModeEnum
      */

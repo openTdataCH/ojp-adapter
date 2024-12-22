@@ -16,6 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
+import de.vdv.ojp.release2.model.CallAtStopStructure;
 import de.vdv.ojp.release2.model.ContinuousLegStructure;
 import de.vdv.ojp.release2.model.DatedJourneyStructure;
 import de.vdv.ojp.release2.model.LegAlightStructure;
@@ -30,6 +31,7 @@ import de.vdv.ojp.release2.model.ResponseContextStructure;
 import de.vdv.ojp.release2.model.SituationsStructure;
 import de.vdv.ojp.release2.model.TimedLegStructure;
 import de.vdv.ojp.release2.model.TransferLegStructure;
+import de.vdv.ojp.release2.model.TripInfoResultStructure;
 import de.vdv.ojp.release2.model.TripResultStructure;
 import de.vdv.ojp.release2.model.TripSummaryStructure;
 import jakarta.xml.bind.JAXBElement;
@@ -104,7 +106,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                 final ResponseContextStructure responseContextStructure = (ResponseContextStructure) rest.getValue();
                 responseContextStructure.getPlaces().getPlace().forEach(placeStructure -> {
                     if (responseContextStructure.getSituations() != null) {
-                        //TODO add situations? See ServiceJourneyConverter::mapToSituations
+                        //TODO OJP 2.0 add situations? See ServiceJourneyConverter::mapToSituations
                         SituationsStructure situationsStructure = responseContextStructure.getSituations();
                         log.debug("situations={}", situationsStructure);
                     }
@@ -133,12 +135,12 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                     tripResultStructure.getTripSummary() == null ? null : tripResultStructure.getTripSummary().getDistance());
                 final List<OperatingPeriod> operatingPeriods = new ArrayList<>();
                 if (tripResultStructure.getTrip().getOperatingDays() != null) {
-                    //TODO make dependent on TripsByOriginAndDestinationBody::includeOperatingDays
+                    //TODO OJP 2.0 make dependent on TripsByOriginAndDestinationBody::includeOperatingDays
                     operatingPeriods.add(OperatingPeriod.builder()
                         .name(OperatingPeriod.PERIOD_TRIP)
                         .operatingDays(List.of(tripResultStructure.getTrip().getOperatingDays().getFrom().toLocalDate(),
                             tripResultStructure.getTrip().getOperatingDays().getTo().toLocalDate()))
-                        // TODO .binary (resultStructure.getTrip().getOperatingDays().getPattern())
+                        // TODO OJP 2.0 .binary (resultStructure.getTrip().getOperatingDays().getPattern())
                         .build());
                 }
                 trips.add(Trip.builder()
@@ -165,7 +167,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         }
 
         return TripResponse.builder()
-            //.paginationCursor() //TODO is there any by OJP?
+            //.paginationCursor() //TODO OJP 2.0 is there any by OJP?
             .trips(trips)
             .build();
     }
@@ -200,7 +202,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                     legIntermediateStructure.getStopPointRef(),
                     legIntermediateStructure.getPlannedQuay(),
                     legIntermediateStructure.getEstimatedQuay(),
-                    //TODO is departure and arrial same Quay?
+                    //TODO OJP 2.0 is departure and arrial same Quay?
                     legIntermediateStructure.getPlannedQuay(),
                     legIntermediateStructure.getEstimatedQuay(),
                     legIntermediateStructure.getServiceDeparture() == null ? null : legIntermediateStructure.getServiceDeparture().getTimetabledTime(),
@@ -286,7 +288,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
              */
             .start(createConnectionEnd(transferLegStructure.getLegStart(), transferLegStructure.getTimeWindowStart()))
             .end(createConnectionEnd(transferLegStructure.getLegEnd(), transferLegStructure.getTimeWindowEnd()))
-            .notices(List.of(/*TODO <ojp:TransferMode>walk</ojp:TransferMode>*/))
+            .notices(List.of(/*TODO OJP 2.0 <ojp:TransferMode>walk</ojp:TransferMode>*/))
             .build();
     }
 
@@ -306,13 +308,13 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                 placeRefStructure.getName(),
                 placeRefStructure.getGeoPosition());
         } else if (placeRefStructure.getAddressRef() != null) {
-            // TODO PlaceConverter.createAddress()
+            // TODO OJP 2.0 PlaceConverter.createAddress()
             throw new NotImplementedException("OJP: Address mapping");
         } else if (placeRefStructure.getPointOfInterestRef() != null) {
-            // TODO PlaceConverter.createPointOfInterest(placeRefStructure.getPointOfInterestRef().getValue())
+            // TODO OJP 2.0 PlaceConverter.createPointOfInterest(placeRefStructure.getPointOfInterestRef().getValue())
             throw new NotImplementedException("OJP: PointOfInterest mapping");
         } else if (placeRefStructure.getTopographicPlaceRef() != null) {
-            // TODO ? TopographicPlace
+            // TODO OJP 2.0  ? TopographicPlace
             throw new NotImplementedException("OJP: TopographicPlace mapping");
         } else {
             throw new DeveloperException("OJP: Unexpected Place type: " + placeRefStructure);
@@ -350,34 +352,37 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
         final OJPTripInfoDeliveryStructure ojpTripInfoDeliveryStructure = OJPAdapter.mapToFirstOJPTripInfoDeliveryStructure(ojpResponseWithTripInfo);
 
         for (JAXBElement<?> rest : ojpTripInfoDeliveryStructure.getRest()) {
-            log.info("OJPTripInfoDeliveryStructure::rest element: {}", rest.getDeclaredType());
+            if (rest.getDeclaredType() != TripInfoResultStructure.class) {
+                log.info("OJPTripInfoDeliveryStructure::rest element: {}", rest.getDeclaredType());
+                continue;
+            }
+
             // TODO OJP 2.0
-            //            if (rest.getDeclaredType() == ??){
-            //                final TripInfoResponseContextStructure ojpTripInfoResponseStructure = ojpTripInfoDeliveryStructure.getTripInfoResponseContext();
-            //                final TripInfoResultStructure tripInfoResultStructure = ojpTripInfoDeliveryStructure.getTripInfoResult();
-            //                final DatedJourneyStructure datedJourneyStructure = tripInfoResultStructure.getService();
-            //                final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
-            //
-            //                final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
-            //                for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getPreviousCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
-            //                    scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
-            //                }
-            //                for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getOnwardCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
-            //                    scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
-            //                }
-            //
-            //                return DatedVehicleJourney.builder()
-            //                    .serviceJourney(OJPFacade.createServiceJourney(
-            //                        datedJourneyStructure.getJourneyRef(),
-            //                        scheduledStopPoints,
-            //                        ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, (Element) tripInfoResultStructure.getExtension()),
-            //                        ServiceJourneyConverter.mapToDirections(datedJourneyStructure),
-            //                        ServiceJourneyConverter.mapToNotices(datedJourneyStructure),
-            //                        ServiceJourneyConverter.mapToSituations(ojpTripInfoResponseStructure.getSituations()),
-            //                        ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure),
-            //                        Collections.emptyList() /*irrelevant for PTRideLeg*/))
-            //                    .build();
-            //            }
+
+            final TripInfoResultStructure tripInfoResultStructure = (TripInfoResultStructure) rest.getValue();
+            final DatedJourneyStructure datedJourneyStructure = tripInfoResultStructure.getService();
+            final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
+
+            final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
+            for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getPreviousCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
+                scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
+            }
+            for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getOnwardCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
+                scheduledStopPoints.add(ServiceJourneyConverter.mapToScheduledStopPoint(callAtStopStructure));
+            }
+
+            return DatedVehicleJourney.builder()
+                .serviceJourney(OJPFacade.createServiceJourney(
+                    datedJourneyStructure.getJourneyRef(),
+                    scheduledStopPoints,
+                    ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, (Element) tripInfoResultStructure.getExtension()),
+                    ServiceJourneyConverter.mapToDirections(datedJourneyStructure),
+                    ServiceJourneyConverter.mapToNotices(datedJourneyStructure),
+                    List.of(/*TODO OJP 2.0 ServiceJourneyConverter.mapToSituations(tripInfoResultStructure.getSituations()*/),
+                    ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure),
+                    Collections.emptyList() /*irrelevant for PTRideLeg*/))
+                .build();
+
         }
         throw new NotImplementedException("TripInfo");
     }
