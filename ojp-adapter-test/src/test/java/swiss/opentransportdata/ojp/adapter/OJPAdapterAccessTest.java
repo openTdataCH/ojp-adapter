@@ -36,6 +36,7 @@ import de.vdv.ojp.release2.model.SituationsStructure;
 import de.vdv.ojp.release2.model.StopEventResultStructure;
 import de.vdv.ojp.release2.model.StopEventStructure;
 import de.vdv.ojp.release2.model.StopPlaceStructure;
+import de.vdv.ojp.release2.model.TripInfoResultStructure;
 import de.vdv.ojp.release2.model.TripResultStructure;
 import de.vdv.ojp.release2.model.TripStructure;
 import jakarta.xml.bind.JAXBElement;
@@ -350,10 +351,16 @@ class OJPAdapterAccessTest {
                 final OJPTripInfoDeliveryStructure ojpTripInfoDeliveryStructure = OJPAdapter.mapToFirstOJPTripInfoDeliveryStructure(ojpResponse);
                 assertResponse(ojpTripInfoDeliveryStructure, language);
                 for (JAXBElement<?> rest : ojpTripInfoDeliveryStructure.getRest()) {
-                    //TODO OJP 2.0 assert ::rest
+                    if (rest.getDeclaredType() == TripInfoResultStructure.class) {
+                        final TripInfoResultStructure tripInfoResultStructure = (TripInfoResultStructure) rest.getValue();
+                        assertThat(tripInfoResultStructure).isNotNull();
+                        //TODO OJP 2.0 assert ::rest
+                        log.info("Refresh OK for LegStructure::id={}, operatingDay={}", journeyRefTimedLeg, operationDay);
+                        return;
+                    }
                     log.debug("OJPTripInfoDeliveryStructure::rest value: {}", rest.getDeclaredType());
                 }
-                log.info("Refresh OK for PTRideLeg::id={}, operatingDay={}", journeyRefTimedLeg, operationDay);
+                Assertions.fail("TripInfoResultStructure expected");
             } catch (Exception ex) {
                 // TODO OJP active seems to fail always -> do we need to adapt its TimedLeg::id
                 Assertions.fail("Trip::leg reconstruction failed for: " + ojpAccessor.getEndpoint() + ", TimedLeg to refresh=" + legStructure.getTimedLeg(), ex);
@@ -404,7 +411,7 @@ class OJPAdapterAccessTest {
             final StopEventStructure stopEventStructure = ((StopEventResultStructure) rest.getValue()).getStopEvent();
             final String stopPlaceId = stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue();
             if (stopPlaceId.startsWith("ch:") && stopPlaceId.contains(":sloid:")) {
-                //TODO assert 85 -> "ch:"; last 4 UIC numbers -> :xxxx:
+                //TODO OJP 2.0 assert 85 -> "ch:"; last 4 UIC numbers -> :xxxx:
                 log.info("OJP SLOID={} for requested StopPlace::id={}", stopPlaceId, departureStopPlaceReference);
             } else {
                 assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopPlaceId);

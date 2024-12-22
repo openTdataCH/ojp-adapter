@@ -34,10 +34,12 @@ import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 
 /**
- * Nasty class, due to OJP's XML generic structure.
+ * Nasty OJP 1.0 class, due to OJP's XML generic structure.
  *
  * @author Peter Hirzel
+ * @deprecated OJP 2.0 provides these properties by {@link de.vdv.ojp.release2.model.DatedJourneyStructure}
  */
+@Deprecated(since = "OJP 2.0")
 @Slf4j
 @Getter
 public final class JAXBElementContentContainer {

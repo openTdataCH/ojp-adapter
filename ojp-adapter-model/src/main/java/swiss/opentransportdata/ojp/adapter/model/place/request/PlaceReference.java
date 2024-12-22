@@ -46,8 +46,9 @@ public class PlaceReference implements InheritanceDiscriminable {
      */
     public static final String TYPE_ADDRESS_POI = "ADDRESS_POI";
 
-    @Schema(description = "`AbstractPlace` concrete sub-type.", allowableValues = {"StopPlace", "PointOfInterest", "Address",
-        TYPE_COORDINATES /*TODO TYPE_ADDRESS_POI is non-documented for J-S internal use*/}, defaultValue = "StopPlace", example = "StopPlace")
+    @Schema(description = "`AbstractPlace` concrete sub-type.",
+        allowableValues = {"StopPlace", "PointOfInterest", "Address", TYPE_COORDINATES},
+        defaultValue = "StopPlace", example = "StopPlace")
 
     private final String type;
 
