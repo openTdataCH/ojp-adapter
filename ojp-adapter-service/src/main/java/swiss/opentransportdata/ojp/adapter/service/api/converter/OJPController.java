@@ -18,6 +18,7 @@ package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -257,6 +258,9 @@ public class OJPController extends BaseController implements LocationPlaceFilter
 
         @Parameter(description = "Day of operation (null defaults to TODAY).", example = ModelDoc.SAMPLE_DATE) @DateTimeFormat(iso = ISO.DATE)
         @RequestParam(value = "date", required = false) LocalDate date,
+
+        @Parameter(description = ModelDoc.PARAM_REALTIME_MODE, schema = @Schema(defaultValue = RealtimeModeEnum.REALTIME_AS_STRING))
+        @RequestParam(value = "realtimeMode", required = false) RealtimeModeEnum realtimeMode,
         /*
         @Parameter(description = "Set true to get `ServiceJourney::operatingPeriods`.", schema = @Schema(defaultValue = "false", type = "boolean"))
         @RequestParam(value = ApiDocumentation.PARAM_INCLUDE_OPERATING_DAYS, required = false) Boolean includeOperatingDays,
@@ -287,13 +291,14 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             final TripLegRequestFilter filter = TripLegRequestFilter.builder()
                 .preferredLanguage(getPreferredLanguage())
                 .journeyReference(id)
+                .realtimeMode(mapToUseRealtimeDataEnumeration(realtimeMode))
                 .operatingDay(date == null ? DateTimeUtils.createSwissDate() : date)
-                .projection(Boolean.TRUE.equals(includeRouteProjection))
+                .includeProjection(Boolean.TRUE.equals(includeRouteProjection))
                 .build();
 
             final DatedVehicleJourney datedVehicleJourney = ojpFacade.requestDatedVehicleJourneyByServiceJourneyId(createOJPAccessor(), filter);
 
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
+            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
             return responseFactory.createOkResponse(datedVehicleJourney, filter.getPreferredLanguage());
         } catch (OJPException ex) {
             return handle(ex);
@@ -618,8 +623,8 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             .includeOperatingDays(Boolean.TRUE.equals(body.getIncludeOperatingDays()))
             .modeFilterStructure(OJPFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))
             .includeSituationsContext(true /*TODO make configurable*/)
-            .includeLegProjection(Boolean.TRUE.equals(body.getIncludeRouteProjection()))
-            .excludeRealtime(body.getRealtimeMode() == RealtimeModeEnum.OFF);
+            .includeProjection(Boolean.TRUE.equals(body.getIncludeRouteProjection()))
+            .realtimeMode(mapToUseRealtimeDataEnumeration(body.getRealtimeMode()));
 
         if (body.getMobilityFilter() == null) {
             tripRequestFilterBuilder.transferLimit(TripMobilityFilter.DEFAULT_MAX_TRANSFERS)
@@ -656,6 +661,13 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         } catch (Exception ex) {
             return responseFactory.createUnexpectedProblemResponse("OJP /trips", ex);
         }
+    }
+
+    private UseRealtimeDataEnumeration mapToUseRealtimeDataEnumeration(RealtimeModeEnum realtimeModeEnum) {
+        if (realtimeModeEnum == RealtimeModeEnum.OFF) {
+            return UseRealtimeDataEnumeration.NONE;
+        }
+        return UseRealtimeDataEnumeration.EXPLANATORY;
     }
 
     /**

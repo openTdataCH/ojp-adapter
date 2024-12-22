@@ -36,7 +36,6 @@ import de.vdv.ojp.release2.model.StopEventTypeEnumeration;
 import de.vdv.ojp.release2.model.StopPlaceRefStructure;
 import de.vdv.ojp.release2.model.TripInfoParamStructure;
 import de.vdv.ojp.release2.model.TripParamStructure;
-import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import jakarta.xml.bind.JAXBElement;
 import java.math.BigInteger;
 import java.time.Duration;
@@ -125,7 +124,7 @@ public class OJPFactory {
         if (!CollectionUtils.isEmpty(filter.getPlaceTypes())) {
             // restrict <ojp:Type>
             placeParamStructure.getType().addAll(filter.getPlaceTypes());
-            /*
+            /* TODO filter POI category
             if (placeTypes.contains(PlaceTypeEnumeration.POI)) {
                 PointOfInterestFilterStructure pointOfInterestFilterStructure = new PointOfInterestFilterStructure();
                 pointOfInterestFilterStructure.setExclude(false);
@@ -168,13 +167,13 @@ public class OJPFactory {
 
         //TODO OJP 2.0 tripParamStructure.setModeFilter(filter.getModeFilterStructure());
         // tripParamStructure.setPrivateModeFilter(PrivateModeFilterStructure);
-        tripParamStructure.setUseRealtimeData(filter.isExcludeRealtime() ? UseRealtimeDataEnumeration.NONE : UseRealtimeDataEnumeration.EXPLANATORY);
+        tripParamStructure.setUseRealtimeData(filter.getRealtimeMode());
         // Whether the result should include accessibility information. Further specifyable: ..noRamp, noElevator, ..
         tripParamStructure.setIncludeAllRestrictedLines(true /*like OJP sample*/);
         //tripParamStructure.setIncludeAccessibility(filter.isIncludeAccessibility());
         tripParamStructure.setIncludeIntermediateStops(filter.isIncludeIntermediateStops());
         tripParamStructure.setIncludeFare(false /*NOVA post-pricing approach for CH*/);
-        tripParamStructure.setIncludeLegProjection(filter.isIncludeLegProjection());
+        tripParamStructure.setIncludeLegProjection(filter.isIncludeProjection());
         // tripParamStructure.setLineFilter();
         // tripParamStructure.setOperatorFilter();
         tripParamStructure.setIncludeOperatingDays(filter.isIncludeOperatingDays());
@@ -256,16 +255,12 @@ public class OJPFactory {
         final TripInfoParamStructure tripInfoParamStructure = new TripInfoParamStructure();
         tripInfoParamStructure.setIncludeCalls(true);
         tripInfoParamStructure.setIncludeTrackSections(INCLUDE_TRACK_SECTIONS);
-        // 'service' information be added to the results!
+        // 'service' information to be added to the results!
         tripInfoParamStructure.setIncludeService(true);
         // Whether the result should include the geographic projection (coordinates) of each journey leg.
-        tripInfoParamStructure.setIncludeTrackProjection(filter.isProjection());
-        /*
-        tripInfoParamStructure.setIncludePosition();
-        tripInfoParamStructure.setExtension();
-        // rtMode#OFF ?
-        tripInfoParamStructure.setUseTimetabledDataOnly();
-        */
+        tripInfoParamStructure.setIncludeTrackProjection(filter.isIncludeProjection());
+        //tripInfoParamStructure.setIncludePosition();
+        tripInfoParamStructure.setUseRealTimeData(filter.getRealtimeMode());
 
         final JourneyRefStructure journeyRefStructure = new JourneyRefStructure();
         journeyRefStructure.setValue(filter.getJourneyReference());
@@ -274,7 +269,6 @@ public class OJPFactory {
         operatingDayRefStructure.setValue(formatDate(filter.getOperatingDay()));
 
         final List<JAXBElement<?>> rest = new ArrayList<>();
-        rest.add(objectFactory2.createOJPTripInfoRequestStructureParams(tripInfoParamStructure));
         rest.add(objectFactory2.createJourneyRef(journeyRefStructure));
         rest.add(objectFactory2.createOperatingDayRef(operatingDayRefStructure));
         // ojpTripInfoRequestStructure.setTimeOfOperation();

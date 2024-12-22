@@ -309,7 +309,7 @@ class OJPAdapterAccessTest {
 
             log.info("/trips and TripDeliveryStructure OK - going to refresh each TimedLeg...");
             for (LegStructure tripLegStructure : tripStructure.getLeg()) {
-                //TODO OJP 2.0 refreshPublicTransportLeg(ojpAccessor, tripLegStructure);
+                refreshPublicTransportLeg(ojpAccessor, tripLegStructure);
             }
         });
 

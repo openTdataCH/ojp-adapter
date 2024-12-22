@@ -16,6 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter;
 
+import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import java.time.LocalDate;
 import java.util.Locale;
 import lombok.Builder;
@@ -26,7 +27,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.que
 
 @Data
 @Builder
-public class TripLegRequestFilter implements PIRequestPolicy, PIRequestFilter {
+public class TripLegRequestFilter implements PIRequestPolicy, PIRequestFilter, RealtimeMode, IncludeProjection {
 
     Locale preferredLanguage;
 
@@ -40,6 +41,12 @@ public class TripLegRequestFilter implements PIRequestPolicy, PIRequestFilter {
      */
     @NonNull LocalDate operatingDay;
 
+    /**
+     * Default: false, all trips are calculated by realtime data; true: planned data only
+     */
     @Builder.Default
-    boolean projection = false;
+    UseRealtimeDataEnumeration realtimeMode = UseRealtimeDataEnumeration.EXPLANATORY;
+
+    @Builder.Default
+    boolean includeProjection = false;
 }

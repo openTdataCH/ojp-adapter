@@ -132,9 +132,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     //    /**
     //     * Transmodel {@link TripRequestPolicy} ::useRealTime
     //     */
-    @Schema(description = ModelDoc.HINT_ENUM_EXTENSIBLE
-        + "\n- `REALTIME` potentially planned and RT **including non-rideable** (like cancelled)"
-        + "\n- `OFF` **planned only**", defaultValue = RealtimeModeEnum.REALTIME_AS_STRING)
+    @Schema(description = ModelDoc.PARAM_REALTIME_MODE, defaultValue = RealtimeModeEnum.REALTIME_AS_STRING)
     RealtimeModeEnum realtimeMode;
 
     //    /**

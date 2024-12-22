@@ -167,6 +167,9 @@ public class ModelDoc {
     public static final String OCCUPANCY_ENUM_LIST = "[UNKNOWN,LOW,MEDIUM,HIGH]";
     public static final String JOURNEY_SINGLE_RIDE = "If this value is missing, it is probably a _single-journey (de:Einzelfahrt)_.";
 
+    public static final String PARAM_REALTIME_MODE = ModelDoc.HINT_ENUM_EXTENSIBLE
+        + "\n- `REALTIME` potentially planned and RT **including non-rideable** (like cancelled)"
+        + "\n- `OFF` **planned only**";
     public static final String TRIP_POLYLINE = "With or without a plottable polyline for each vehicle-journey (if available)." + HINT_PERFORMANCE;
     public static final String PARAM_INCLUDE_ROUTE_PROJECTION = "includeRouteProjection";
     public static final String PARAM_INCLUDE_OPERATING_DAYS = "includeOperatingDays";

@@ -18,6 +18,7 @@ package swiss.opentransportdata.ojp.adapter;
 
 import de.vdv.ojp.release2.model.ModeFilterStructure;
 import de.vdv.ojp.release2.model.TripViaStructure;
+import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +38,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
  */
 @Data
 @Builder
-public class TripRequestFilter implements TripRequest, ModeRequestFilter {
+public class TripRequestFilter implements TripRequest, ModeRequestFilter, RealtimeMode, IncludeProjection {
 
     private static int LIMIT_DEFAULT = 5;
     static final int TRANSFER_LIMIT_MAX = 11;
@@ -104,22 +105,22 @@ public class TripRequestFilter implements TripRequest, ModeRequestFilter {
      */
     List<TripViaStructure> vias;
 
+    /**
+     * Default: false, all trips are calculated by realtime data; true: planned data only
+     */
+    @Builder.Default
+    UseRealtimeDataEnumeration realtimeMode = UseRealtimeDataEnumeration.EXPLANATORY;
+
     @Builder.Default
     boolean includeAccessibility = false;
     @Builder.Default
     boolean includeBikeCarriage = false;
     @Builder.Default
-    boolean includeLegProjection = false;
+    boolean includeProjection = false;
     @Builder.Default
     boolean includeOperatingDays = false;
     @Builder.Default
     boolean includeIntermediateStops = false;
     @Builder.Default
     boolean includeSituationsContext = true;
-
-    /**
-     * Default: false, all trips are calculated by realtime data; true: planned data only
-     */
-    @Builder.Default // TODO rename closer to UseRealtimeDataEnumeration
-    boolean excludeRealtime = false;
 }
