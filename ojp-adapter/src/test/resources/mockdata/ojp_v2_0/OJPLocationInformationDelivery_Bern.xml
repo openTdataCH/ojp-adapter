@@ -1,0 +1,70 @@
+<OJP xmlns:siri="http://www.siri.org.uk/siri" xmlns="http://www.vdv.de/ojp" version="2.0">
+    <OJPResponse>
+        <siri:ServiceDelivery>
+            <siri:ResponseTimestamp>2024-12-23T08:54:11.2446303+01:00</siri:ResponseTimestamp>
+            <siri:ProducerRef>MENTZ</siri:ProducerRef>
+            <OJPLocationInformationDelivery>
+                <siri:ResponseTimestamp>2024-12-23T08:54:11.2446835+01:00</siri:ResponseTimestamp>
+                <siri:RequestMessageRef>5bd602b9-a99b-4db7-8909-b12cfb3b05d6
+                </siri:RequestMessageRef>
+                <siri:DefaultLanguage>de</siri:DefaultLanguage>
+                <CalcTime>2</CalcTime>
+                <PlaceResult>
+                    <Place>
+                        <StopPlace>
+                            <StopPlaceRef>8507785</StopPlaceRef>
+                            <StopPlaceName>
+                                <Text xml:lang="de">Bern, Hauptbahnhof</Text>
+                            </StopPlaceName>
+                            <PrivateCode>
+                                <System>EFA</System>
+                                <Value>111553</Value>
+                            </PrivateCode>
+                            <TopographicPlaceRef>23006351:1</TopographicPlaceRef>
+                        </StopPlace>
+                        <Name>
+                            <Text xml:lang="de">Hauptbahnhof</Text>
+                        </Name>
+                        <GeoPosition>
+                            <siri:Longitude>7.43853</siri:Longitude>
+                            <siri:Latitude>46.949</siri:Latitude>
+                        </GeoPosition>
+                        <Mode>
+                            <PtMode>bus</PtMode>
+                            <siri:BusSubmode>localBus</siri:BusSubmode>
+                        </Mode>
+                    </Place>
+                    <Complete>true</Complete>
+                    <Probability>0.95</Probability>
+                </PlaceResult>
+                <PlaceResult>
+                    <Place>
+                        <StopPlace>
+                            <StopPlaceRef>8507000</StopPlaceRef>
+                            <StopPlaceName>
+                                <Text xml:lang="de">Bern</Text>
+                            </StopPlaceName>
+                            <PrivateCode>
+                                <System>EFA</System>
+                                <Value>111055</Value>
+                            </PrivateCode>
+                            <TopographicPlaceRef>23006351:1</TopographicPlaceRef>
+                        </StopPlace>
+                        <Name>
+                            <Text xml:lang="de">Bern</Text>
+                        </Name>
+                        <GeoPosition>
+                            <siri:Longitude>7.43913</siri:Longitude>
+                            <siri:Latitude>46.94883</siri:Latitude>
+                        </GeoPosition>
+                        <Mode>
+                            <PtMode>rail</PtMode>
+                        </Mode>
+                    </Place>
+                    <Complete>true</Complete>
+                    <Probability>0.45</Probability>
+                </PlaceResult>
+            </OJPLocationInformationDelivery>
+        </siri:ServiceDelivery>
+    </OJPResponse>
+</OJP>

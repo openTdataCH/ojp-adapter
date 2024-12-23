@@ -106,9 +106,9 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                 scheduledStopPoints.add(mapToScheduledStopPoint(callAtNearStopStructure.getCallAtStop()));
             }
 
-            final DatedJourneyStructure datedJourneyStructure = stopEventStructure.getService();
-            final ModeOJP mode = mapToMode(datedJourneyStructure.getMode());
-            serviceJourneys.add(OJPFacade.createServiceJourney(datedJourneyStructure, scheduledStopPoints, (Element) stopEventStructure.getExtension()));
+            serviceJourneys.add(OJPFacade.createServiceJourney(stopEventStructure.getService(),
+                scheduledStopPoints,
+                (Element) stopEventStructure.getExtension()));
         }
 
         return serviceJourneys;

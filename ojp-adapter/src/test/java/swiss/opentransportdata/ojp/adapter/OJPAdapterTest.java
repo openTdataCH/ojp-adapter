@@ -22,20 +22,26 @@ import de.vdv.ojp.release2.model.OJP;
 import de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure;
 import de.vdv.ojp.release2.model.OJPStopEventDeliveryStructure;
 import de.vdv.ojp.release2.model.OJPTripDeliveryStructure;
+import de.vdv.ojp.release2.model.PlaceResultStructure;
+import de.vdv.ojp.release2.model.StopEventResultStructure;
+import de.vdv.ojp.release2.model.TripResultStructure;
+import jakarta.xml.bind.JAXBElement;
 import java.io.IOException;
 import java.io.InputStream;
 import org.assertj.core.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * @see <a href="https://tools.odpch.ch/ojp-demo-v2/search">Test-file creation tool</a>
+ */
 class OJPAdapterTest {
 
     private static final OJPAdapter ojpAdapter = new OJPAdapter(WebClient.builder().build(), "OJP-Adapter test");
 
     private String readFile(String filename) throws IOException {
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("mockdata/ojp_v1_0/" + filename)) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("mockdata/ojp_v2_0/" + filename)) {
             final String xml = new String(is.readAllBytes());
             Assumptions.assumeThat(xml).as("test-condition").isNotBlank();
             return xml;
@@ -55,90 +61,99 @@ class OJPAdapterTest {
 
         assertThat(ojp.getOJPResponse()).isNotNull();
         assertThat(ojp.getOJPResponse().getServiceDelivery()).isNotNull();
-        assertThat(ojp.getOJPResponse().getServiceDelivery().isStatus()).isTrue();
+        assertThat(ojp.getOJPResponse().getServiceDelivery().isStatus()).as("null defaults to ok (TRUE)").isNull();
         assertThat(ojp.getOJPResponse().getServiceDelivery().getErrorCondition()).isNull();
-        assertThat(ojp.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery()).as("JAXBElement").hasSize(1);
+        assertThat(ojp.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery()).hasSize(1);
+        assertThat(ojp.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().getFirst()).isInstanceOf(JAXBElement.class);
 
         return ojp;
     }
 
-    //TODO OJP 2.0 replace v1 files with v2
-    @Disabled
     @Test
     void mapToFirstOJPLocationInformationDeliveryStructure() throws IOException {
         final OJP ojp = unmarshalResponse("OJPLocationInformationDelivery_Bern.xml");
 
         final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojp);
         assertThat(ojpLocationInformationDeliveryStructure).isNotNull();
-        /* TODO OJP v2.0
-        assertThat(ojpLocationInformationDeliveryStructure.getLocation()).hasSize(26);
-        for (PlaceResultStructure placeResultStructure : ojpLocationInformationDeliveryStructure.getLocation()) {
-            assertThat(placeResultStructure.getLocation()).isNotNull();
-            assertThat(placeResultStructure.getLocation().getStopPlace()).isNotNull();
-            assertThat(placeResultStructure.getLocation().getStopPlace().getStopPlaceName()).isNotNull();
-            assertThat(placeResultStructure.getLocation().getStopPlace().getStopPlaceRef()).isNotNull();
+        assertThat(ojpLocationInformationDeliveryStructure.getRest()).isNotEmpty();
+
+        int count = 0;
+        for (JAXBElement<?> rest : ojpLocationInformationDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() == PlaceResultStructure.class) {
+                count++;
+
+                final PlaceResultStructure placeResultStructure = (PlaceResultStructure) rest.getValue();
+                assertThat(placeResultStructure.getPlace()).isNotNull();
+                assertThat(placeResultStructure.getPlace().getStopPlace()).isNotNull();
+                assertThat(placeResultStructure.getPlace().getStopPlace().getStopPlaceName()).isNotNull();
+                assertThat(placeResultStructure.getPlace().getStopPlace().getStopPlaceRef()).isNotNull();
+            }
         }
-         */
+        assertThat(count).isEqualTo(2);
     }
 
-    //TODO OJP 2.0 replace v1 files with v2
-    @Disabled
     @Test
     void mapToFirstOJPStopEventDeliveryStructure_ArrivalResponse() throws IOException {
         final OJP ojp = unmarshalResponse("OJPStopEventDelivery_ArrivalsAtZurichHB.xml");
 
         final OJPStopEventDeliveryStructure stopEventDeliveryStructure = OJPAdapter.mapToFirstOJPStopEventDeliveryStructure(ojp);
         assertThat(stopEventDeliveryStructure).isNotNull();
-        /*TODO OJP 2.0
-        assertThat(stopEventDeliveryStructure.getStopEventResponseContext()).isNotNull();
-        assertThat(stopEventDeliveryStructure.getStopEventResult()).hasSize(5);
-        for (StopEventResultStructure stopEventResultStructure : stopEventDeliveryStructure.getStopEventResult()) {
-            assertThat(stopEventResultStructure.getStopEvent()).isNotNull();
-            assertThat(stopEventResultStructure.getStopEvent().getThisCall()).as("arrival stop").isNotNull();
-            assertThat(stopEventResultStructure.getStopEvent().getPreviousCall()).as("stops before arrival").isNotEmpty();
-            assertThat(stopEventResultStructure.getStopEvent().getOnwardCall()).as("stops after arrival").isEmpty();
-        }
+        assertThat(stopEventDeliveryStructure.getRest()).isNotEmpty();
 
-         */
+        int count = 0;
+        for (JAXBElement<?> rest : stopEventDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() == StopEventResultStructure.class) {
+                count++;
+
+                final StopEventResultStructure stopEventResultStructure = (StopEventResultStructure) rest.getValue();
+                assertThat(stopEventResultStructure.getStopEvent()).isNotNull();
+                assertThat(stopEventResultStructure.getStopEvent().getThisCall()).as("arrival stop").isNotNull();
+                //assertThat(stopEventResultStructure.getStopEvent().getPreviousCall()).as("stops before arrival, may or may not").isEmpty();
+                //assertThat(stopEventResultStructure.getStopEvent().getOnwardCall()).as("stops after arrival, may or may not").isNotEmpty();
+            }
+        }
+        assertThat(count).isEqualTo(10);
     }
 
-    //TODO OJP 2.0 replace v1 files with v2
-    @Disabled
     @Test
     void mapToFirstOJPStopEventDeliveryStructure_DepartureResponse() throws IOException {
         final OJP ojp = unmarshalResponse("OJPStopEventDelivery_DeparturesFromBern.xml");
 
         final OJPStopEventDeliveryStructure stopEventDeliveryStructure = OJPAdapter.mapToFirstOJPStopEventDeliveryStructure(ojp);
         assertThat(stopEventDeliveryStructure).isNotNull();
-        /*TODO OJP 2.0
-        assertThat(stopEventDeliveryStructure.getStopEventResponseContext()).isNotNull();
-        assertThat(stopEventDeliveryStructure.getStopEventResult()).hasSize(3);
-        for (StopEventResultStructure stopEventResultStructure : stopEventDeliveryStructure.getStopEventResult()) {
-            assertThat(stopEventResultStructure.getStopEvent()).isNotNull();
-            assertThat(stopEventResultStructure.getStopEvent().getThisCall()).as("arrival stop").isNotNull();
-            assertThat(stopEventResultStructure.getStopEvent().getPreviousCall()).as("stops before arrival").isEmpty();
-            assertThat(stopEventResultStructure.getStopEvent().getOnwardCall()).as("stops after arrival").isNotEmpty();
-        }
+        assertThat(stopEventDeliveryStructure.getRest()).isNotEmpty();
 
-         */
+        int count = 0;
+        for (JAXBElement<?> rest : stopEventDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() == StopEventResultStructure.class) {
+                count++;
+                final StopEventResultStructure stopEventResultStructure = (StopEventResultStructure) rest.getValue();
+                assertThat(stopEventResultStructure.getStopEvent()).isNotNull();
+                assertThat(stopEventResultStructure.getStopEvent().getThisCall()).as("arrival stop").isNotNull();
+                //assertThat(stopEventResultStructure.getStopEvent().getPreviousCall()).as("stops before arrival").isEmpty();
+                assertThat(stopEventResultStructure.getStopEvent().getOnwardCall()).as("stops after arrival").isNotEmpty();
+            }
+        }
+        assertThat(count).isEqualTo(10);
     }
 
-    //TODO OJP 2.0 replace v1 files with v2
-    @Disabled
     @Test
     void mapToFirstOJPTripDeliveryStructure_TripResponse() throws IOException {
         final OJP ojp = unmarshalResponse("OJPTripDelivery_Bern_Paris.xml");
 
-        final OJPTripDeliveryStructure ojpTripDeliveryStructure = OJPAdapter.mapToFirstOJPTripDeliveryStructure(ojp);
-        assertThat(ojpTripDeliveryStructure).isNotNull();
-        /* TODO OJP 2.0
-        assertThat(ojpTripDeliveryStructure.getTripResponseContext()).isNotNull();
-        assertThat(ojpTripDeliveryStructure.getTripResult()).hasSize(3);
-        for (TripResultStructure tripResultStructure : ojpTripDeliveryStructure.getTripResult()) {
-            assertThat(tripResultStructure.getTrip()).isNotNull();
-            assertThat(tripResultStructure.getTrip().getTripId()).isNotBlank();
-        }
+        final OJPTripDeliveryStructure tripDeliveryStructure = OJPAdapter.mapToFirstOJPTripDeliveryStructure(ojp);
+        assertThat(tripDeliveryStructure).isNotNull();
+        assertThat(tripDeliveryStructure.getRest()).isNotEmpty();
 
-         */
+        int count = 0;
+        for (JAXBElement<?> rest : tripDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() == TripResultStructure.class) {
+                count++;
+                final TripResultStructure tripResultStructure = (TripResultStructure) rest.getValue();
+                assertThat(tripResultStructure.getTrip()).isNotNull();
+                assertThat(tripResultStructure.getTrip().getId()).isNotBlank();
+            }
+        }
+        assertThat(count).isEqualTo(5);
     }
 }
