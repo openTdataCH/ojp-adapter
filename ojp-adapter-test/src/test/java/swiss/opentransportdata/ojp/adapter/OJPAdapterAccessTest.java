@@ -55,6 +55,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter.Point;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAdapterServiceConfiguration;
+import swiss.opentransportdata.ojp.adapter.converter.OJPFactory;
 import uk.org.siri.siri.AbstractServiceDeliveryStructure;
 import uk.org.siri.siri.LocationStructure;
 import uk.org.siri.siri.ServiceDelivery;
@@ -336,7 +337,7 @@ class OJPAdapterAccessTest {
             // assertThat(tripLegStructure.getTimedLeg().getLegBoard().getServiceDeparture().getEstimatedTime()).as("rt mostly given").isNotNull();
             assertThat(datedJourneyStructure.getOperatingDayRef()).isNotNull();
             assertThat(datedJourneyStructure.getOperatingDayRef().getValue()).isNotEmpty();
-            final LocalDate operationDay = LocalDate.parse(datedJourneyStructure.getOperatingDayRef().getValue());
+            final LocalDate operationDay = OJPFactory.parseOperatingDayRef(datedJourneyStructure.getOperatingDayRef());
 
             try {
                 final Locale language = Locale.GERMAN;

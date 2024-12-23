@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter;
 import swiss.opentransportdata.ojp.adapter.StopEventRequestFilter;
@@ -293,6 +294,14 @@ public class OJPFactory {
     private static String formatDate(LocalDate date) {
         return date == null ? null : date.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
+
+    public static LocalDate parseOperatingDayRef(OperatingDayRefStructure operatingDayRefStructure) {
+        if ((operatingDayRefStructure != null) && StringUtils.isNotBlank(operatingDayRefStructure.getValue())) {
+            return LocalDate.parse(operatingDayRefStructure.getValue());
+        }
+        return null;
+    }
+
 
     @NonNull
     public OJP createOjpWithStopEventRequest(@NonNull StopEventRequestFilter filter) {

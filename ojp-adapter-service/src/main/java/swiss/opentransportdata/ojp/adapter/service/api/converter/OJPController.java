@@ -253,7 +253,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = DESCRIPTION_OJP_TOKEN, schema = @Schema(type = "string"))
         @RequestHeader(value = HEADER_OJP_TOKEN, required = false) String ojpToken,
 
-        @Parameter(description = "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.", schema = @Schema(type = "string", example = "ch:1:sjyid:100061:2373-003"))
+        @Parameter(description = "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.", schema = @Schema(type = "string", example = ModelDoc.SAMPLE_SJYID))
         @PathVariable("id") String id,
 
         @Parameter(description = "Day of operation (null defaults to TODAY).", example = ModelDoc.SAMPLE_DATE) @DateTimeFormat(iso = ISO.DATE)
@@ -605,7 +605,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         //        }
 
         final AccessibilityEnum accessibilityEnum = ObjectUtils.defaultIfNull(body.getIncludeAccessibility(), TripsByOriginAndDestinationRequestBody.DEFAULT_INCLUDE_ACCESSIBILITY);
-        if (!(accessibilityEnum == AccessibilityEnum.NONE || accessibilityEnum == AccessibilityEnum.ALL)) {
+        if (!((accessibilityEnum == AccessibilityEnum.NONE) || (accessibilityEnum == AccessibilityEnum.ALL))) {
             return responseFactory.createBadParamResponse(null, "includeAccessibility",
                 "only '" + AccessibilityEnum.ALL_AS_STRING + "' or '" + AccessibilityEnum.NONE_AS_STRING + "' supported by OJP yet");
         }

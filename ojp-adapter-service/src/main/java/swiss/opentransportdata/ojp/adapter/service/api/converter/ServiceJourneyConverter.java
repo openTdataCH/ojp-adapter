@@ -24,7 +24,8 @@ import de.vdv.ojp.release2.model.InternationalTextStructure;
 import de.vdv.ojp.release2.model.ModeStructure;
 import de.vdv.ojp.release2.model.OJP;
 import de.vdv.ojp.release2.model.OJPStopEventDeliveryStructure;
-import de.vdv.ojp.release2.model.SituationsStructure;
+import de.vdv.ojp.release2.model.SituationFullRefStructure;
+import de.vdv.ojp.release2.model.SituationRefList;
 import de.vdv.ojp.release2.model.StopEventResultStructure;
 import de.vdv.ojp.release2.model.StopEventStructure;
 import jakarta.xml.bind.JAXBElement;
@@ -32,7 +33,6 @@ import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
 import lombok.NonNull;
@@ -45,6 +45,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Direction;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.LinkedText;
@@ -107,15 +108,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
 
             final DatedJourneyStructure datedJourneyStructure = stopEventStructure.getService();
             final ModeOJP mode = mapToMode(datedJourneyStructure.getMode());
-            serviceJourneys.add(OJPFacade.createServiceJourney(
-                datedJourneyStructure.getJourneyRef(),
-                scheduledStopPoints,
-                mapToServiceProducts(datedJourneyStructure, mode, (Element) stopEventStructure.getExtension()),
-                mapToDirections(datedJourneyStructure),
-                mapToNotices(datedJourneyStructure),
-                mapToSituations(null /*TODO OJP 2.0 seems not contained*/),
-                mapToServiceAlteration(datedJourneyStructure),
-                Collections.emptyList() /*TODO OJP 2.0 operatingDays*/));
+            serviceJourneys.add(OJPFacade.createServiceJourney(datedJourneyStructure, scheduledStopPoints, (Element) stopEventStructure.getExtension()));
         }
 
         return serviceJourneys;
@@ -344,15 +337,20 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
 
     static ServiceAlteration mapToServiceAlteration(DatedJourneyStructure datedJourneyStructure) {
         return ServiceAlteration.builder()
+            .cancelled(Boolean.TRUE.equals(datedJourneyStructure.isCancelled()))
             .redirected(Boolean.TRUE.equals(datedJourneyStructure.isDeviation()))
-            //TODO others
+            .delayFormatted(Boolean.TRUE.equals(datedJourneyStructure.isUndefinedDelay()) ? "Undefined delay" : null)
+            .unplannedStopPointsFormatted(Boolean.TRUE.equals(datedJourneyStructure.isUnplanned()) ? ModelDoc.UNPLANNED_STOPS_FORMATTED_SAMPLE : null)
+            //TODO OJP 2.0 others ::partiallyCancelled ::isRestricted,..
             .build();
     }
 
-    static List<PTSituation> mapToSituations(SituationsStructure situations) {
-        if (situations != null) {
-            //TODO OJP might not have something like HIM
-            log.info("not mapped yet: PTSituation's: {}", situations);
+    static List<PTSituation> mapToSituations(SituationRefList situationRefList) {
+        if (situationRefList != null) {
+            for (SituationFullRefStructure situationFullRefStructure : situationRefList.getSituationFullRef()) {
+                //TODO OJP 2.0, see TripConverter::mapToTripResponse
+                log.info("not mapped yet: PTSituation's: {}", situationFullRefStructure);
+            }
         }
         return new ArrayList<>();
     }

@@ -41,7 +41,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -120,9 +119,15 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             } else if (rest.getDeclaredType() == TripResultStructure.class) {
                 final TripResultStructure tripResultStructure = (TripResultStructure) rest.getValue();
                 final List<Leg> legs = new ArrayList<>();
+                int cancelled = 0;
+                int timedLegs = 0;
                 for (LegStructure legStructure : tripResultStructure.getTrip().getLeg()) {
                     if (legStructure.getTimedLeg() != null) {
                         legs.add(mapToPTRideLeg(legStructure));
+                        if (Boolean.TRUE.equals(legStructure.getTimedLeg().getService().isCancelled())) {
+                            cancelled++;
+                        }
+                        timedLegs++;
                     } else if (legStructure.getContinuousLeg() != null) {
                         legs.add(mapToAccessLeg(legStructure));
                     } else if (legStructure.getTransferLeg() != null) {
@@ -156,7 +161,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                     .operatingPeriods(operatingPeriods)
                     //.ecoBalance(tripV2.getEcoBalance())
                     //.archiveReliability(tripV2.getArchivedConnectionReliability() == null ? null : tripV2.getArchivedConnectionReliability().toString())
-                    .status(OJPFacade.createTripStatus())
+                    .status(OJPFacade.createTripStatus(timedLegs, cancelled))
                     .summary(mapToTripSummary(tripResultStructure.getTripSummary()))
                     // resultStructure.getTripFare() -> probably no Data yet
 
@@ -249,17 +254,9 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             .mode(mode.getMode())
             .id(legStructure.getId())
             //.distance()
-            .duration(null /*"TODO DurationHelper.toDuration(analog LegV2::duration) calculate cause not given toDurationString()"*/)
+            .duration(null /*"TODO DurationHelper.toDuration() calculate cause not given toDurationString()"*/)
             // irrelevant resp. implicite by dateTime: <ojp:OperatingDayRef>2022-11-19</ojp:OperatingDayRef>
-            .serviceJourney(OJPFacade.createServiceJourney(datedJourneyStructure.getJourneyRef(),
-                scheduledStopPoints /*PlaceReferenceHelper.mapToScheduledStopPoints(stops)*/,
-                ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, (Element) timedLegStructure.getExtension()),
-                ServiceJourneyConverter.mapToDirections(datedJourneyStructure),
-                ServiceJourneyConverter.mapToNotices(datedJourneyStructure /*NoteConverter.mapNotices(attributes, infos)*/),
-                ServiceJourneyConverter.mapToSituations(null),
-                ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure),
-                Collections.emptyList() // Hafas set on Trip but never on PTRideLeg
-            ))
+            .serviceJourney(OJPFacade.createServiceJourney(datedJourneyStructure, scheduledStopPoints, (Element) timedLegStructure.getExtension()))
             .build();
     }
 
@@ -327,7 +324,8 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
 
     private TripSummary mapToTripSummary(TripSummaryStructure tripSummaryStructure) {
         if (tripSummaryStructure != null) {
-            /*TODO return TripSummary.builder()
+            log.info("TripSummaryStructure: {}", tripSummaryStructure);
+            /*TODO OJP 2.0 return TripSummary.builder()
                 //.firstStopPlace(tripSummaryStructure.getOrigin())
                 //.lastStopPlace(tripSummaryStructure.getDestination())
                 //.duration(tripSummaryStructure.getDuration()) -> on Trip::duration
@@ -357,8 +355,6 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                 continue;
             }
 
-            // TODO OJP 2.0
-
             final TripInfoResultStructure tripInfoResultStructure = (TripInfoResultStructure) rest.getValue();
             final DatedJourneyStructure datedJourneyStructure = tripInfoResultStructure.getService();
             final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
@@ -372,15 +368,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
             }
 
             return DatedVehicleJourney.builder()
-                .serviceJourney(OJPFacade.createServiceJourney(
-                    datedJourneyStructure.getJourneyRef(),
-                    scheduledStopPoints,
-                    ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, (Element) tripInfoResultStructure.getExtension()),
-                    ServiceJourneyConverter.mapToDirections(datedJourneyStructure),
-                    ServiceJourneyConverter.mapToNotices(datedJourneyStructure),
-                    List.of(/*TODO OJP 2.0 ServiceJourneyConverter.mapToSituations(tripInfoResultStructure.getSituations()*/),
-                    ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure),
-                    Collections.emptyList() /*irrelevant for PTRideLeg*/))
+                .serviceJourney(OJPFacade.createServiceJourney(datedJourneyStructure, scheduledStopPoints, (Element) tripInfoResultStructure.getExtension()))
                 .build();
 
         }

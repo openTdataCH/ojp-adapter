@@ -202,7 +202,7 @@ public class ModelDoc {
 
     public static final String SAMPLE_WEIGHT = "30170";
 
-    public static final String SAMPLE_SJYID = "ch:1:sjyid:100001:702-001";
+    public static final String SAMPLE_SJYID = "ch:1:sjyid:100001:18728-001";
     // see DURATION
     public static final String SAMPLE_DURATION = "P1DT2H4M";
     /**
@@ -211,6 +211,6 @@ public class ModelDoc {
      * @see #ISO8601
      */
     public static final String SAMPLE_OFFSETDATETIME = "2024-12-18T14:55:00+01:00";
-    public static final String SAMPLE_DATE = "2024-12-18";
+    public static final String SAMPLE_DATE = "2024-12-22";
     public static final String SAMPLE_TIME = "13:07";
 }

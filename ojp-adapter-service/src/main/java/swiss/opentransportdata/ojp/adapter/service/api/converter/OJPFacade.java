@@ -16,7 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.release2.model.JourneyRefStructure;
+import de.vdv.ojp.release2.model.DatedJourneyStructure;
 import de.vdv.ojp.release2.model.ModeFilterStructure;
 import de.vdv.ojp.release2.model.OJP;
 import de.vdv.ojp.release2.model.PlaceRefStructure;
@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.w3c.dom.Element;
 import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
 import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter;
@@ -49,23 +50,18 @@ import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.converter.OJPFactory;
 import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceTypeEnum;
 import swiss.opentransportdata.ojp.adapter.model.place.response.PlaceResponse;
-import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response.DatedVehicleJourney;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Direction;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Notice;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ScheduledStopPoint;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceAlteration;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceProduct;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.Arrival;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.ArrivalResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.Departure;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.DepartureResponse;
-import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.PTViaReference;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus;
+import swiss.opentransportdata.ojp.adapter.service.api.converter.ServiceJourneyConverter.ModeOJP;
 import swiss.opentransportdata.ojp.adapter.service.utils.DateTimeUtils;
 import uk.org.siri.siri.VehicleModesOfTransportEnumeration;
 
@@ -202,24 +198,19 @@ public class OJPFacade {
             .build();
     }
 
-    // TODO refactor to stricter Builder usage (current goal: just make sure all OJP "XML structures of the same" result into same data)
-    static ServiceJourney createServiceJourney(@NonNull JourneyRefStructure journeyRefStructure, @NonNull List<ScheduledStopPoint> scheduledStopPoints,
-        @NonNull List<ServiceProduct> serviceProducts,
-        @NonNull List<Direction> directions, @NonNull List<Notice> notices, @NonNull List<PTSituation> situations, @NonNull ServiceAlteration serviceAlteration,
-        List<OperatingPeriod> operatingPeriods) {
-
+    static ServiceJourney createServiceJourney(DatedJourneyStructure datedJourneyStructure, List<ScheduledStopPoint> scheduledStopPoints, Element extension) {
+        final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
         return ServiceJourney.builder()
-            .id(journeyRefStructure.getValue())
-            // TODO OJP 2.0 might not be the exact operatingDay!
-            .operatingDay(scheduledStopPoints.getFirst().getDeparture().getTimeAimed().toLocalDate())
+            .id(datedJourneyStructure.getJourneyRef().getValue())
+            .operatingDay(OJPFactory.parseOperatingDayRef(datedJourneyStructure.getOperatingDayRef()))
             .stopPoints(scheduledStopPoints)
-            .serviceProducts(serviceProducts)
-            .directions(directions)
-            .notices(notices)
+            .serviceProducts(ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, extension))
+            .directions(ServiceJourneyConverter.mapToDirections(datedJourneyStructure))
+            .notices(ServiceJourneyConverter.mapToNotices(datedJourneyStructure))
             //.checkConstraints()
-            .situations(situations)
-            .serviceAlteration(serviceAlteration)
-            .operatingPeriods(operatingPeriods == null ? Collections.emptyList() : operatingPeriods)
+            .situations(ServiceJourneyConverter.mapToSituations(datedJourneyStructure.getSituationFullRefs()))
+            .serviceAlteration(ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure))
+            .operatingPeriods(Collections.emptyList() /*irrelevant for PTRideLeg*/)
             //TODO ProductCategory::getTranslation(locale)
             .quayTypeName("Gleis")
             .quayTypeShortName("GL.")
@@ -227,13 +218,26 @@ public class OJPFacade {
             .build();
     }
 
-    static TripStatus createTripStatus() {
+    static TripStatus createTripStatus(int numberOfServiceJourneys, int numberOfCancelledSubset) {
+        //TODO verify simple approach
+        boolean cancelled = false;
+        boolean partiallyCancelled = false;
+        if (numberOfCancelledSubset > 0) {
+            if (numberOfCancelledSubset == numberOfServiceJourneys) {
+                cancelled = true;
+            } else {
+                partiallyCancelled = true;
+            }
+        }
+
         return TripStatus.builder()
+            .valid(!cancelled)
+            .cancelled(cancelled)
+            .partiallyCancelled(partiallyCancelled)
             /*TODO OJP 2.0
-            .valid()
-            .cancelled()
-            .partiallyCancelled()
-            ...
+            .delayed
+            .alternative
+            ..
              */
             .build();
     }

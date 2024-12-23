@@ -149,7 +149,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
      * Optional, additional data includes in response!
      */
 
-    public static final AccessibilityEnum DEFAULT_INCLUDE_ACCESSIBILITY = AccessibilityEnum.ALL;
+    public static final AccessibilityEnum DEFAULT_INCLUDE_ACCESSIBILITY = AccessibilityEnum.NONE;
     /**
      * @see swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestPolicy ::includeAccessibility
      */
@@ -157,7 +157,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
         "This is especially relevant on first (boarding) and last (alighting) of each `PTRideLeg::serviceJourney::stopPoints` (implicitely affects transfers).<br>" +
         "If 'NONE' or non `PTRideLeg's` irrelevant and never given." +
         ModelDoc.HINT_ENUM_EXTENSIBLE + " see enum values.",
-        defaultValue = AccessibilityEnum.ALL_AS_STRING /*TODO breaking change: bad default should be NONE, since not all clients have GRANT-rights*/)
+        defaultValue = AccessibilityEnum.NONE_AS_STRING)
     AccessibilityEnum includeAccessibility;
 
     //    public static final AlternateMatchEnum DEFAULT_INCLUDE_ALTERNATE_MATCH = AlternateMatchEnum.IRRELEVANT;

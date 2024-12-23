@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:49419",
+      "url": "http://localhost:64012",
       "description": "Generated server url"
     }
   ],
@@ -64,32 +64,6 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Response found",
             "headers": {
@@ -112,6 +86,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -205,7 +205,8 @@
             "description": "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "ch:1:sjyid:100001:18728-001"
             }
           },
           {
@@ -217,7 +218,7 @@
               "type": "string",
               "format": "date"
             },
-            "example": "2024-12-18"
+            "example": "2024-12-22"
           },
           {
             "name": "realtimeMode",
@@ -241,32 +242,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Response found",
             "headers": {
@@ -289,6 +264,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DatedVehicleJourney"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -394,7 +395,7 @@
             "schema": {
               "type": "string",
               "format": "date",
-              "example": "2024-12-18"
+              "example": "2024-12-22"
             }
           },
           {
@@ -433,32 +434,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Response found",
             "headers": {
@@ -481,6 +456,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DepartureResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -586,7 +587,7 @@
             "schema": {
               "type": "string",
               "format": "date",
-              "example": "2024-12-18"
+              "example": "2024-12-22"
             }
           },
           {
@@ -824,32 +825,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Response found",
             "headers": {
@@ -872,6 +847,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlaceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -911,7 +912,7 @@
       "AccessibilityEnum": {
         "type": "string",
         "description": "Sets Accessibility (de:BFR/BAIM) on each `ScheduledStopPoint::accessibilityBoardingAlighting` for better handicap support using vehicles. This is especially relevant on first (boarding) and last (alighting) of each `PTRideLeg::serviceJourney::stopPoints` (implicitely affects transfers).<br>If 'NONE' or non `PTRideLeg's` irrelevant and never given.<br>x-extensible-enum:  see enum values.",
-        "default": "ALL",
+        "default": "NONE",
         "enum": [
           "ALL",
           "NONE"
@@ -1097,50 +1098,6 @@
           }
         },
         "description": "Request parameters (POST body)."
-      },
-      "Problem": {
-        "required": [
-          "detail",
-          "status",
-          "title",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "status": {
-            "maximum": 600,
-            "exclusiveMaximum": true,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 500
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized).",
-            "example": "Service Unavailable"
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem."
-          },
-          "instance": {
-            "type": "string",
-            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
-            "example": "/v3/places/{8507000}"
-          },
-          "type": {
-            "type": "string",
-            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
-            "default": "https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/Problem-Manual.md"
-          },
-          "traceId": {
-            "type": "string",
-            "description": "The `trace-id` according to the [W3C tracing standard](https://www.w3.org/TR/trace-context/#traceparent-header). (Might be useful for support-cases with the operations teams.)"
-          }
-        },
-        "description": "Zalando like error-object if not HttpStatus 2xx (see [RFC-7807](https://tools.ietf.org/html/rfc7807)). Check for: Content-Type=application/problem+json"
       },
       "AccessibilityBoardingAlighting": {
         "required": [
@@ -1446,14 +1403,14 @@
             "type": "string",
             "description": "[duration](https://www.w3.org/TR/xmlschema11-2/#duration)"
           },
+          "mode": {
+            "type": "string",
+            "description": "Mode of the Leg"
+          },
           "distance": {
             "type": "integer",
             "description": "Total distance for Leg (in meter).",
             "format": "int32"
-          },
-          "mode": {
-            "type": "string",
-            "description": "Mode of the Leg"
           },
           "type": {
             "type": "string",
@@ -1893,7 +1850,7 @@
             "type": "string",
             "description": "Local start date of situation (related to `startTime`).",
             "format": "date",
-            "example": "2024-12-18"
+            "example": "2024-12-22"
           },
           "startTime": {
             "type": "string",
@@ -2114,13 +2071,13 @@
           "id": {
             "type": "string",
             "description": "Underlying system specific unique identifier representing a concrete (partial) route for a specific vehicle and time. Be aware this is just a temporary id and may change daily! Additionally check for `notices` with `Notice::type=INFO`, `text=<SwissJourneyId>` for a more standardized permanent [Swiss Journey-ID (SJYID)](https://transportdatamanagement.ch/content/uploads/2021/05/SwissJourneyID_DE_1_2.pdf) within a planning period.",
-            "example": "ch:1:sjyid:100001:702-001"
+            "example": "ch:1:sjyid:100001:18728-001"
           },
           "operatingDay": {
             "type": "string",
             "description": "Official operating-day of the related `ServiceJourney`.",
             "format": "date",
-            "example": "2024-12-18"
+            "example": "2024-12-22"
           },
           "stopPoints": {
             "minItems": 2,
@@ -2668,6 +2625,50 @@
           }
         },
         "description": "A characterisation of the public transport operation according to the means of transport (aka OJP PtMode; Siri::VehicleMode; v580 TransportMode or de:Verkehrsmittelkategorie). Whether only `id` is given or submode as well depends on available data."
+      },
+      "Problem": {
+        "required": [
+          "detail",
+          "status",
+          "title",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "maximum": 600,
+            "exclusiveMaximum": true,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 500
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized).",
+            "example": "Service Unavailable"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem."
+          },
+          "instance": {
+            "type": "string",
+            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+            "example": "/v3/places/{8507000}"
+          },
+          "type": {
+            "type": "string",
+            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
+            "default": "https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/Problem-Manual.md"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "The `trace-id` according to the [W3C tracing standard](https://www.w3.org/TR/trace-context/#traceparent-header). (Might be useful for support-cases with the operations teams.)"
+          }
+        },
+        "description": "Zalando like error-object if not HttpStatus 2xx (see [RFC-7807](https://tools.ietf.org/html/rfc7807)). Check for: Content-Type=application/problem+json"
       },
       "DatedVehicleJourney": {
         "required": [
