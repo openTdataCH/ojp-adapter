@@ -21,7 +21,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.responsib
 /**
  * A company providing public transport services.
  */
-public interface Operator extends /*TODO TRM6+2022 extends from TransportOrganisatioN*/ Organisation {
+public interface Operator extends /*TODO TRM6+2022 extends from TransportOrganisation*/ Organisation {
 
     /**
      * @return Identifier of  OPERATOR.

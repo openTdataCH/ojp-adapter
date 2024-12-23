@@ -39,10 +39,6 @@ public class Connection implements swiss.opentransportdata.ojp.adapter.trm.v6.pa
     @JsonProperty
     Boolean mobilityRestrictedTravellerTransferCritical;
 
-    /**
-     * @see <a href="https://code.sbb.ch/projects/KI_FAHRPLAN/repos/journey-service/browse/journey-service-persistence/src/main/resources/db/data/transfertime_accessibility_initial.sql">Fallback rules
-     *     in TABLE transfer_time_accessibility_rule_per_track</a>
-     */
     @Schema(description = "Hint for handicaped experts (such as AMO) about which duration rule was applied to determine minimal transfer time.", example = "Fallback")
     @JsonProperty
     String mobilityRestrictedTravellerTransferRule;

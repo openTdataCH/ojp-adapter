@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 
 /**
- * TODO Provide better Standard terms, which are the concrete modes SBB. They do
+ * TODO Provide better Standard terms, which are the concrete modes. They do
  * not match exactly to TransportModeData "TransportMode" values which relate to more generic  {@link swiss.opentransportdata.ojp.adapter.trm.v6.part10.alternativemodes.reusablecomponents.vehicletype.VehicleType} and they map to {@link swiss.opentransportdata.ojp.adapter.model.servicejourney.response.VehicleMode}!!!
  * <p>
  * P-Data-Mgmt is not quiet conform to OpenTransportData TransportMode's and TransportSubmode's, therefore this is a mixture possible to query for {@link swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney}.

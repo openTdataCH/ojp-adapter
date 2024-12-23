@@ -20,8 +20,6 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedo
 
 /**
  * A place comprising one or more locations where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. A STOP PLACE will usually have one or more wellknown names.
- *
- * @see ch.sbb.ki.journeyservice.b2c.v3.api.place.model.response.StopPlaceDetailed
  */
 public interface StopPlace extends Site {
 

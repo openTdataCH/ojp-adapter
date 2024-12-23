@@ -21,11 +21,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.model.geojson.GeoJsonConverter;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
 import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceReference;
 import swiss.opentransportdata.ojp.adapter.model.standards.SwissLocationId;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
 
 @UtilityClass
 public final class PlaceReferenceHelper {
@@ -65,10 +65,6 @@ public final class PlaceReferenceHelper {
             // router specific (for e.g. Hafas generates its own Address::id values)
             return buildAddressOrPoiExternalId(trimedReference);
         }
-    }
-
-    public static StopPlaceByUic buildStopPlaceUic(@NonNull Integer uic) {
-        return new StopPlaceByUic(uic, null);
     }
 
     public static StopPlaceByUic buildStopPlaceUic(@NonNull Integer uic, String placeId) {
