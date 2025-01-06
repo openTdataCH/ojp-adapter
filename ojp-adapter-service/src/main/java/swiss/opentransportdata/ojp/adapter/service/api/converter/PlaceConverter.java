@@ -47,7 +47,7 @@ import uk.org.siri.siri.LocationStructure;
  */
 @Slf4j
 @Component("OJPPlaceConverter")
-public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.OJP, PlaceResponse> {
+public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
 
     PlaceConverter() {
         super();
@@ -57,7 +57,7 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
      * Converter Function
      */
     @Override
-    public PlaceResponse convertToDTO(de.vdv.ojp.release2.model.OJP ojpResponse) {
+    public PlaceResponse convertToDTO(OJP ojpResponse) {
         if ((ojpResponse == null) || (ojpResponse.getOJPResponse() == null)) {
             throw new OJPException("ojpResponse must not be null");
         }
@@ -110,13 +110,13 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
             .build();
     }
 
-    static StopPlace createStopPlace(String id, InternationalTextStructure internationalTextStructure, uk.org.siri.siri.LocationStructure geoPosition) {
+    static StopPlace createStopPlace(String id, InternationalTextStructure internationalTextStructure, LocationStructure geoPosition) {
         return createStopPlace(id,
             OJPAdapter.getText(internationalTextStructure),
             geoPosition);
     }
 
-    private static StopPlace createStopPlace(String id, String name, uk.org.siri.siri.LocationStructure geoPosition) {
+    private static StopPlace createStopPlace(String id, String name, LocationStructure geoPosition) {
         return StopPlace.builder()
             .id(id)
             .name(name)
@@ -163,7 +163,7 @@ public class PlaceConverter extends AbstractConverter<de.vdv.ojp.release2.model.
             .build();
     }
 
-    static Point toPoint(uk.org.siri.siri.LocationStructure locationStructure) {
+    static Point toPoint(LocationStructure locationStructure) {
         if (locationStructure == null) {
             return null;
         }

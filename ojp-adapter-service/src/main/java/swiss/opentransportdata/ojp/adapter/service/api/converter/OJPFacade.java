@@ -113,14 +113,14 @@ public class OJPFacade {
     static Set<PlaceTypeEnumeration> mapToPlaceTypes(Set<PlaceTypeEnum> types) {
         if (CollectionUtils.isEmpty(types) || types.contains(PlaceTypeEnum.ALL) || (types.size() >= PlaceTypeEnum.values().length - 1)) {
             // not supported yet: PlaceTypeEnumeration.COORD, PlaceTypeEnumeration.TOPOGRAPHIC_PLACE
-            return Set.of(de.vdv.ojp.release2.model.PlaceTypeEnumeration.STOP, de.vdv.ojp.release2.model.PlaceTypeEnumeration.ADDRESS, de.vdv.ojp.release2.model.PlaceTypeEnumeration.POI);
+            return Set.of(PlaceTypeEnumeration.STOP, PlaceTypeEnumeration.ADDRESS, PlaceTypeEnumeration.POI);
         }
 
         return types.stream()
             .map(type -> switch (type) {
-                case StopPlace -> de.vdv.ojp.release2.model.PlaceTypeEnumeration.STOP;
-                case PointOfInterest -> de.vdv.ojp.release2.model.PlaceTypeEnumeration.POI;
-                case Address -> de.vdv.ojp.release2.model.PlaceTypeEnumeration.ADDRESS;
+                case StopPlace -> PlaceTypeEnumeration.STOP;
+                case PointOfInterest -> PlaceTypeEnumeration.POI;
+                case Address -> PlaceTypeEnumeration.ADDRESS;
                 case ALL -> throw new IllegalStateException("developer fault: ALL should not remain any more");
             })
             .collect(Collectors.toSet());

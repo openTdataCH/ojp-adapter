@@ -56,7 +56,7 @@ class OJPAdapterTest {
     private OJP unmarshalResponse(String filename) throws IOException {
         final String xmlInstance = readFile(filename);
 
-        final OJP ojp = ojpAdapter.unmarshalResponse2(ResponseEntity.ok(xmlInstance));
+        final OJP ojp = ojpAdapter.unmarshalResponse(ResponseEntity.ok(xmlInstance));
         assertThat(ojp).isNotNull();
 
         assertThat(ojp.getOJPResponse()).isNotNull();

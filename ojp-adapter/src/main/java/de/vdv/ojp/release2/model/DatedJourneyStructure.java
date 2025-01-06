@@ -8,9 +8,6 @@
 
 package de.vdv.ojp.release2.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -18,11 +15,15 @@ import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.rutebanken.netex.OmitNullsToStringStyle;
 import uk.org.siri.siri.DirectionRefStructure;
 import uk.org.siri.siri.JourneyRelationsStructure;
 import uk.org.siri.siri.LineRefStructure;
+import uk.org.siri.siri.MonitoredVehicleJourneyStructure;
 import uk.org.siri.siri.OccupancyEnumeration;
 import uk.org.siri.siri.OperatorRefStructure;
 import uk.org.siri.siri.ProductCategoryRefStructure;
@@ -172,11 +173,11 @@ public class DatedJourneyStructure {
     @XmlElement(name = "JourneyRelations")
     protected JourneyRelationsStructure journeyRelations;
     @XmlElement(name = "TrainElements", namespace = "http://www.siri.org.uk/siri")
-    protected uk.org.siri.siri.MonitoredVehicleJourneyStructure.TrainElements trainElements;
+    protected MonitoredVehicleJourneyStructure.TrainElements trainElements;
     @XmlElement(name = "Trains", namespace = "http://www.siri.org.uk/siri")
-    protected uk.org.siri.siri.MonitoredVehicleJourneyStructure.Trains trains;
+    protected MonitoredVehicleJourneyStructure.Trains trains;
     @XmlElement(name = "CompoundTrains", namespace = "http://www.siri.org.uk/siri")
-    protected uk.org.siri.siri.MonitoredVehicleJourneyStructure.CompoundTrains compoundTrains;
+    protected MonitoredVehicleJourneyStructure.CompoundTrains compoundTrains;
     @XmlElement(name = "BookingArrangements")
     protected BookingArrangementsContainerStructure bookingArrangements;
     @XmlElement(name = "ReservationNeeded", defaultValue = "none")
@@ -957,10 +958,10 @@ public class DatedJourneyStructure {
      * 
      * @return
      *     possible object is
-     *     {@link uk.org.siri.siri.MonitoredVehicleJourneyStructure.TrainElements }
+     *     {@link MonitoredVehicleJourneyStructure.TrainElements }
      *     
      */
-    public uk.org.siri.siri.MonitoredVehicleJourneyStructure.TrainElements getTrainElements() {
+    public MonitoredVehicleJourneyStructure.TrainElements getTrainElements() {
         return trainElements;
     }
 
@@ -968,11 +969,10 @@ public class DatedJourneyStructure {
      * Legt den Wert der trainElements-Eigenschaft fest.
      * 
      * @param value
-     *     allowed object is
-     *     {@link uk.org.siri.siri.MonitoredVehicleJourneyStructure.TrainElements }
+     *     allowed object is {@link MonitoredVehicleJourneyStructure.TrainElements }
      *     
      */
-    public void setTrainElements(uk.org.siri.siri.MonitoredVehicleJourneyStructure.TrainElements value) {
+    public void setTrainElements(MonitoredVehicleJourneyStructure.TrainElements value) {
         this.trainElements = value;
     }
 
@@ -980,11 +980,10 @@ public class DatedJourneyStructure {
      * Ruft den Wert der trains-Eigenschaft ab.
      * 
      * @return
-     *     possible object is
-     *     {@link uk.org.siri.siri.MonitoredVehicleJourneyStructure.Trains }
+     *     possible object is {@link MonitoredVehicleJourneyStructure.Trains }
      *     
      */
-    public uk.org.siri.siri.MonitoredVehicleJourneyStructure.Trains getTrains() {
+    public MonitoredVehicleJourneyStructure.Trains getTrains() {
         return trains;
     }
 
@@ -992,11 +991,10 @@ public class DatedJourneyStructure {
      * Legt den Wert der trains-Eigenschaft fest.
      * 
      * @param value
-     *     allowed object is
-     *     {@link uk.org.siri.siri.MonitoredVehicleJourneyStructure.Trains }
+     *     allowed object is {@link MonitoredVehicleJourneyStructure.Trains }
      *     
      */
-    public void setTrains(uk.org.siri.siri.MonitoredVehicleJourneyStructure.Trains value) {
+    public void setTrains(MonitoredVehicleJourneyStructure.Trains value) {
         this.trains = value;
     }
 
@@ -1004,11 +1002,10 @@ public class DatedJourneyStructure {
      * Ruft den Wert der compoundTrains-Eigenschaft ab.
      * 
      * @return
-     *     possible object is
-     *     {@link uk.org.siri.siri.MonitoredVehicleJourneyStructure.CompoundTrains }
+     *     possible object is {@link MonitoredVehicleJourneyStructure.CompoundTrains }
      *     
      */
-    public uk.org.siri.siri.MonitoredVehicleJourneyStructure.CompoundTrains getCompoundTrains() {
+    public MonitoredVehicleJourneyStructure.CompoundTrains getCompoundTrains() {
         return compoundTrains;
     }
 
@@ -1016,11 +1013,10 @@ public class DatedJourneyStructure {
      * Legt den Wert der compoundTrains-Eigenschaft fest.
      * 
      * @param value
-     *     allowed object is
-     *     {@link uk.org.siri.siri.MonitoredVehicleJourneyStructure.CompoundTrains }
+     *     allowed object is {@link MonitoredVehicleJourneyStructure.CompoundTrains }
      *     
      */
-    public void setCompoundTrains(uk.org.siri.siri.MonitoredVehicleJourneyStructure.CompoundTrains value) {
+    public void setCompoundTrains(MonitoredVehicleJourneyStructure.CompoundTrains value) {
         this.compoundTrains = value;
     }
 

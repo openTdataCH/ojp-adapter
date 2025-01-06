@@ -49,6 +49,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.converter.OJPFactory;
+import uk.org.siri.siri.AbstractServiceDeliveryStructure;
 import uk.org.siri.siri.LocationStructure;
 
 /**
@@ -111,10 +112,10 @@ public class OJPAdapter {
      * @return specific delivery structure related to request-query (might still contain specific error)
      * @throws OJPException
      */
-    private static uk.org.siri.siri.AbstractServiceDeliveryStructure extractFirstDeliveryStructure(
-        List<JAXBElement<? extends uk.org.siri.siri.AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
+    private static AbstractServiceDeliveryStructure extractFirstDeliveryStructure(
+        List<JAXBElement<? extends AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
 
-        final uk.org.siri.siri.AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.getFirst().getValue();
+        final AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.getFirst().getValue();
         if (firstDeliveryStructure == null) {
             // unexpected
             throw new OJPException("AbstractServiceDeliveryStructure is null");
@@ -129,7 +130,7 @@ public class OJPAdapter {
      * @see #requestPlaces(OJPAccessor, PlaceRequestFilter)
      */
     public static OJPLocationInformationDeliveryStructure mapToFirstOJPLocationInformationDeliveryStructure(OJP ojpResponse) {
-        final uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
+        final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
             ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         if (hasFailure(deliveryStructure)) {
@@ -150,7 +151,7 @@ public class OJPAdapter {
      * @see #requestTripLegByJourneyReference(OJPAccessor, TripLegRequestFilter)
      */
     public static OJPTripInfoDeliveryStructure mapToFirstOJPTripInfoDeliveryStructure(OJP ojpResponse) {
-        final uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
+        final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
             ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         if (hasFailure(deliveryStructure)) {
@@ -167,7 +168,7 @@ public class OJPAdapter {
      * @see #requestTrips(OJPAccessor, TripRequestFilter)
      */
     public static OJPTripDeliveryStructure mapToFirstOJPTripDeliveryStructure(OJP ojpResponse) {
-        final uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
+        final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
             ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         if (hasFailure(deliveryStructure)) {
@@ -189,7 +190,7 @@ public class OJPAdapter {
      * @see #requestStopEvent(OJPAccessor, StopEventRequestFilter)
      */
     public static OJPStopEventDeliveryStructure mapToFirstOJPStopEventDeliveryStructure(OJP ojpResponse) {
-        final uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
+        final AbstractServiceDeliveryStructure deliveryStructure = extractFirstDeliveryStructure(
             ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         if (hasFailure(deliveryStructure)) {
@@ -211,7 +212,7 @@ public class OJPAdapter {
      * @param deliveryStructure part of OJP response
      * @return deliveryStructure::isStatus is not ok (if false further examination by caller needs to be done!)
      */
-    private static boolean hasFailure(uk.org.siri.siri.AbstractServiceDeliveryStructure deliveryStructure) {
+    private static boolean hasFailure(AbstractServiceDeliveryStructure deliveryStructure) {
         if (Boolean.TRUE.equals(deliveryStructure.isStatus())) {
             if (deliveryStructure.getErrorCondition() != null) {
                 // by experience: like a 400 Bad Parameter (by means a value does not please OJP and passive/active instance may behave differently)
@@ -398,7 +399,7 @@ public class OJPAdapter {
             .blockOptional()
             .orElseThrow();
 
-        return unmarshalBody2(response);
+        return unmarshalBody(response);
     }
 
     private HttpHeaders createOjpHeaders(OJPAccessor ojpAccessor) {
@@ -434,7 +435,6 @@ public class OJPAdapter {
      * @param responseEntity
      * @return Generic OJP container with a delivery part
      */
-    @Deprecated(since = "OJP v2.0")
     public OJP unmarshalResponse(ResponseEntity<String> responseEntity) throws OJPException {
         if (HttpStatus.OK.isSameCodeAs(responseEntity.getStatusCode())) {
             log.debug("OJP response: {}", responseEntity);
@@ -449,56 +449,10 @@ public class OJPAdapter {
     }
 
     /**
-     * @param responseEntity
-     * @return Generic OJP container with a delivery part
-     */
-    public OJP unmarshalResponse2(ResponseEntity<String> responseEntity) throws OJPException {
-        if (HttpStatus.OK.isSameCodeAs(responseEntity.getStatusCode())) {
-            log.debug("OJP response: {}", responseEntity);
-            if (responseEntity.getBody() == null) {
-                throw new OJPException("Unexpected OJP response-body is null");
-            }
-
-            return unmarshalBody2(responseEntity.getBody());
-        } else {
-            throw new OJPException("Unexpected error: " + responseEntity.getStatusCode() + " " + responseEntity.getBody());
-        }
-    }
-
-    /**
-     * @param responseBody OJP 1.0 xml-instance
+     * @param responseBody OJP 2.0 xml-instance
      * @return OJP response structure
      */
-    @Deprecated(since = "OJP v2.0")
     private OJP unmarshalBody(String responseBody) {
-        final OJP ojpResponse;
-        try {
-            ojpResponse = (OJP) ojpJaxbContext.createUnmarshaller().unmarshal(new StringReader(responseBody));
-        } catch (JAXBException ex) {
-            throw new OJPException("Response mapping failed", ex);
-        }
-        if (ojpResponse.getOJPResponse() == null) {
-            throw new OJPException("Expected response element is expected: " + ojpResponse);
-        }
-        if (ojpResponse.getOJPResponse().getServiceDelivery() == null) {
-            throw new OJPException("Expected ServiceDelivery content is expected: " + ojpResponse.getOJPResponse());
-        }
-        if (ojpResponse.getOJPResponse().getServiceDelivery().getErrorCondition() != null) {
-            // general fault: OJP failed to treat request (whether single- or multi-query)
-            throw new OJPException(ojpResponse.getOJPResponse().getServiceDelivery());
-        }
-        if (CollectionUtils.isEmpty(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery())) {
-            // unexpected
-            throw new OJPException("ServiceDelivery::abstractFunctionalServiceDelivery is empty for: " + ojpResponse.getOJPResponse().getServiceDelivery());
-        }
-        return ojpResponse;
-    }
-
-    /**
-     * @param responseBody OJP 1.0 xml-instance
-     * @return OJP response structure
-     */
-    private OJP unmarshalBody2(String responseBody) {
         final OJP ojpResponse;
         try {
             ojpResponse = (OJP) ojpJaxbContext.createUnmarshaller().unmarshal(new StringReader(responseBody));

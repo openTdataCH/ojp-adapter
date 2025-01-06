@@ -54,7 +54,9 @@ import swiss.opentransportdata.ojp.adapter.StopEventRequestFilter;
 import swiss.opentransportdata.ojp.adapter.TripLegRequestFilter;
 import swiss.opentransportdata.ojp.adapter.TripRequestFilter;
 import uk.org.siri.siri.NaturalLanguageStringStructure;
+import uk.org.siri.siri.ParticipantRefStructure;
 import uk.org.siri.siri.ServiceRequest;
+import uk.org.siri.siri.ServiceRequestContextStructure;
 
 /**
  * Helper to create some OJP specific structures declared by ojp.xsd.
@@ -89,7 +91,7 @@ public class OJPFactory {
 
     public static PlaceRefStructure createPlaceReferenceStructure(@NonNull String stopPlaceId) {
         // stopName seems redundant, but OJP needs it probably (given in samples)
-        final uk.org.siri.siri.NaturalLanguageStringStructure naturalLanguageStringStructure = new NaturalLanguageStringStructure();
+        final NaturalLanguageStringStructure naturalLanguageStringStructure = new NaturalLanguageStringStructure();
         //TODO OJP 2.0  naturalLanguageStringStructure.setLang(locale.getLanguage());
         naturalLanguageStringStructure.setValue(DUMMY_LOCATION_NAME);
         final InternationalTextStructure textStructure = new InternationalTextStructure();
@@ -227,9 +229,9 @@ public class OJPFactory {
      * @return General Service container for an OJP request
      */
     ServiceRequest createServiceRequest(ZonedDateTime requestTimestamp, Locale preferredLanguage) {
-        final uk.org.siri.siri.ServiceRequest serviceRequest = new uk.org.siri.siri.ServiceRequest();
+        final ServiceRequest serviceRequest = new ServiceRequest();
         serviceRequest.setRequestTimestamp(requestTimestamp);
-        final uk.org.siri.siri.ParticipantRefStructure participantRefStructure = new uk.org.siri.siri.ParticipantRefStructure();
+        final ParticipantRefStructure participantRefStructure = new ParticipantRefStructure();
         participantRefStructure.setValue(participantReference);
         serviceRequest.setRequestorRef(participantRefStructure);
         /*
@@ -238,7 +240,7 @@ public class OJPFactory {
         serviceRequest.setMessageIdentifier(messageQualifierStructure);
          */
 
-        final uk.org.siri.siri.ServiceRequestContextStructure serviceRequestContextStructure = new uk.org.siri.siri.ServiceRequestContextStructure();
+        final ServiceRequestContextStructure serviceRequestContextStructure = new ServiceRequestContextStructure();
         serviceRequestContextStructure.withLanguage(preferredLanguage.getLanguage());
         serviceRequestContextStructure.setRequestTimeout(Duration.ofMillis(29000));
         serviceRequestContextStructure.setDistanceUnits("m");

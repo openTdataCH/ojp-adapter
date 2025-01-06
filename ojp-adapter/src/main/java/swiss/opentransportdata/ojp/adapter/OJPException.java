@@ -15,9 +15,9 @@
  */
 package swiss.opentransportdata.ojp.adapter;
 
-import de.vdv.ojp.model.ServiceDelivery;
 import lombok.Getter;
 import lombok.NonNull;
+import uk.org.siri.siri.ServiceDelivery;
 
 /**
  * OJP-Adapter Exception if any OJP Backend fault happens or OJP returned an ErrorCondition.
@@ -32,19 +32,15 @@ public class OJPException extends RuntimeException {
      */
     @Getter
     private final ServiceDelivery serviceDelivery;
-    @Getter
-    private final uk.org.siri.siri.ServiceDelivery serviceDelivery2;
 
     public OJPException(@NonNull String message) {
         super(message);
         serviceDelivery = null;
-        serviceDelivery2 = null;
     }
 
     public OJPException(@NonNull String message, @NonNull Throwable cause) {
         super(message, cause);
         serviceDelivery = null;
-        serviceDelivery2 = null;
     }
 
     /**
@@ -52,21 +48,8 @@ public class OJPException extends RuntimeException {
      *
      * @param serviceDelivery with {@link ServiceDelivery#getErrorCondition()}
      */
-    @Deprecated(since = "OJP v2.0")
     public OJPException(@NonNull ServiceDelivery serviceDelivery) {
         super("ServiceDelivery::errorCondition=" + serviceDelivery.getErrorCondition().toString());
-        this.serviceDelivery = serviceDelivery;
-        this.serviceDelivery2 = null;
-    }
-
-    /**
-     * General fault in OJP response about the request.
-     *
-     * @param serviceDelivery with {@link uk.org.siri.siri.ServiceDelivery#getErrorCondition()}
-     */
-    public OJPException(@NonNull uk.org.siri.siri.ServiceDelivery serviceDelivery) {
-        super("ServiceDelivery::errorCondition=" + serviceDelivery.getErrorCondition().toString());
         this.serviceDelivery = null;
-        this.serviceDelivery2 = serviceDelivery;
     }
 }
