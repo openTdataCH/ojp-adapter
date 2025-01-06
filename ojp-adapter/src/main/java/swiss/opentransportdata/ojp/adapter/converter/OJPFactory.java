@@ -255,6 +255,7 @@ public class OJPFactory {
     public OJP createOjpWithTripInfoRequest(@NonNull TripLegRequestFilter filter) {
         final ZonedDateTime dateTime = createTimestamp();
 
+        //TODO OJP 2.0 non-used object yet
         final TripInfoParamStructure tripInfoParamStructure = new TripInfoParamStructure();
         tripInfoParamStructure.setIncludeCalls(true);
         tripInfoParamStructure.setIncludeTrackSections(INCLUDE_TRACK_SECTIONS);
