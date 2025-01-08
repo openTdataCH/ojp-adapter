@@ -36,6 +36,7 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +90,8 @@ public class OJPAdapter {
     private static final String HEADER_REQUEST_ID = "Request-ID";
 
     private final WebClient webClient;
+    // internal friend
+    @Getter
     private final OJPFactory ojpFactory;
     private final JAXBContext ojpJaxbContext;
     private final String callerReference;

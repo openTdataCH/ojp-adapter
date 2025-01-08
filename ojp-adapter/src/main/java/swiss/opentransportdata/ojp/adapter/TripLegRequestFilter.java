@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.querymodel.commonquery.PIRequestFilter;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.querymodel.commonquery.PIRequestPolicy;
+import uk.org.siri.siri.VehicleRefStructure;
 
 /**
  * Filter to refresh a {@link de.vdv.ojp.release2.model.TimedLegStructure}
@@ -43,6 +44,8 @@ public class TripLegRequestFilter implements PIRequestPolicy, PIRequestFilter, R
      * Day of operation.
      */
     @NonNull LocalDate operatingDay;
+
+    VehicleRefStructure vehicleReference;
 
     /**
      * Default: false, all trips are calculated by realtime data; true: planned data only

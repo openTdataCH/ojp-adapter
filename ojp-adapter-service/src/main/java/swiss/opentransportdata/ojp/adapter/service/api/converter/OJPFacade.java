@@ -242,14 +242,15 @@ public class OJPFacade {
             .build();
     }
 
-    static List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences) {
+    List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences) {
         if (CollectionUtils.isEmpty(ptViaReferences)) {
             return null;
         }
         return ptViaReferences.stream()
             .map(ptViaReference -> {
-                final TripViaStructure tripViaStructure = new TripViaStructure();
-                final PlaceRefStructure placeRefStructure = OJPFactory.createPlaceReferenceStructure(ptViaReference.getStopPlaceId());
+                final PlaceRefStructure placeRefStructure = ojpAdapter.getOjpFactory().createPlaceReferenceStructure(ptViaReference.getStopPlaceId());
+
+                final TripViaStructure tripViaStructure = ojpAdapter.getOjpFactory().createTripViaStructure();
                 tripViaStructure.setViaPoint(placeRefStructure);
                 tripViaStructure.setDwellTime(ptViaReference.getWaittime() == null ? null : Duration.ofMinutes(ptViaReference.getWaittime()));
                 if ((ptViaReference.getStatus() != null) && (!PTViaReference.STATUS_BOARDING_ALIGHTING_NECESSARY.equals(ptViaReference.getStatus())) ||
@@ -270,7 +271,7 @@ public class OJPFacade {
      * @param transportModes
      * @return including enforced
      */
-    static ModeFilterStructure mapToPtModeFilterStructure(Set<TransportModeEnum> transportModes) {
+    ModeFilterStructure mapToPtModeFilterStructure(Set<TransportModeEnum> transportModes) {
         if (CollectionUtils.isEmpty(transportModes)) {
             // EnumSet.of(VehicleModesOfTransportEnumeration.ALL, VehicleModesOfTransportEnumeration.ALL_SERVICES);
             return null;
@@ -328,7 +329,7 @@ public class OJPFacade {
             }
         }
 
-        final ModeFilterStructure ptModeFilterStructure = new ModeFilterStructure();
+        final ModeFilterStructure ptModeFilterStructure = ojpAdapter.getOjpFactory().createModeFilterStructure();
         ptModeFilterStructure.withPtMode(vehicleModesOfTransportEnumerations);
         ptModeFilterStructure.setExclude(false);
         return ptModeFilterStructure;

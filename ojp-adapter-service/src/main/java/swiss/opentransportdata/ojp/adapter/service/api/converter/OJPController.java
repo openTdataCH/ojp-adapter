@@ -293,6 +293,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .journeyReference(id)
                 .realtimeMode(mapToUseRealtimeDataEnumeration(realtimeMode))
                 .operatingDay(date == null ? DateTimeUtils.createSwissDate() : date)
+                //.vehicleReference()
                 .includeProjection(Boolean.TRUE.equals(includeRouteProjection))
                 .build();
 
@@ -383,7 +384,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .stopPlaceReference(startPlaceRef.getPlaceId())
                 .departureArrivalDateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(date, time)))
                 .limit(limit == null ? STATIONBOARD_DEFAULT_LIMIT : limit)
-                .modeFilterStructure(OJPFacade.mapToPtModeFilterStructure(includeTransportModes))
+                .modeFilterStructure(ojpFacade.mapToPtModeFilterStructure(includeTransportModes))
                 .build();
 
             final DepartureResponse departureResponse = ojpFacade.requestDepartures(createOJPAccessor(), filter);
@@ -473,7 +474,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .stopPlaceReference(endPlaceRef.getPlaceId())
                 .departureArrivalDateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(date, time)))
                 .limit(limit == null ? STATIONBOARD_DEFAULT_LIMIT : limit)
-                .modeFilterStructure(OJPFacade.mapToPtModeFilterStructure(includeTransportModes))
+                .modeFilterStructure(ojpFacade.mapToPtModeFilterStructure(includeTransportModes))
                 .build();
 
             final ArrivalResponse arrivalResponse = ojpFacade.requestArrivals(createOJPAccessor(), filter);
@@ -616,12 +617,12 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             .origin(startPlaceReference.getPlaceId())
             .destination(endPlaceRef.getPlaceId())
             .dateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(body.getDate(), body.getTime())))
-            .vias(OJPFacade.mapToViaStops(body.getVias()))
+            .vias(ojpFacade.mapToViaStops(body.getVias()))
             //.limit(limit)
             .includeAccessibility(accessibilityEnum == AccessibilityEnum.ALL)
             .includeIntermediateStops(body.getIncludeIntermediateStops() == null || body.getIncludeIntermediateStops() == IntermediateStopsEnum.ALL)
             .includeOperatingDays(Boolean.TRUE.equals(body.getIncludeOperatingDays()))
-            .modeFilterStructure(OJPFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))
+            .modeFilterStructure(ojpFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))
             .includeSituationsContext(true /*TODO make configurable*/)
             .includeProjection(Boolean.TRUE.equals(body.getIncludeRouteProjection()))
             .realtimeMode(mapToUseRealtimeDataEnumeration(body.getRealtimeMode()));

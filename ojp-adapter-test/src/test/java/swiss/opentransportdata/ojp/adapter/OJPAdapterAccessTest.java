@@ -99,7 +99,7 @@ class OJPAdapterAccessTest {
         requestStopPlaces(configuration.ojpAccessPassive(), "Bern");
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_StopPlace() throws OJPException {
         requestStopPlaces(configuration.ojpAccessActive(), "Zürich HB");
@@ -125,7 +125,7 @@ class OJPAdapterAccessTest {
         requestPointOfInterests(configuration.ojpAccessPassive(), "Museum");
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_PointOfInterest() throws OJPException {
         requestPointOfInterests(configuration.ojpAccessActive(), "Musée");
@@ -152,7 +152,7 @@ class OJPAdapterAccessTest {
         requestAddresses(configuration.ojpAccessPassive(), "Wylerringstrasse");
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_Address() throws OJPException {
         requestAddresses(configuration.ojpAccessActive(), "Schwarztorstrasse");
@@ -179,7 +179,7 @@ class OJPAdapterAccessTest {
         requestStopPlacesByNameAndCoordinate(configuration.ojpAccessPassive());
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_StopPlace_name_coordinates() throws OJPException {
         requestStopPlacesByNameAndCoordinate(configuration.ojpAccessActive());
@@ -208,7 +208,7 @@ class OJPAdapterAccessTest {
         requestStopPlacesByCoordinatesAndRadius(configuration.ojpAccessPassive());
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_StopPlace_coordinates_radius() throws OJPException {
         requestStopPlacesByCoordinatesAndRadius(configuration.ojpAccessActive());
@@ -240,7 +240,7 @@ class OJPAdapterAccessTest {
         requestTrips(configuration.ojpAccessPassive(), "8503308", "8503424");
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestTrips_active() throws OJPException {
         // active OJP needs qualified OJP-Stop-References (due to cascading OJP instances)
@@ -346,6 +346,7 @@ class OJPAdapterAccessTest {
                         .preferredLanguage(language)
                         .journeyReference(journeyRefTimedLeg)
                         .operatingDay(operationDay)
+                        .vehicleReference(datedJourneyStructure.getVehicleRef())
                         .build());
                 assertResponseOJP(ojpResponse);
 
@@ -355,8 +356,9 @@ class OJPAdapterAccessTest {
                     if (rest.getDeclaredType() == TripInfoResultStructure.class) {
                         final TripInfoResultStructure tripInfoResultStructure = (TripInfoResultStructure) rest.getValue();
                         assertThat(tripInfoResultStructure).isNotNull();
-                        //TODO OJP 2.0 assert ::rest
                         log.info("Refresh OK for LegStructure::id={}, operatingDay={}", journeyRefTimedLeg, operationDay);
+                        assertThat(tripInfoResultStructure.getService().getOperatingDayRef().getValue()).isEqualTo(datedJourneyStructure.getOperatingDayRef().getValue());
+                        //TODO OJP 2.0 assert
                         return;
                     }
                     log.debug("OJPTripInfoDeliveryStructure::rest value: {}", rest.getDeclaredType());
@@ -382,7 +384,7 @@ class OJPAdapterAccessTest {
         requestDepartures(configuration.ojpAccessPassive(), "ch:1:sloid:3424:3:4");
     }
 
-    @Disabled //TODO OJP 2.0 configure URL
+    @Disabled // active instance does only support OJP 1.0
     @Test
     void requestStopEventRequest_active_departure() throws OJPException {
         requestDepartures(configuration.ojpAccessActive(), "OJP:STOP:SBB:8503424|Schaffhausen");
