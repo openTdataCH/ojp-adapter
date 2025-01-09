@@ -48,6 +48,7 @@ import swiss.opentransportdata.ojp.adapter.TripLegRequestFilter;
 import swiss.opentransportdata.ojp.adapter.TripRequestFilter;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.converter.OJPFactory;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceTypeEnum;
 import swiss.opentransportdata.ojp.adapter.model.place.response.PlaceResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response.DatedVehicleJourney;
@@ -63,6 +64,7 @@ import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus;
 import swiss.opentransportdata.ojp.adapter.service.api.converter.ServiceJourneyConverter.ModeOJP;
 import swiss.opentransportdata.ojp.adapter.service.utils.DateTimeUtils;
+import uk.org.siri.siri.AbstractServiceDeliveryStructure;
 import uk.org.siri.siri.VehicleModesOfTransportEnumeration;
 
 /**
@@ -136,7 +138,7 @@ public class OJPFacade {
      */
     @NonNull
     public PlaceResponse requestPlaces(@NonNull OJPAccessor ojpAccessor, @NonNull PlaceRequestFilter filter) throws OJPException {
-        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, filter);
+        final OJP ojpResponse = ojpAdapter.requestPlaces(ojpAccessor, filter);
         return placeConverter.convertToDTO(ojpResponse);
     }
 
@@ -144,7 +146,7 @@ public class OJPFacade {
     public TripResponse requestTrips(@NonNull OJPAccessor ojpAccessor, @NonNull TripRequestFilter tripRequestFilter)
         throws OJPException {
 
-        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestTrips(ojpAccessor, tripRequestFilter);
+        final OJP ojpResponse = ojpAdapter.requestTrips(ojpAccessor, tripRequestFilter);
         return tripConverter.convertToDTO(ojpResponse);
     }
 
@@ -168,14 +170,16 @@ public class OJPFacade {
      */
     @NonNull
     public DepartureResponse requestDepartures(@NonNull OJPAccessor ojpAccessor, @NonNull StopEventRequestFilter filter) throws OJPException {
-        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, filter);
+        final OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, filter);
+        final AbstractServiceDeliveryStructure deliveryStructure = OJPAdapter.extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         return DepartureResponse.builder()
             .departures(serviceJourneyConverter.convertToDTO(ojpResponse).stream()
                 .map(serviceJourney -> Departure.builder()
                     .serviceJourney(serviceJourney)
                     .build())
-                .collect(Collectors.toList()))
+                .toList())
+            .responseTranslation(Translation.mapToLocale(deliveryStructure.getDefaultLanguage()))
             .build();
     }
 
@@ -187,14 +191,16 @@ public class OJPFacade {
      */
     @NonNull
     public ArrivalResponse requestArrivals(@NonNull OJPAccessor ojpAccessor, @NonNull StopEventRequestFilter filter) throws OJPException {
-        final de.vdv.ojp.release2.model.OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, filter);
+        final OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, filter);
+        final AbstractServiceDeliveryStructure deliveryStructure = OJPAdapter.extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         return ArrivalResponse.builder()
             .arrivals(serviceJourneyConverter.convertToDTO(ojpResponse).stream()
                 .map(serviceJourney -> Arrival.builder()
                     .serviceJourney(serviceJourney)
                     .build())
-                .collect(Collectors.toList()))
+                .toList())
+            .responseTranslation(Translation.mapToLocale(deliveryStructure.getDefaultLanguage()))
             .build();
     }
 

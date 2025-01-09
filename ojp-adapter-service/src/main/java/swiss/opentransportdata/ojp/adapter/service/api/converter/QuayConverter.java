@@ -31,7 +31,7 @@ public class QuayConverter {
     //        return tracks.stream()
     //            .map(track -> mapToQuay(stopPlaceUic, track))
     //            .filter(Objects::nonNull)
-    //            .collect(Collectors.toList());
+    //            .toList();
     //    }
     //
     //    public static Quay mapToQuay(@NonNull Integer stopPlaceUic, Track track) {
@@ -42,7 +42,7 @@ public class QuayConverter {
     //        String perron = track.getPerron();
     //        return Quay.builder()
     //            .id(getQuayId("" + stopPlaceUic, trackName))
-    //            //.swissLocationId(track.getSwissLocationId) // TODO
+    //            //.swissLocationId(track.getSwissLocationId)
     //            .name(trackName)
     //            .parentId(perron == null ? null : "" + stopPlaceUic + "_" + perron)
     //            .build();
@@ -53,7 +53,7 @@ public class QuayConverter {
             return null;
         }
         return Quay.builder()
-            .id(getQuayId("" + stopPlaceUic, trackName))
+            .id(getQuayId(stopPlaceUic, trackName))
             .swissLocationId(trackSwissLocationId)
             .name(trackName)
             .build();

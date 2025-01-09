@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.Point;
 import swiss.opentransportdata.ojp.adapter.model.place.response.Address;
 import swiss.opentransportdata.ojp.adapter.model.place.response.Place;
@@ -106,6 +107,7 @@ public class PlaceConverter implements AbstractConverter<OJP, PlaceResponse> {
 
         return PlaceResponse.builder()
             .places(places)
+            .responseTranslation(Translation.mapToLocale(ojpLocationInformationDeliveryStructure.getDefaultLanguage()))
             .build();
     }
 

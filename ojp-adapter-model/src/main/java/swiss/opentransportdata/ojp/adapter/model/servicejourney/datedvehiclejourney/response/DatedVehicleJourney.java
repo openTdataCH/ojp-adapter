@@ -16,13 +16,16 @@
 
 package swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import java.util.Locale;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourneyPattern;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.networkdescription.route.Route;
@@ -33,10 +36,13 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.networ
 @Schema(description = "A particular journey of a vehicle on a particular operatingday including all modifications possibly decided by the control staff. Complete route of public transport service (de:Zuglauf).")
 @Builder
 @Value
-public class DatedVehicleJourney implements JsonResponse, ServiceJourneyPattern, Route {
+public class DatedVehicleJourney implements JsonResponse, Translation, ServiceJourneyPattern, Route {
 
     @Schema(description = ModelDoc.DESCRIPTION_SERVICEJOURNEY,
         requiredMode = RequiredMode.REQUIRED)
     @NonNull
     ServiceJourney serviceJourney;
+
+    @JsonIgnore
+    Locale responseTranslation;
 }

@@ -115,7 +115,7 @@ public class OJPAdapter {
      * @return specific delivery structure related to request-query (might still contain specific error)
      * @throws OJPException
      */
-    private static AbstractServiceDeliveryStructure extractFirstDeliveryStructure(
+    public static AbstractServiceDeliveryStructure extractFirstDeliveryStructure(
         List<JAXBElement<? extends AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
 
         if (CollectionUtils.isEmpty(abstractServiceDeliveryStructures)) {

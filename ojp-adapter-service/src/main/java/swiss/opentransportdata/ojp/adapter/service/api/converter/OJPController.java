@@ -141,6 +141,15 @@ public class OJPController extends BaseController implements LocationPlaceFilter
     private final OJPConfiguration ojpConfiguration;
     private final OJPFacade ojpFacade;
 
+    private static Locale detectTranslation(Locale byResponse, Locale byRequest) {
+        if (byResponse == null) {
+            log.info("OJP did not set a response defaultLanguage -> fallback to ACCEPT-LANGUAGE");
+            return byRequest;
+        }
+
+        return byResponse;
+    }
+
     @GetMapping(value = {API_PLACES})
     @Operation(summary = "Get places of type " + PlaceTypeEnum.TYPE_STOPPLACE + ", " + PlaceTypeEnum.TYPE_ADDRESS + "," + PlaceTypeEnum.TYPE_POINTOFINTEREST + " by its name.",
         description = "The response is a flat (non-inherited) structure of concrete places.")
@@ -228,8 +237,8 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             if (placeResponse.getPlaces().isEmpty()) {
                 return responseFactory.createNotFoundResponse();
             }
-            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(placeResponse, placeRequestFilter.getPreferredLanguage());
+
+            return responseFactory.createOkResponse(placeResponse, detectTranslation(placeResponse.getResponseTranslation(), placeRequestFilter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -298,9 +307,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .build();
 
             final DatedVehicleJourney datedVehicleJourney = ojpFacade.requestDatedVehicleJourneyByServiceJourneyId(createOJPAccessor(), filter);
-
-            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(datedVehicleJourney, filter.getPreferredLanguage());
+            return responseFactory.createOkResponse(datedVehicleJourney, detectTranslation(datedVehicleJourney.getResponseTranslation(), filter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -388,8 +395,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .build();
 
             final DepartureResponse departureResponse = ojpFacade.requestDepartures(createOJPAccessor(), filter);
-            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(departureResponse, filter.getPreferredLanguage());
+            return responseFactory.createOkResponse(departureResponse, detectTranslation(departureResponse.getResponseTranslation(), filter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -478,8 +484,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .build();
 
             final ArrivalResponse arrivalResponse = ojpFacade.requestArrivals(createOJPAccessor(), filter);
-            // TODO OJP 2.0 CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(arrivalResponse, filter.getPreferredLanguage() /*TODO if translated by OJP*/);
+            return responseFactory.createOkResponse(arrivalResponse, detectTranslation(arrivalResponse.getResponseTranslation(), filter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {

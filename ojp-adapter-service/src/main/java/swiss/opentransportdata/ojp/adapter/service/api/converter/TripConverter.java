@@ -49,6 +49,7 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.model.place.response.Place;
 import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response.DatedVehicleJourney;
@@ -369,6 +370,7 @@ class TripConverter implements AbstractConverter<OJP, TripResponse> {
 
             return DatedVehicleJourney.builder()
                 .serviceJourney(OJPFacade.createServiceJourney(datedJourneyStructure, scheduledStopPoints, (Element) tripInfoResultStructure.getExtension()))
+                .responseTranslation(Translation.mapToLocale(ojpTripInfoDeliveryStructure.getDefaultLanguage()))
                 .build();
 
         }
