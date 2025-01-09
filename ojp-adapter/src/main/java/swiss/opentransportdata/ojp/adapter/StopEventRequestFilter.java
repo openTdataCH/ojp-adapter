@@ -17,6 +17,7 @@
 package swiss.opentransportdata.ojp.adapter;
 
 import de.vdv.ojp.release2.model.ModeFilterStructure;
+import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import lombok.Builder;
@@ -64,4 +65,10 @@ public class StopEventRequestFilter implements StopEventRequest, ModeRequestFilt
      */
     @Builder.Default
     ZonedDateTime departureArrivalDateTime = ZonedDateTime.now();
+
+    /**
+     * Default: false, all trips are calculated by realtime data; true: planned data only
+     */
+    @Builder.Default
+    UseRealtimeDataEnumeration realtimeMode = UseRealtimeDataEnumeration.EXPLANATORY;
 }

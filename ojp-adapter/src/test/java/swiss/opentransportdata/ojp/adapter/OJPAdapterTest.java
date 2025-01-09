@@ -28,10 +28,13 @@ import de.vdv.ojp.release2.model.TripResultStructure;
 import jakarta.xml.bind.JAXBElement;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
+import uk.org.siri.siri.AbstractServiceDeliveryStructure;
+import uk.org.siri.siri.ServiceDelivery;
 
 /**
  * @see <a href="https://tools.odpch.ch/ojp-demo-v2/search">Test-file creation tool</a>
@@ -60,11 +63,20 @@ class OJPAdapterTest {
         assertThat(ojp).isNotNull();
 
         assertThat(ojp.getOJPResponse()).isNotNull();
-        assertThat(ojp.getOJPResponse().getServiceDelivery()).isNotNull();
-        assertThat(ojp.getOJPResponse().getServiceDelivery().isStatus()).as("null defaults to ok (TRUE)").isNull();
-        assertThat(ojp.getOJPResponse().getServiceDelivery().getErrorCondition()).isNull();
-        assertThat(ojp.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery()).hasSize(1);
-        assertThat(ojp.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().getFirst()).isInstanceOf(JAXBElement.class);
+        assertThat(ojp.getOJPResponse().getCheckStatusResponse()).isNull();
+        assertThat(ojp.getOJPResponse().getCapabilitiesResponse()).isNull();
+        assertThat(ojp.getOJPResponse().getTerminateSubscriptionResponse()).isNull();
+        assertThat(ojp.getOJPResponse().getAbstractDiscoveryDelivery()).isNull();
+
+        final ServiceDelivery serviceDelivery = ojp.getOJPResponse().getServiceDelivery();
+        assertThat(serviceDelivery).isNotNull();
+        assertThat(serviceDelivery.isStatus()).as("null defaults to ok (TRUE)").isNull();
+        assertThat(serviceDelivery.getErrorCondition()).isNull();
+
+        final List<JAXBElement<? extends AbstractServiceDeliveryStructure>> deliveryStructures = serviceDelivery.getAbstractFunctionalServiceDelivery();
+        assertThat(deliveryStructures).hasSize(1);
+        assertThat(deliveryStructures.getFirst()).isInstanceOf(JAXBElement.class);
+        assertThat(deliveryStructures.getFirst().getValue().getDefaultLanguage()).isNotBlank();
 
         return ojp;
     }
@@ -75,6 +87,7 @@ class OJPAdapterTest {
 
         final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojp);
         assertThat(ojpLocationInformationDeliveryStructure).isNotNull();
+        assertThat(ojpLocationInformationDeliveryStructure.getDefaultLanguage()).isNotBlank();
         assertThat(ojpLocationInformationDeliveryStructure.getRest()).isNotEmpty();
 
         int count = 0;
@@ -98,6 +111,7 @@ class OJPAdapterTest {
 
         final OJPStopEventDeliveryStructure stopEventDeliveryStructure = OJPAdapter.mapToFirstOJPStopEventDeliveryStructure(ojp);
         assertThat(stopEventDeliveryStructure).isNotNull();
+        assertThat(stopEventDeliveryStructure.getDefaultLanguage()).isNotBlank();
         assertThat(stopEventDeliveryStructure.getRest()).isNotEmpty();
 
         int count = 0;
@@ -121,6 +135,7 @@ class OJPAdapterTest {
 
         final OJPStopEventDeliveryStructure stopEventDeliveryStructure = OJPAdapter.mapToFirstOJPStopEventDeliveryStructure(ojp);
         assertThat(stopEventDeliveryStructure).isNotNull();
+        assertThat(stopEventDeliveryStructure.getDefaultLanguage()).isNotBlank();
         assertThat(stopEventDeliveryStructure.getRest()).isNotEmpty();
 
         int count = 0;
@@ -143,6 +158,7 @@ class OJPAdapterTest {
 
         final OJPTripDeliveryStructure tripDeliveryStructure = OJPAdapter.mapToFirstOJPTripDeliveryStructure(ojp);
         assertThat(tripDeliveryStructure).isNotNull();
+        assertThat(tripDeliveryStructure.getDefaultLanguage()).isNotBlank();
         assertThat(tripDeliveryStructure.getRest()).isNotEmpty();
 
         int count = 0;

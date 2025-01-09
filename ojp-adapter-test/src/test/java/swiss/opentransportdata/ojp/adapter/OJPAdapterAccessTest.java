@@ -358,14 +358,14 @@ class OJPAdapterAccessTest {
                         assertThat(tripInfoResultStructure).isNotNull();
                         log.info("Refresh OK for LegStructure::id={}, operatingDay={}", journeyRefTimedLeg, operationDay);
                         assertThat(tripInfoResultStructure.getService().getOperatingDayRef().getValue()).isEqualTo(datedJourneyStructure.getOperatingDayRef().getValue());
-                        //TODO OJP 2.0 assert
+                        //TODO assert
                         return;
                     }
                     log.debug("OJPTripInfoDeliveryStructure::rest value: {}", rest.getDeclaredType());
                 }
                 Assertions.fail("TripInfoResultStructure expected");
             } catch (Exception ex) {
-                // TODO OJP active seems to fail always -> do we need to adapt its TimedLeg::id
+                // TODO OJP 1.0 active seems to fail always -> do we need to adapt its TimedLeg::id
                 Assertions.fail("Trip::leg reconstruction failed for: " + ojpAccessor.getEndpoint() + ", TimedLeg to refresh=" + legStructure.getTimedLeg(), ex);
             }
         } else if (legStructure.getTransferLeg() != null) {
@@ -379,7 +379,7 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestStopEventRequest_passive_departure() throws OJPException {
-        // passive can deal with classic UIC or SBOID
+        // passive can deal with classic UIC or SLOID
         requestDepartures(configuration.ojpAccessPassive(), "8503424" /*Schaffhausen*/);
         requestDepartures(configuration.ojpAccessPassive(), "ch:1:sloid:3424:3:4");
     }
@@ -405,6 +405,7 @@ class OJPAdapterAccessTest {
         assertResponse(ojpStopEventDeliveryStructure, language);
 
         assertThat(ojpStopEventDeliveryStructure.getRest()).hasSizeGreaterThanOrEqualTo(1);
+        int stopCount = 0;
         for (JAXBElement<?> rest : ojpStopEventDeliveryStructure.getRest()) {
             if (rest.getDeclaredType() != StopEventResultStructure.class) {
                 log.debug("skip non-Departure: {}", rest.getDeclaredType());
@@ -412,19 +413,25 @@ class OJPAdapterAccessTest {
             }
 
             final StopEventStructure stopEventStructure = ((StopEventResultStructure) rest.getValue()).getStopEvent();
-            final String stopPlaceId = stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue();
-            if (stopPlaceId.startsWith("ch:") && stopPlaceId.contains(":sloid:")) {
-                //TODO OJP 2.0 assert 85 -> "ch:"; last 4 UIC numbers -> :xxxx:
-                log.info("OJP SLOID={} for requested StopPlace::id={}", stopPlaceId, departureStopPlaceReference);
+            final String stopPointRefValue = stopEventStructure.getThisCall().getCallAtStop().getStopPointRef().getValue();
+            if (stopCount == 0) {
+                assertThat(stopPointRefValue).as("1st stop departure match")
+                    .startsWith("ch:")
+                    .contains(":sloid:3424:");
             } else {
-                assertThat(departureStopPlaceReference).as("wanted departure StopPlace").contains(stopPlaceId);
+                log.info("OJP SLOID={} for requested StopPlace::id={}", stopPointRefValue, departureStopPlaceReference);
             }
+            stopCount++;
+
+            assertThat(stopEventStructure.getPreviousCall()).as("stops before start irrelevant").isEmpty();
+            assertThat(stopEventStructure.getOnwardCall()).as("stops after start").hasSizeGreaterThanOrEqualTo(0);
+
             log.info("routeIndex={},  quayAimed={} departure={}", stopEventStructure.getThisCall().getCallAtStop().getOrder(),
                 OJPAdapter.getText(stopEventStructure.getThisCall().getCallAtStop().getPlannedQuay()),
                 stopEventStructure.getThisCall().getCallAtStop().getServiceDeparture().getTimetabledTime());
+
             final DatedJourneyStructure datedJourneyStructure = stopEventStructure.getService();
             final String journeyRef = datedJourneyStructure.getJourneyRef().getValue();
-
             assertThat(journeyRef).isNotBlank();
             if (isSwissJourneyId(journeyRef)) {
                 log.debug("OJP JourneyReference as SJYID={}", journeyRef);

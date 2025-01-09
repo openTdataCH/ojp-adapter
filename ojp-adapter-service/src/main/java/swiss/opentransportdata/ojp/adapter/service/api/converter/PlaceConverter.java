@@ -74,7 +74,6 @@ public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
         final OJPLocationInformationDeliveryStructure ojpLocationInformationDeliveryStructure = OJPAdapter.mapToFirstOJPLocationInformationDeliveryStructure(ojpResponse);
 
         final List<Place> places = new ArrayList<>();
-        // v1 "<ojp:Location>"
         ojpLocationInformationDeliveryStructure.getRest().stream()
             .filter(rest -> rest.getDeclaredType() == PlaceResultStructure.class)
             .forEach(rest -> {

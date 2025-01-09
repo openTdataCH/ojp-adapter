@@ -118,10 +118,15 @@ public class OJPAdapter {
     private static AbstractServiceDeliveryStructure extractFirstDeliveryStructure(
         List<JAXBElement<? extends AbstractServiceDeliveryStructure>> abstractServiceDeliveryStructures) throws OJPException {
 
+        if (CollectionUtils.isEmpty(abstractServiceDeliveryStructures)) {
+            // unexpected
+            throw new OJPException("abstractServiceDeliveryStructures is empty");
+        }
+
         final AbstractServiceDeliveryStructure firstDeliveryStructure = abstractServiceDeliveryStructures.getFirst().getValue();
         if (firstDeliveryStructure == null) {
             // unexpected
-            throw new OJPException("AbstractServiceDeliveryStructure is null");
+            throw new OJPException("first AbstractServiceDeliveryStructure is null");
         }
 
         return firstDeliveryStructure;
@@ -304,7 +309,7 @@ public class OJPAdapter {
                 }
             }
             final OJP ojpRequest = ojpFactory.createOjpWithLocationInformationRequest(initialLocationInputStructure, filter);
-            return request2(ojpAccessor, ojpRequest);
+            return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") LocationInformation request failed" + ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -327,7 +332,7 @@ public class OJPAdapter {
     public OJP requestTrips(@NonNull OJPAccessor ojpAccessor, @NonNull TripRequestFilter filter) throws OJPException {
         try {
             final OJP ojpRequest = ojpFactory.createOjpWithTripRequest(filter);
-            return request2(ojpAccessor, ojpRequest);
+            return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") Trip request failed", ex);
         } catch (Exception ex) {
@@ -349,7 +354,7 @@ public class OJPAdapter {
     public OJP requestTripLegByJourneyReference(@NonNull OJPAccessor ojpAccessor, @NonNull TripLegRequestFilter filter) throws OJPException {
         try {
             final OJP ojpRequest = ojpFactory.createOjpWithTripInfoRequest(filter);
-            return request2(ojpAccessor, ojpRequest);
+            return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ", journeyReference=" + filter.getJourneyReference() + ") TripInfo request failed", ex);
         } catch (Exception ex) {
@@ -373,7 +378,7 @@ public class OJPAdapter {
     public OJP requestStopEvent(@NonNull OJPAccessor ojpAccessor, @NonNull StopEventRequestFilter filter) throws OJPException {
         try {
             final OJP ojpRequest = ojpFactory.createOjpWithStopEventRequest(filter);
-            return request2(ojpAccessor, ojpRequest);
+            return request(ojpAccessor, ojpRequest);
         } catch (WebClientResponseException ex) {
             throw new OJPException("OJP(" + ojpAccessor.getEndpoint() + ") StopEvent request failed" + ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -388,7 +393,7 @@ public class OJPAdapter {
      * @param ojpRequest OJP body
      * @return OJP response (might still contain specific error)
      */
-    private OJP request2(OJPAccessor ojpAccessor, OJP ojpRequest) {
+    private OJP request(OJPAccessor ojpAccessor, OJP ojpRequest) {
         final String body = marshalRequest(ojpRequest);
 
         log.debug("POST {}, body={}", ojpAccessor.getEndpoint(), body);
@@ -456,26 +461,26 @@ public class OJPAdapter {
      * @return OJP response structure
      */
     private OJP unmarshalBody(String responseBody) {
-        final OJP ojpResponse;
         try {
-            ojpResponse = (OJP) ojpJaxbContext.createUnmarshaller().unmarshal(new StringReader(responseBody));
+            final OJP ojpResponse = (OJP) ojpJaxbContext.createUnmarshaller().unmarshal(new StringReader(responseBody));
+
+            if (ojpResponse.getOJPResponse() == null) {
+                throw new OJPException("Expected response element is expected: " + ojpResponse);
+            }
+            if (ojpResponse.getOJPResponse().getServiceDelivery() == null) {
+                throw new OJPException("Expected ServiceDelivery content is expected: " + ojpResponse.getOJPResponse());
+            }
+            if (ojpResponse.getOJPResponse().getServiceDelivery().getErrorCondition() != null) {
+                // general fault: OJP failed to treat request (whether single- or multi-query)
+                throw new OJPException(ojpResponse.getOJPResponse().getServiceDelivery());
+            }
+            if (CollectionUtils.isEmpty(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery())) {
+                // unexpected
+                throw new OJPException("ServiceDelivery::abstractFunctionalServiceDelivery is empty for: " + ojpResponse.getOJPResponse().getServiceDelivery());
+            }
+            return ojpResponse;
         } catch (JAXBException ex) {
             throw new OJPException("Response mapping failed", ex);
         }
-        if (ojpResponse.getOJPResponse() == null) {
-            throw new OJPException("Expected response element is expected: " + ojpResponse);
-        }
-        if (ojpResponse.getOJPResponse().getServiceDelivery() == null) {
-            throw new OJPException("Expected ServiceDelivery content is expected: " + ojpResponse.getOJPResponse());
-        }
-        if (ojpResponse.getOJPResponse().getServiceDelivery().getErrorCondition() != null) {
-            // general fault: OJP failed to treat request (whether single- or multi-query)
-            throw new OJPException(ojpResponse.getOJPResponse().getServiceDelivery());
-        }
-        if (CollectionUtils.isEmpty(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery())) {
-            // unexpected
-            throw new OJPException("ServiceDelivery::abstractFunctionalServiceDelivery is empty for: " + ojpResponse.getOJPResponse().getServiceDelivery());
-        }
-        return ojpResponse;
     }
 }

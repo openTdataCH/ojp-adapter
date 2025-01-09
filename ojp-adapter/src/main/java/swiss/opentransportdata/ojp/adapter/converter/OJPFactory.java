@@ -339,17 +339,15 @@ public class OJPFactory {
             stopEventParamStructure.setIncludeOnwardCalls(true /*'true' means the future stops of each line are shown as well*/);
         } // or BOTH -> not possible by Hafas
         stopEventParamStructure.setIncludeOperatingDays(true);
-        //v1 only ? stopEventParamStructure.setIncludeRealtimeData(true);
         stopEventParamStructure.setNumberOfResults(BigInteger.valueOf(filter.getLimit()));
         stopEventParamStructure.setModeFilter(filter.getModeFilterStructure());
+        stopEventParamStructure.setUseRealtimeData(filter.getRealtimeMode());
 
         /*
         stopEventParamStructure.setLineFilter();
         stopEventParamStructure.setOperatorFilter();
         stopEventParamStructure.setTimeWindow();
 
-        LocationStructure locationStructure = objectFactoryOjp.createLocationStructure();
-        locationStructure.set
         OperatingDayRefStructure operatingDayRefStructure = objectFactoryOjp.createOperatingDayRefStructure();
         TODO OJP 2.0  operatingDayRefStructure.setValue(DateTimeUtils.formatDate(operatingDay));
         */

@@ -1,8 +1,30 @@
 # v1.0.0
-Upgrade to Swiss SKI+ OJP v2.0
 
-**breaking changes (OJP v1.0.3 upgrade to OJP v2)**:
-* PTModeFilterStructure replaced by ModeFilterStructure, property ptModeFilterStructure renamed to modeFilterStructure
+**Breaking changes (OJP v1.0.3 upgrade to OJP v2)**:
+
+* OJP java-model (POJO) v1.0.3 upgraded to OJP v2.0
+  * PTModeFilterStructure (OJP 1.0) replaced by ModeFilterStructure (OJP 2.0), property
+    ptModeFilterStructure renamed to modeFilterStructure
+* OJP URL configured to Swiss SKI+ OJP 2.0 passive instance
+* AccessEnd::timeAimed nullable
+* ConnectionEnd::timeAimed nullable
+* TripRequestFilter::includeLegProjection renamed to ::includeProjection
+* TripRequestFilter::excludeRealtime renamed to ::realtimeMode
+* TripLegRequestFilter::projection renamed to ::includeProjection
+
+**Improvements**:
+
+* StopEventRequestFilter::realtimeMode added
+* refactoring
+  * Java 21
+  * duplicates
+  * TODOs minimized
+  * OJP/SIRI object instantiation
+* bug fixes
+
+**Not supported currently (use OJP-Adapter v0.9.0-beta)**:
+
+* OJP SKI+ active instance (Tests disabled)
 
 # v0.9.0-beta
 Initial Release, based on Swiss SKI+ OJP v1.0.3

@@ -15,11 +15,9 @@
  */
 
 /**
- * TODO OJP v2.0
+ * TODO OJP 2.0
  * <ul>
  *     <li>remove all packages except swiss. when dependency ojp-java-model is upgraded to OJP v2</li>
- *     <li>replace all OJP v1 namespaces by proper OJP v2 namespaces</li>
- *     <li>remove v1 code like Deprecated(since = "OJP v2.0")</li>
  * </ul>
  * @deprecated contains just a temporary OJP v2 POJO in de.*, eu.*,net.*,uk.*
  */

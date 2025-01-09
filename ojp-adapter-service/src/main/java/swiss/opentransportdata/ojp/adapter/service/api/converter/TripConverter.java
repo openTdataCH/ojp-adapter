@@ -106,7 +106,7 @@ class TripConverter extends AbstractConverter<OJP, TripResponse> {
                 responseContextStructure.getPlaces().getPlace().forEach(placeStructure -> {
                     if (responseContextStructure.getSituations() != null) {
                         //TODO OJP 2.0 add situations? See ServiceJourneyConverter::mapToSituations
-                        SituationsStructure situationsStructure = responseContextStructure.getSituations();
+                        final SituationsStructure situationsStructure = responseContextStructure.getSituations();
                         log.debug("situations={}", situationsStructure);
                     }
                     if (placeStructure.getStopPoint() != null) {
