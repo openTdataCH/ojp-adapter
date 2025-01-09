@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/**
+/*
  * TODO OJP 2.0
  * <ul>
  *     <li>remove all packages except swiss. when dependency ojp-java-model is upgraded to OJP v2</li>
