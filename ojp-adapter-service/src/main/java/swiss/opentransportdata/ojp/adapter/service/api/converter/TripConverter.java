@@ -358,7 +358,6 @@ class TripConverter implements AbstractConverter<OJP, TripResponse> {
 
             final TripInfoResultStructure tripInfoResultStructure = (TripInfoResultStructure) rest.getValue();
             final DatedJourneyStructure datedJourneyStructure = tripInfoResultStructure.getService();
-            final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
 
             final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
             for (CallAtStopStructure callAtStopStructure : tripInfoResultStructure.getPreviousCall() /*.PlaceStructure placeStructure : places.getLocation()*/) {
