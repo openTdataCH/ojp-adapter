@@ -18,9 +18,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>swiss.opentransportdata.ojp</groupId>
-            <artifactId>ojp-adapter</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${springframework.version}</version>
         </dependency>
 
         <dependency>

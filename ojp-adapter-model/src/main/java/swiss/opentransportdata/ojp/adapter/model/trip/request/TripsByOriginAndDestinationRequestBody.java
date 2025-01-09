@@ -132,6 +132,7 @@ public class TripsByOriginAndDestinationRequestBody implements JsonResponse, /*R
     //    /**
     //     * Transmodel {@link TripRequestPolicy} ::useRealTime
     //     */
+
     @Schema(description = ModelDoc.PARAM_REALTIME_MODE, defaultValue = RealtimeModeEnum.REALTIME_AS_STRING)
     RealtimeModeEnum realtimeMode;
 

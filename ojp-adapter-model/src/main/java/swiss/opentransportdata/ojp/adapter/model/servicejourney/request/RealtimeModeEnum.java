@@ -16,13 +16,13 @@
 
 package swiss.opentransportdata.ojp.adapter.model.servicejourney.request;
 
-import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
 import io.swagger.v3.oas.annotations.media.Schema;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleEnum;
 
 /**
  * Planned versus realtime impacted journeys.
- * @see UseRealtimeDataEnumeration
+ *
+ * Aka OJP UseRealtimeDataEnumeration
  */
 @JsonExtensibleEnum
 @Schema(enumAsRef = true)
@@ -30,16 +30,18 @@ public enum RealtimeModeEnum {
     /**
      * Realtime impacted if any.
      *
-     * Be aware OJP knows {@link UseRealtimeDataEnumeration#FULL} as well, but EXPLANATORY is probably better.
-     * @see UseRealtimeDataEnumeration#EXPLANATORY
+     * Might be router-specific, for e.g.:
+     * <ul>
+     *     <li>Hafas knows REALTIME_RIDEABLE (Rt without cancelled).</li>
+     *     <li>OJP distinguishes between FULL and EXPLANATORY.</li>
+     * </ul>
      */
     REALTIME,
 
-    // Hafas knows REALTIME_RIDEABLE (Rt without cancelled)
-
     /**
-     * Planned.
-     * @see UseRealtimeDataEnumeration#NONE
+     * Planned without realtime.
+     *
+     * Aka OJP UseRealtimeDataEnumeration#NONE
      */
     OFF;
 
