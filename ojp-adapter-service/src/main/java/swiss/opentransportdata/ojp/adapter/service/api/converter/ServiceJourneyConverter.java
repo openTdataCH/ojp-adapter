@@ -72,7 +72,7 @@ import uk.org.siri.siri.StopPointRefStructure;
  */
 @Slf4j
 @Component("OJPDepartureConverter")
-class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney>> {
+class ServiceJourneyConverter implements AbstractConverter<OJP, List<ServiceJourney>> {
 
     @Override
     public List<ServiceJourney> convertToDTO(OJP ojpResponseWithStopEvent) {

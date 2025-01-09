@@ -47,7 +47,7 @@ import uk.org.siri.siri.LocationStructure;
  */
 @Slf4j
 @Component("OJPPlaceConverter")
-public class PlaceConverter extends AbstractConverter<OJP, PlaceResponse> {
+public class PlaceConverter implements AbstractConverter<OJP, PlaceResponse> {
 
     PlaceConverter() {
         super();

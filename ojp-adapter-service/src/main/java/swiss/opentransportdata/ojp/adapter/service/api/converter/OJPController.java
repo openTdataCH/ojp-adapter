@@ -668,6 +668,8 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         if (realtimeModeEnum == RealtimeModeEnum.OFF) {
             return UseRealtimeDataEnumeration.NONE;
         }
+
+        // Be aware OJP knows UseRealtimeDataEnumeration#FULL as well, but EXPLANATORY is probably better.
         return UseRealtimeDataEnumeration.EXPLANATORY;
     }
 

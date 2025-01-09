@@ -73,7 +73,7 @@ import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
  */
 @Slf4j
 @Component("OJPTripConverter")
-class TripConverter extends AbstractConverter<OJP, TripResponse> {
+class TripConverter implements AbstractConverter<OJP, TripResponse> {
 
     /**
      * Converter Function (may deal with a single TripV2 or a List of TripV2).

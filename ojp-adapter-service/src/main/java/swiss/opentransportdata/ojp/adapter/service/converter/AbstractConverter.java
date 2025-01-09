@@ -19,9 +19,7 @@ package swiss.opentransportdata.ojp.adapter.service.converter;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.NonNull;
-import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * Abstract converter already handling collection of objects, but letting conversion of singular object to be implemented in the subclasses.
@@ -33,25 +31,41 @@ import org.apache.commons.lang3.NotImplementedException;
  * @author Florian Hof
  * @see <a href="https://www.baeldung.com/spring-type-conversions>Perhaps use Spring GenericConverter</a>
  */
-public abstract class AbstractConverter<T, R> implements ModelConverter<T, R> {
+public interface AbstractConverter<T, R> {
 
-    @Override
-    public List<R> convertToDTOs(@NonNull Collection<T> entities) {
-        return entities.stream().map(this::convertToDTO).collect(Collectors.toList());
+    /**
+     * @param internalObjects collection of domain or raw model objects
+     * @return List of DTO's (beautified/converted internalObjects)
+     */
+    default List<R> convertToDTOs(@NonNull Collection<T> internalObjects) {
+        return internalObjects.stream().map(this::convertToDTO).toList();
     }
 
-    @Override
-    public List<T> convertToEntities(@NonNull Collection<R> dtos) {
-        return dtos.stream().map(this::convertToEntity).collect(Collectors.toList());
-    }
+    /**
+     * Convert raw to beauty model.
+     *
+     * @param internalObject (for e.g. raw model)
+     * @return DTO (beautified model)
+     */
+    R convertToDTO(T internalObject);
 
-    @Override
-    public R convertToDTO(T entity) {
-        throw new NotImplementedException(this.getClass().getSimpleName() + " does not implement convertToDTO");
-    }
-
-    @Override
-    public T convertToEntity(R dto) {
-        throw new NotImplementedException(this.getClass().getSimpleName() + " does not implement convertToEntity");
-    }
+    //    /**
+    //     * Provided DTO's retrieved by mapping each of them with the conversion function.
+    //     *
+    //     * @param dtos beautified models
+    //     * @return entities (for e.g. raw model or internal object)
+    //     */
+    //    default List<T> convertToEntities(@NonNull Collection<R> dtos) {
+    //        return dtos.stream().map(this::convertToEntity).toList();
+    //    }
+    //
+    //    /**
+    //     * Convert beauty to raw model.
+    //     *
+    //     * @param dto beauty model
+    //     * @return entity (for e.g. raw model or internal object)
+    //     */
+    //    default T convertToEntity(R dto) {
+    //        throw new NotImplementedException(this.getClass().getSimpleName() + " must override");
+    //    }
 }
