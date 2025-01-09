@@ -3,8 +3,7 @@
 **Breaking changes (OJP v1.0.3 upgrade to OJP v2)**:
 
 * OJP java-model (POJO) v1.0.3 upgraded to OJP v2.0
-  * PTModeFilterStructure (OJP 1.0) replaced by ModeFilterStructure (OJP 2.0), property
-    ptModeFilterStructure renamed to modeFilterStructure
+  * PTModeFilterStructure (OJP 1.0) replaced by ModeFilterStructure (OJP 2.0), property ptModeFilterStructure renamed to modeFilterStructure
 * OJP URL configured to Swiss SKI+ OJP 2.0 passive instance
 * AccessEnd::timeAimed nullable
 * ConnectionEnd::timeAimed nullable
@@ -21,6 +20,7 @@
   * TODOs minimized
   * OJP/SIRI object instantiation
 * bug fixes
+  * OJPController APIs return CONTEXT-LANGUAGE fallback by OJP router 
 
 **Not supported currently (use OJP-Adapter v0.9.0-beta)**:
 
