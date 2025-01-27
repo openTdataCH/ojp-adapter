@@ -93,10 +93,12 @@ public class OJPFactory {
         this.participantReference = participantReference;
     }
 
-    public PlaceRefStructure createPlaceReferenceStructure(@NonNull String stopPlaceId) {
+    public PlaceRefStructure createPlaceReferenceStructure(@NonNull String stopPlaceId, Locale preferredLanguage) {
         // stopName seems redundant, but OJP needs it probably (given in samples)
         final NaturalLanguageStringStructure naturalLanguageStringStructure = objectFactorySiri.createNaturalLanguageStringStructure();
-        //TODO OJP 2.0  naturalLanguageStringStructure.setLang(locale.getLanguage());
+        if (preferredLanguage != null) {
+            naturalLanguageStringStructure.setLang(preferredLanguage.getLanguage());
+        }
         naturalLanguageStringStructure.setValue(DUMMY_LOCATION_NAME);
         final InternationalTextStructure textStructure = objectFactoryOjp.createInternationalTextStructure();
         textStructure.withText(naturalLanguageStringStructure);
@@ -165,8 +167,8 @@ public class OJPFactory {
 
         final OJPTripRequestStructure ojpTripRequestStructure = objectFactoryOjp.createOJPTripRequestStructure();
         ojpTripRequestStructure.setRequestTimestamp(timestamp);
-        ojpTripRequestStructure.withOrigin(createPlaceContextStructure(filter.getOrigin(), filter.isSearchForArrival() ? null : filter.getDateTime()));
-        ojpTripRequestStructure.withDestination(createPlaceContextStructure(filter.getDestination(), filter.isSearchForArrival() ? filter.getDateTime() : null));
+        ojpTripRequestStructure.withOrigin(createPlaceContextStructure(filter.getOrigin(), filter.isSearchForArrival() ? null : filter.getDateTime(), filter.getPreferredLanguage()));
+        ojpTripRequestStructure.withDestination(createPlaceContextStructure(filter.getDestination(), filter.isSearchForArrival() ? filter.getDateTime() : null, filter.getPreferredLanguage()));
 
         final TripParamStructure tripParamStructure = objectFactoryOjp.createTripParamStructure();
         // tripParamStructure.setAcceptDeferredDelivery();
@@ -207,9 +209,9 @@ public class OJPFactory {
         return createSingleRequest(timestamp, filter.getPreferredLanguage(), objectFactoryOjp.createOJPTripRequest(ojpTripRequestStructure));
     }
 
-    private PlaceContextStructure createPlaceContextStructure(String stopPlaceUic, ZonedDateTime departureArrivalDateTime) {
+    private PlaceContextStructure createPlaceContextStructure(String stopPlaceUic, ZonedDateTime departureArrivalDateTime, Locale preferredLanguage) {
         final PlaceContextStructure placeContextStructure = objectFactoryOjp.createPlaceContextStructure();
-        placeContextStructure.setPlaceRef(createPlaceReferenceStructure(stopPlaceUic));
+        placeContextStructure.setPlaceRef(createPlaceReferenceStructure(stopPlaceUic, preferredLanguage));
 
         if (departureArrivalDateTime != null) {
             placeContextStructure.setDepArrTime(departureArrivalDateTime);
@@ -355,7 +357,7 @@ public class OJPFactory {
         final OJPStopEventRequestStructure ojpStopEventRequestStructure = objectFactoryOjp.createOJPStopEventRequestStructure();
         ojpStopEventRequestStructure.setRequestTimestamp(dateTime);
         ojpStopEventRequestStructure.setParams(stopEventParamStructure);
-        ojpStopEventRequestStructure.setLocation(createPlaceContextStructure(filter.getStopPlaceReference(), filter.getDepartureArrivalDateTime()));
+        ojpStopEventRequestStructure.setLocation(createPlaceContextStructure(filter.getStopPlaceReference(), filter.getDepartureArrivalDateTime(), filter.getPreferredLanguage()));
 
         return createSingleRequest(dateTime, filter.getPreferredLanguage(), objectFactoryOjp.createOJPStopEventRequest(ojpStopEventRequestStructure));
     }

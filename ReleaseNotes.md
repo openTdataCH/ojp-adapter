@@ -21,6 +21,7 @@
   * OJP/SIRI object instantiation
 * bug fixes
   * OJPController APIs return CONTEXT-LANGUAGE fallback by OJP router 
+  * filtering for preferredLanguage
 
 **Not supported currently (use OJP-Adapter v0.9.0-beta)**:
 

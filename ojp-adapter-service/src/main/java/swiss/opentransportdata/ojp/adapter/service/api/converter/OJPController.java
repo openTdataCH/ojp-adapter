@@ -622,7 +622,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             .origin(startPlaceReference.getPlaceId())
             .destination(endPlaceRef.getPlaceId())
             .dateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(body.getDate(), body.getTime())))
-            .vias(ojpFacade.mapToViaStops(body.getVias()))
+            .vias(ojpFacade.mapToViaStops(body.getVias(), getRequestContext().getAcceptLocale()))
             //.limit(limit)
             .includeAccessibility(accessibilityEnum == AccessibilityEnum.ALL)
             .includeIntermediateStops(body.getIncludeIntermediateStops() == null || body.getIncludeIntermediateStops() == IntermediateStopsEnum.ALL)

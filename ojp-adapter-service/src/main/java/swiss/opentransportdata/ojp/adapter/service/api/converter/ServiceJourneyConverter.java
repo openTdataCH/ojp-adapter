@@ -114,11 +114,12 @@ class ServiceJourneyConverter implements AbstractConverter<OJP, List<ServiceJour
         return serviceJourneys;
     }
 
+    // TODO CallAtStopStructure::departureFormationAssignment
     static ScheduledStopPoint mapToScheduledStopPoint(CallAtStopStructure callAtStopStructure) {
         return createScheduledStopPoint(callAtStopStructure.getStopPointName(), callAtStopStructure.getStopPointRef(),
             //TODO OJP 2.0 seems not to distinguish between departure/arrival quay
             callAtStopStructure.getPlannedQuay(), callAtStopStructure.getEstimatedQuay(), callAtStopStructure.getPlannedQuay(), callAtStopStructure.getEstimatedQuay(),
-            // TODO OJP 2.0 not foreseen yet: callAtStopStructure.getServiceDeparture/Arrival().getEstimatedTimeHigh/Low()
+            // TODO callAtStopStructure.getServiceDeparture/Arrival().getEstimatedTimeHigh/Low() -> what is it for?
             callAtStopStructure.getServiceDeparture() == null ? null : callAtStopStructure.getServiceDeparture().getTimetabledTime(),
             callAtStopStructure.getServiceDeparture() == null ? null : callAtStopStructure.getServiceDeparture().getEstimatedTime(),
             callAtStopStructure.getServiceArrival() == null ? null : callAtStopStructure.getServiceArrival().getTimetabledTime(),

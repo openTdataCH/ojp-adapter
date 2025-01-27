@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:62989",
+      "url": "http://localhost:57646",
       "description": "Generated server url"
     }
   ],
@@ -2744,9 +2744,6 @@
         ],
         "type": "object",
         "properties": {
-          "defaultLanguage": {
-            "type": "string"
-          },
           "places": {
             "minItems": 1,
             "type": "array",

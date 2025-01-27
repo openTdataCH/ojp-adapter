@@ -29,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import jdk.jfr.Experimental;
@@ -248,13 +249,13 @@ public class OJPFacade {
             .build();
     }
 
-    List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences) {
+    List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences, Locale preferredLanguage) {
         if (CollectionUtils.isEmpty(ptViaReferences)) {
             return null;
         }
         return ptViaReferences.stream()
             .map(ptViaReference -> {
-                final PlaceRefStructure placeRefStructure = ojpAdapter.getOjpFactory().createPlaceReferenceStructure(ptViaReference.getStopPlaceId());
+                final PlaceRefStructure placeRefStructure = ojpAdapter.getOjpFactory().createPlaceReferenceStructure(ptViaReference.getStopPlaceId(), preferredLanguage);
 
                 final TripViaStructure tripViaStructure = ojpAdapter.getOjpFactory().createTripViaStructure();
                 tripViaStructure.setViaPoint(placeRefStructure);
