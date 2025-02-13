@@ -16,7 +16,8 @@
 
 package swiss.opentransportdata.ojp.adapter;
 
-import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
+import de.vdv.ojp.v2.model.UseRealtimeDataEnumeration;
+import de.vdv.ojp.v2.model.TimedLegStructure;
 import java.time.LocalDate;
 import java.util.Locale;
 import lombok.Builder;
@@ -27,7 +28,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.que
 import uk.org.siri.siri.VehicleRefStructure;
 
 /**
- * Filter to refresh a {@link de.vdv.ojp.release2.model.TimedLegStructure}
+ * Filter to refresh a {@link TimedLegStructure}
  */
 @Data
 @Builder

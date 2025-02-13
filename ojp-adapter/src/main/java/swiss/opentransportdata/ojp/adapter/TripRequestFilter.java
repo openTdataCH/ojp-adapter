@@ -16,9 +16,9 @@
 
 package swiss.opentransportdata.ojp.adapter;
 
-import de.vdv.ojp.release2.model.ModeFilterStructure;
-import de.vdv.ojp.release2.model.TripViaStructure;
-import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
+import de.vdv.ojp.v2.model.ModeFilterStructure;
+import de.vdv.ojp.v2.model.TripViaStructure;
+import de.vdv.ojp.v2.model.UseRealtimeDataEnumeration;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Locale;

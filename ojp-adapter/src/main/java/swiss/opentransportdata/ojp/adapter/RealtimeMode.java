@@ -1,9 +1,9 @@
 package swiss.opentransportdata.ojp.adapter;
 
-import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
+import de.vdv.ojp.v2.model.UseRealtimeDataEnumeration;
 
 /**
- * @see de.vdv.ojp.release2.model.UseRealtimeDataEnumeration
+ * @see UseRealtimeDataEnumeration
  */
 public interface RealtimeMode {
 

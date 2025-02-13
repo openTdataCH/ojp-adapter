@@ -18,13 +18,13 @@ package swiss.opentransportdata.ojp.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.vdv.ojp.release2.model.OJP;
-import de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure;
-import de.vdv.ojp.release2.model.OJPStopEventDeliveryStructure;
-import de.vdv.ojp.release2.model.OJPTripDeliveryStructure;
-import de.vdv.ojp.release2.model.PlaceResultStructure;
-import de.vdv.ojp.release2.model.StopEventResultStructure;
-import de.vdv.ojp.release2.model.TripResultStructure;
+import de.vdv.ojp.v2.model.OJP;
+import de.vdv.ojp.v2.model.OJPLocationInformationDeliveryStructure;
+import de.vdv.ojp.v2.model.OJPStopEventDeliveryStructure;
+import de.vdv.ojp.v2.model.OJPTripDeliveryStructure;
+import de.vdv.ojp.v2.model.PlaceResultStructure;
+import de.vdv.ojp.v2.model.StopEventResultStructure;
+import de.vdv.ojp.v2.model.TripResultStructure;
 import jakarta.xml.bind.JAXBElement;
 import java.io.IOException;
 import java.io.InputStream;

@@ -16,12 +16,12 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.release2.model.DatedJourneyStructure;
-import de.vdv.ojp.release2.model.ModeFilterStructure;
-import de.vdv.ojp.release2.model.OJP;
-import de.vdv.ojp.release2.model.PlaceRefStructure;
-import de.vdv.ojp.release2.model.PlaceTypeEnumeration;
-import de.vdv.ojp.release2.model.TripViaStructure;
+import de.vdv.ojp.v2.model.DatedJourneyStructure;
+import de.vdv.ojp.v2.model.ModeFilterStructure;
+import de.vdv.ojp.v2.model.OJP;
+import de.vdv.ojp.v2.model.PlaceRefStructure;
+import de.vdv.ojp.v2.model.PlaceTypeEnumeration;
+import de.vdv.ojp.v2.model.TripViaStructure;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

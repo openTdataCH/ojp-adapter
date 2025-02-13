@@ -18,7 +18,7 @@ package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import de.vdv.ojp.release2.model.UseRealtimeDataEnumeration;
+import de.vdv.ojp.v2.model.UseRealtimeDataEnumeration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;

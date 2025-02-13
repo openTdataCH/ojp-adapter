@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:57646",
+      "url": "http://localhost:50729",
       "description": "Generated server url"
     }
   ],
@@ -64,6 +64,32 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Response found",
             "headers": {
@@ -92,32 +118,6 @@
           },
           "400": {
             "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -268,8 +268,8 @@
               }
             }
           },
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -294,8 +294,8 @@
               }
             }
           },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -460,8 +460,8 @@
               }
             }
           },
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -486,8 +486,8 @@
               }
             }
           },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -652,8 +652,8 @@
               }
             }
           },
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -678,8 +678,8 @@
               }
             }
           },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -825,6 +825,32 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Response found",
             "headers": {
@@ -853,32 +879,6 @@
           },
           "400": {
             "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -1098,6 +1098,50 @@
           }
         },
         "description": "Request parameters (POST body)."
+      },
+      "Problem": {
+        "required": [
+          "detail",
+          "status",
+          "title",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "maximum": 600,
+            "exclusiveMaximum": true,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 500
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized).",
+            "example": "Service Unavailable"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem."
+          },
+          "instance": {
+            "type": "string",
+            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+            "example": "/v3/places/{8507000}"
+          },
+          "type": {
+            "type": "string",
+            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
+            "default": "https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/Problem-Manual.md"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "The `trace-id` according to the [W3C tracing standard](https://www.w3.org/TR/trace-context/#traceparent-header). (Might be useful for support-cases with the operations teams.)"
+          }
+        },
+        "description": "Zalando like error-object if not HttpStatus 2xx (see [RFC-7807](https://tools.ietf.org/html/rfc7807)). Check for: Content-Type=application/problem+json"
       },
       "AccessibilityBoardingAlighting": {
         "required": [
@@ -2625,50 +2669,6 @@
           }
         },
         "description": "A characterisation of the public transport operation according to the means of transport (aka OJP PtMode; Siri::VehicleMode; v580 TransportMode or de:Verkehrsmittelkategorie). Whether only `id` is given or submode as well depends on available data."
-      },
-      "Problem": {
-        "required": [
-          "detail",
-          "status",
-          "title",
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "status": {
-            "maximum": 600,
-            "exclusiveMaximum": true,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 500
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized).",
-            "example": "Service Unavailable"
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem."
-          },
-          "instance": {
-            "type": "string",
-            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
-            "example": "/v3/places/{8507000}"
-          },
-          "type": {
-            "type": "string",
-            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
-            "default": "https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/Problem-Manual.md"
-          },
-          "traceId": {
-            "type": "string",
-            "description": "The `trace-id` according to the [W3C tracing standard](https://www.w3.org/TR/trace-context/#traceparent-header). (Might be useful for support-cases with the operations teams.)"
-          }
-        },
-        "description": "Zalando like error-object if not HttpStatus 2xx (see [RFC-7807](https://tools.ietf.org/html/rfc7807)). Check for: Content-Type=application/problem+json"
       },
       "DatedVehicleJourney": {
         "required": [

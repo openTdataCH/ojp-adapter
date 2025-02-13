@@ -1,7 +1,9 @@
 package swiss.opentransportdata.ojp.adapter;
 
+import de.vdv.ojp.v2.model.TripParamStructure;
+
 /**
- * @see de.vdv.ojp.release2.model.TripParamStructure#setIncludeLegProjection(Boolean)
+ * @see TripParamStructure#setIncludeLegProjection(Boolean)
  */
 public interface IncludeProjection {
 

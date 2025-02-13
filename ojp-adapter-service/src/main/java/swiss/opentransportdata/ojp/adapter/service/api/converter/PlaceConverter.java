@@ -16,14 +16,14 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.release2.model.AddressStructure;
-import de.vdv.ojp.release2.model.InternationalTextStructure;
-import de.vdv.ojp.release2.model.OJP;
-import de.vdv.ojp.release2.model.OJPLocationInformationDeliveryStructure;
-import de.vdv.ojp.release2.model.PlaceResultStructure;
-import de.vdv.ojp.release2.model.PlaceStructure;
-import de.vdv.ojp.release2.model.PointOfInterestCategoryStructure;
-import de.vdv.ojp.release2.model.StopPlaceStructure;
+import de.vdv.ojp.v2.model.AddressStructure;
+import de.vdv.ojp.v2.model.InternationalTextStructure;
+import de.vdv.ojp.v2.model.OJP;
+import de.vdv.ojp.v2.model.OJPLocationInformationDeliveryStructure;
+import de.vdv.ojp.v2.model.PlaceResultStructure;
+import de.vdv.ojp.v2.model.PlaceStructure;
+import de.vdv.ojp.v2.model.PointOfInterestCategoryStructure;
+import de.vdv.ojp.v2.model.StopPlaceStructure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

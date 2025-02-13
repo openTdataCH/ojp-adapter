@@ -35,11 +35,9 @@
         </dependency>
 
         <dependency>
-            <!-- open-source provided by https://github.com/bliksemlabs/ojp-java-model (containing POJO for https://github.com/VDVde/OJP) -->
-            <!-- TODO OJP 2.0 upgrade and remove local POJO in Modul "ojp-adapter" https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1 -->
-            <groupId>de.vdv</groupId>
+            <groupId>swiss.opentransportdata.ojp</groupId>
             <artifactId>ojp-java-model</artifactId>
-            <version>1.0.3.1</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

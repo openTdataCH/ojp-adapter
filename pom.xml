@@ -31,6 +31,7 @@
         <module>ojp-adapter-model</module>
         <module>ojp-adapter-service</module>
         <module>ojp-adapter-transmodel</module>
+        <module>ojp-java-model</module>
     </modules>
 
     <properties>

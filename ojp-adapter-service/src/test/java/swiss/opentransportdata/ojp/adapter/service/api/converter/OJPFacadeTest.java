@@ -18,7 +18,7 @@ package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.vdv.ojp.release2.model.PlaceTypeEnumeration;
+import de.vdv.ojp.v2.model.PlaceTypeEnumeration;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceTypeEnum;

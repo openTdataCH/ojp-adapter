@@ -16,8 +16,8 @@
 
 package swiss.opentransportdata.ojp.adapter;
 
-import de.vdv.ojp.release2.model.ModeFilterStructure;
-import de.vdv.ojp.release2.model.PlaceTypeEnumeration;
+import de.vdv.ojp.v2.model.ModeFilterStructure;
+import de.vdv.ojp.v2.model.PlaceTypeEnumeration;
 import java.util.Locale;
 import java.util.Set;
 import lombok.Builder;

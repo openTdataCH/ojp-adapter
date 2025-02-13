@@ -16,18 +16,18 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.release2.model.CallAtNearStopStructure;
-import de.vdv.ojp.release2.model.CallAtStopStructure;
-import de.vdv.ojp.release2.model.DatedJourneyStructure;
-import de.vdv.ojp.release2.model.GeneralAttributeStructure;
-import de.vdv.ojp.release2.model.InternationalTextStructure;
-import de.vdv.ojp.release2.model.ModeStructure;
-import de.vdv.ojp.release2.model.OJP;
-import de.vdv.ojp.release2.model.OJPStopEventDeliveryStructure;
-import de.vdv.ojp.release2.model.SituationFullRefStructure;
-import de.vdv.ojp.release2.model.SituationRefList;
-import de.vdv.ojp.release2.model.StopEventResultStructure;
-import de.vdv.ojp.release2.model.StopEventStructure;
+import de.vdv.ojp.v2.model.CallAtNearStopStructure;
+import de.vdv.ojp.v2.model.CallAtStopStructure;
+import de.vdv.ojp.v2.model.DatedJourneyStructure;
+import de.vdv.ojp.v2.model.GeneralAttributeStructure;
+import de.vdv.ojp.v2.model.InternationalTextStructure;
+import de.vdv.ojp.v2.model.ModeStructure;
+import de.vdv.ojp.v2.model.OJP;
+import de.vdv.ojp.v2.model.OJPStopEventDeliveryStructure;
+import de.vdv.ojp.v2.model.SituationFullRefStructure;
+import de.vdv.ojp.v2.model.SituationRefList;
+import de.vdv.ojp.v2.model.StopEventResultStructure;
+import de.vdv.ojp.v2.model.StopEventStructure;
 import jakarta.xml.bind.JAXBElement;
 import java.math.BigInteger;
 import java.time.OffsetDateTime;

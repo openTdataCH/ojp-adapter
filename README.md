@@ -10,6 +10,7 @@ The project contains 2 targets:
 Remark about **OJP SKI+**
 * Public Transportation router commissioned by [BAV](https://www.bav.admin.ch/bav/de/home.html)
 * Usage for e.g. by [öv-info.ch](https://www.öv-info.ch/de)
+* [OJP Wiki]( https://github.com/VDVde/OJP/wiki)
 * [OJP-Demo shell and XML insights](https://tools.odpch.ch/beta-ojp-demo/search)
 
 ## Goals
