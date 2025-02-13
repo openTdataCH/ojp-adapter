@@ -1,0 +1,2759 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:53611",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Open Journey Planner",
+      "description": "[OJP (SKI+, CH)](https://opentransportdata.swiss/de/cookbook/open-journey-planner-ojp/) as underlying router, exposed by APIs. **Experimental, responses might be partially incomplete yet!!!**"
+    }
+  ],
+  "paths": {
+    "/v0/ojp/trips/by-origin-destination": {
+      "post": {
+        "tags": [
+          "Open Journey Planner"
+        ],
+        "summary": "{Idempotent: GET with body payload} Get one-way trips between given origin and destination locations. Each Leg is operated by a certain transport-product, therefore multiple legs means changing vehicles.",
+        "description": "The underlying public transportation planner will provide the best journey-connections according to your query-parameters, such as via, individual change time (ICT) etc.",
+        "operationId": "getTripsByOriginAndDestination",
+        "parameters": [
+          {
+            "name": "Request-ID",
+            "in": "header",
+            "description": "The given 'Request-ID' will support traceability (monitoring like Instana and logging like Splunk). The given value will be returned by the appropriate response as well.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language of translatable properties.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "enum": [
+                "de",
+                "fr",
+                "it",
+                "en"
+              ]
+            },
+            "example": "en"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TripsByOriginAndDestinationRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response found",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TripResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/ojp/vehicle-journeys/{id}": {
+      "get": {
+        "tags": [
+          "Open Journey Planner"
+        ],
+        "summary": "Get complete DatedVehicleJourney by its Journey-Reference.",
+        "description": "This will deliver all current details of the complete vehicle-journey (of the passenger carrying `ServiceProduct` such such as train, bus,..). It contains a list of all `ScheduledStopPoints` including departure and arrival times (with real-time data if available) and additional information like specific Notice's.",
+        "operationId": "getOJPDatedVehicleJourneyById",
+        "parameters": [
+          {
+            "name": "Request-ID",
+            "in": "header",
+            "description": "The given 'Request-ID' will support traceability (monitoring like Instana and logging like Splunk). The given value will be returned by the appropriate response as well.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language of translatable properties.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "enum": [
+                "de",
+                "fr",
+                "it",
+                "en"
+              ]
+            },
+            "example": "en"
+          },
+          {
+            "name": "OJP-Active-Instance",
+            "in": "header",
+            "description": "false: **passive instance** is used (default); true: **active instance** is used.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "OJP-Token",
+            "in": "header",
+            "description": "OJP instance specific secret necessary for OJP-Active-Instance, see [API-key](https://opentransportdata.swiss/de/cookbook/verwendung-der-api/). If none is given, fallback to a restricted token for passive instance.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ch:1:sjyid:100001:18728-001"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Day of operation (null defaults to TODAY).",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-12-22"
+          },
+          {
+            "name": "realtimeMode",
+            "in": "query",
+            "description": "<br>x-extensible-enum: \n- `REALTIME` potentially planned and RT **including non-rideable** (like cancelled)\n- `OFF` **planned only**",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "REALTIME"
+            }
+          },
+          {
+            "name": "includeRouteProjection",
+            "in": "query",
+            "description": "With or without a plottable polyline for each vehicle-journey (if available).<br>This parameter has an impact on performance and/or response volume, set wisely!",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response found",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DatedVehicleJourney"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/ojp/vehicle-journeys/by-departure/{origin}": {
+      "get": {
+        "tags": [
+          "Open Journey Planner"
+        ],
+        "summary": "Get departures starting at a StopPlace.",
+        "description": "Determines next departures from a Stop and point in time within duration (the results always contain all departures running to the last minute found even if the requested maximum limit was overrun).",
+        "operationId": "getOjpVehicleJourneysByDepartureAtOrigin",
+        "parameters": [
+          {
+            "name": "Request-ID",
+            "in": "header",
+            "description": "The given 'Request-ID' will support traceability (monitoring like Instana and logging like Splunk). The given value will be returned by the appropriate response as well.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language of translatable properties.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "enum": [
+                "de",
+                "fr",
+                "it",
+                "en"
+              ]
+            },
+            "example": "en"
+          },
+          {
+            "name": "OJP-Active-Instance",
+            "in": "header",
+            "description": "false: **passive instance** is used (default); true: **active instance** is used.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "OJP-Token",
+            "in": "header",
+            "description": "OJP instance specific secret necessary for OJP-Active-Instance, see [API-key](https://opentransportdata.swiss/de/cookbook/verwendung-der-api/). If none is given, fallback to a restricted token for passive instance.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "path",
+            "description": "Starting StopPlace of the Departure. OJP passive instance requires Stop UIC like '850700' whereas active instance enforces 'OJP:STOP:SBB:8507000|Bern'. See v3 **PlaceReference** in [complex parameter](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/v3/JSON-Objects.md)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 8507000
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "(Local) date at origin, defaults to TODAY.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-12-22"
+            }
+          },
+          {
+            "name": "time",
+            "in": "query",
+            "description": "Local time at origin, defaults to NOW (seconds will be ignored).",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "time",
+              "example": "13:07"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of departures to be returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "includeTransportModes",
+            "in": "query",
+            "description": "Optionally restrict to a requestable set of SBB specific TransportMode's (aka OJP PTMode). The set is relevant for any vehicle-journey (`DatedVehicleJourney`, `PTRideLeg`, ..). Relates to `ServiceProduct::vehicleMode` and `::vehicleSubModes`.\n- Default: non-restricted (null or empty-list), by means all TransportMode's are searched.\n- If some choice is made, other TransportMode's are excluded implicitely.\n- To get TRAIN (VehicleMode::id) only, add: [HIGH_SPEED_TRAIN,INTERCITY,INTERREGIO,REGIO,URBAN_TRAIN,SPECIAL_TRAIN]\n>- Be aware that TRAMWAY also searches for METRO (not distinguished it here further!)\n- Also there is no exact possibility to distinguish more precisely between CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR at search time<br><br>x-extensible-enum: ",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TransportModeEnum"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response found",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartureResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/ojp/vehicle-journeys/by-arrival/{destination}": {
+      "get": {
+        "tags": [
+          "Open Journey Planner"
+        ],
+        "summary": "Get arrivals at a StopPlace.",
+        "description": "Determines next arrivals at a given Stop and point in time within a duration (the results always contain all departures running to the last minute found even if the requested maximum limit was overrun).",
+        "operationId": "getOjpVehicleJourneysByArrivalAtDestination",
+        "parameters": [
+          {
+            "name": "Request-ID",
+            "in": "header",
+            "description": "The given 'Request-ID' will support traceability (monitoring like Instana and logging like Splunk). The given value will be returned by the appropriate response as well.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language of translatable properties.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "enum": [
+                "de",
+                "fr",
+                "it",
+                "en"
+              ]
+            },
+            "example": "en"
+          },
+          {
+            "name": "OJP-Active-Instance",
+            "in": "header",
+            "description": "false: **passive instance** is used (default); true: **active instance** is used.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "OJP-Token",
+            "in": "header",
+            "description": "OJP instance specific secret necessary for OJP-Active-Instance, see [API-key](https://opentransportdata.swiss/de/cookbook/verwendung-der-api/). If none is given, fallback to a restricted token for passive instance.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "destination",
+            "in": "path",
+            "description": "StopPlace for which arrivals shall be retrieved. OJP passive instance requires Stop UIC like '850700' whereas active instance enforces 'OJP:STOP:SBB:8507000|Bern'. See v3 **PlaceReference** in [complex parameter](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/v3/JSON-Objects.md)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 8507000
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "(Local) date at arrival, defaults to TODAY.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-12-22"
+            }
+          },
+          {
+            "name": "time",
+            "in": "query",
+            "description": "Local time at arrival, defaults to NOW (seconds will be ignored).",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "time",
+              "example": "13:07"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of arrivals to be returned.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "name": "includeTransportModes",
+            "in": "query",
+            "description": "Optionally restrict to a requestable set of SBB specific TransportMode's (aka OJP PTMode). The set is relevant for any vehicle-journey (`DatedVehicleJourney`, `PTRideLeg`, ..). Relates to `ServiceProduct::vehicleMode` and `::vehicleSubModes`.\n- Default: non-restricted (null or empty-list), by means all TransportMode's are searched.\n- If some choice is made, other TransportMode's are excluded implicitely.\n- To get TRAIN (VehicleMode::id) only, add: [HIGH_SPEED_TRAIN,INTERCITY,INTERREGIO,REGIO,URBAN_TRAIN,SPECIAL_TRAIN]\n>- Be aware that TRAMWAY also searches for METRO (not distinguished it here further!)\n- Also there is no exact possibility to distinguish more precisely between CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR at search time<br><br>x-extensible-enum: ",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TransportModeEnum"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response found",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrivalResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/ojp/places": {
+      "get": {
+        "tags": [
+          "Open Journey Planner"
+        ],
+        "summary": "Get places of type StopPlace, Address,PointOfInterest by its name.",
+        "description": "The response is a flat (non-inherited) structure of concrete places.",
+        "operationId": "getOjpPlacesByName",
+        "parameters": [
+          {
+            "name": "Request-ID",
+            "in": "header",
+            "description": "The given 'Request-ID' will support traceability (monitoring like Instana and logging like Splunk). The given value will be returned by the appropriate response as well.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "Language of translatable properties.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "enum": [
+                "de",
+                "fr",
+                "it",
+                "en"
+              ]
+            },
+            "example": "en"
+          },
+          {
+            "name": "OJP-Active-Instance",
+            "in": "header",
+            "description": "false: **passive instance** is used (default); true: **active instance** is used.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "OJP-Token",
+            "in": "header",
+            "description": "OJP instance specific secret necessary for OJP-Active-Instance, see [API-key](https://opentransportdata.swiss/de/cookbook/verwendung-der-api/). If none is given, fallback to a restricted token for passive instance.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nameMatch",
+            "in": "query",
+            "description": "Tolerant `Place::name` match, where `Accept-Language` accepts translated terms like (Genève, Geneva, ..) at request time, where:\n- Address resp. street name (like 'Bollwerk 8')\n- PointOfInterest (like 'Museum')\n- StopPlace name (like 'Bern' or Atlas-UIC '8507000' or DiDok-ShortName 'BN').",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bern"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Place type to be searched for.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "default": "ALL",
+                "enum": [
+                  "ALL",
+                  "StopPlace",
+                  "Address",
+                  "PointOfInterest"
+                ]
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of hits to be found (max=50).",
+            "required": false,
+            "schema": {
+              "maximum": 50,
+              "minimum": 1,
+              "type": "integer",
+              "example": 10,
+              "default": 10
+            }
+          },
+          {
+            "name": "center",
+            "in": "query",
+            "description": "A representative geographic position of the `Place` by a [GeoJSON Point](https://datatracker.ietf.org/doc/html/rfc794). If set, the nearby pattern matching score of `nameMatch`  should be increased.<br>",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "[8.5441, 47.4115]"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "query",
+            "description": "Radius [m] around the related `center`, if given.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1000
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Response found",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaceResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccessibilityEnum": {
+        "type": "string",
+        "description": "Sets Accessibility (de:BFR/BAIM) on each `ScheduledStopPoint::accessibilityBoardingAlighting` for better handicap support using vehicles. This is especially relevant on first (boarding) and last (alighting) of each `PTRideLeg::serviceJourney::stopPoints` (implicitely affects transfers).<br>If 'NONE' or non `PTRideLeg's` irrelevant and never given.<br>x-extensible-enum:  see enum values.",
+        "default": "NONE",
+        "enum": [
+          "ALL",
+          "NONE"
+        ]
+      },
+      "NoticeAttributeEnum": {
+        "type": "string",
+        "description": "Searchable `Notice's` values for type=ATTRIBUTE. Relates to `ServiceJourney::notices`.<br>x-extensible-enum: \n- `TripsByOriginAndDestinationPostBody::includeNoticeAttributes`: all values supported and also applied in related `vias` except COUCHETTE/SLEEPING_CAR\n- `ServiceCalendarByOriginAndDestinationRequestBody::includeNoticeAttributes`: only 'BIKE_TRANSPORT' supported yet",
+        "enum": [
+          "BIKE_TRANSPORT"
+        ]
+      },
+      "PTViaReference": {
+        "required": [
+          "stopPlaceId"
+        ],
+        "type": "object",
+        "properties": {
+          "stopPlaceId": {
+            "type": "string",
+            "description": "`StopPlace::id` to be passed as via.",
+            "example": "8507000"
+          },
+          "status": {
+            "type": "string",
+            "description": "Boarding/alighting-status at via `StopPlace`.<br>x-extensible-enum: ",
+            "default": "BOARDING_ALIGHTING_NECESSARY",
+            "enum": [
+              "BOARDING_ALIGHTING_NECESSARY",
+              "BOARDING_NOT_NECESSARY",
+              "ALIGHTING_NOT_NECESSARY",
+              "BOARDING_ALIGHTING_NOT_NECESSARY"
+            ]
+          },
+          "transportModes": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The modes are relevant until the next Via. Optionally restrict to a requestable set of SBB specific TransportMode's (aka OJP PTMode). The set is relevant for any vehicle-journey (`DatedVehicleJourney`, `PTRideLeg`, ..). Relates to `ServiceProduct::vehicleMode` and `::vehicleSubModes`.\n- Default: non-restricted (null or empty-list), by means all TransportMode's are searched.\n- If some choice is made, other TransportMode's are excluded implicitely.\n- To get TRAIN (VehicleMode::id) only, add: [HIGH_SPEED_TRAIN,INTERCITY,INTERREGIO,REGIO,URBAN_TRAIN,SPECIAL_TRAIN]\n>- Be aware that TRAMWAY also searches for METRO (not distinguished it here further!)\n- Also there is no exact possibility to distinguish more precisely between CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR at search time<br><br>x-extensible-enum: ",
+            "items": {
+              "$ref": "#/components/schemas/TransportModeEnum"
+            }
+          },
+          "waittime": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Minimum waiting time to be spent at via StopPlace [min.]. Some additional minutes might be added by underlying router (aka OJP dwellTime).",
+            "format": "int32"
+          }
+        },
+        "description": "Specification and behaviour of via StopPlace (aka OJP TripViaStructure).\n- TripsByOriginAndDestinationPostBody: all filters supported\n- ServiceCalendarByOriginAndDestinationRequestBody: only `stopPlaceId` and `transportModes` supported yet"
+      },
+      "RealtimeModeEnum": {
+        "type": "string",
+        "description": "<br>x-extensible-enum: \n- `REALTIME` potentially planned and RT **including non-rideable** (like cancelled)\n- `OFF` **planned only**",
+        "default": "REALTIME",
+        "enum": [
+          "REALTIME",
+          "OFF"
+        ]
+      },
+      "TransportModeEnum": {
+        "type": "string",
+        "description": "If any `vias` are set, thes tranportMode-values will be considered until the first via. Optionally restrict to a requestable set of SBB specific TransportMode's (aka OJP PTMode). The set is relevant for any vehicle-journey (`DatedVehicleJourney`, `PTRideLeg`, ..). Relates to `ServiceProduct::vehicleMode` and `::vehicleSubModes`.\n- Default: non-restricted (null or empty-list), by means all TransportMode's are searched.\n- If some choice is made, other TransportMode's are excluded implicitely.\n- To get TRAIN (VehicleMode::id) only, add: [HIGH_SPEED_TRAIN,INTERCITY,INTERREGIO,REGIO,URBAN_TRAIN,SPECIAL_TRAIN]\n>- Be aware that TRAMWAY also searches for METRO (not distinguished it here further!)\n- Also there is no exact possibility to distinguish more precisely between CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR at search time<br><br>x-extensible-enum: ",
+        "enum": [
+          "HIGH_SPEED_TRAIN",
+          "INTERCITY",
+          "INTERREGIO",
+          "REGIO",
+          "URBAN_TRAIN",
+          "SPECIAL_TRAIN",
+          "SHIP",
+          "BUS",
+          "TRAMWAY",
+          "CABLEWAY_GONDOLA_CHAIRLIFT_FUNICULAR"
+        ]
+      },
+      "TripMobilityFilter": {
+        "type": "object",
+        "properties": {
+          "maxTransfers": {
+            "maximum": 11,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Max. number of Vehicle changes. The parameter is relevant between origin and destination or between origin and ptVias[0] if any among all `PTRideLeg's`.",
+            "format": "int32",
+            "default": 11
+          },
+          "walkSpeed": {
+            "type": "integer",
+            "description": "Walking speed when changing Vehicles: 100% means default speed, 200% doubles it and below 100% will reduce changing time below SBB recommendation.\n- If the calculation does not result in full minutes, it is rounded using 'round half up' method.\n- See `Trip::fastTransfer` for time risky changes.",
+            "format": "int32",
+            "default": 100
+          }
+        },
+        "description": "Parameters to restrict the transfer options - particularly for interchanging `PTRideLeg's` by passenger (de: Individuelles Umsteigeverhalten).\n- TripsByOriginAndDestinationPostBody: all filters supported\n- ServiceCalendarByOriginAndDestinationRequestBody: only `maxTransfers` supported yet"
+      },
+      "TripsByOriginAndDestinationRequestBody": {
+        "required": [
+          "destination",
+          "origin"
+        ],
+        "type": "object",
+        "properties": {
+          "origin": {
+            "type": "string",
+            "description": "Starting point of the trip at origin (departure). See v3 **PlaceReference** in [complex parameter](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/v3/JSON-Objects.md)",
+            "example": "8503000"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Ending point of the trip at destination (arrival). See **PlaceReference** in [complex parameter](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/v3/JSON-Objects.md)",
+            "example": "8507000"
+          },
+          "forArrival": {
+            "type": "boolean",
+            "description": "Search for arriving (true) or departing (false) trips.",
+            "default": false
+          },
+          "date": {
+            "type": "string",
+            "description": "(Local) date at either origin (`forArrival`=false) or destination (`forArrival`=true) related to `time`, defaults to TODAY.",
+            "format": "date"
+          },
+          "time": {
+            "type": "string",
+            "description": "Local time at either origin (`forArrival`=false) or destination (`forArrival`=true) related to `date`, defaults to NOW (seconds will be ignored).",
+            "format": "time",
+            "example": "13:07"
+          },
+          "mobilityFilter": {
+            "$ref": "#/components/schemas/TripMobilityFilter"
+          },
+          "vias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PTViaReference"
+            }
+          },
+          "realtimeMode": {
+            "$ref": "#/components/schemas/RealtimeModeEnum"
+          },
+          "includeAccessibility": {
+            "$ref": "#/components/schemas/AccessibilityEnum"
+          },
+          "includeNoticeAttributes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NoticeAttributeEnum"
+            }
+          },
+          "includeEconomic": {
+            "type": "boolean",
+            "description": "Consider additional connections by Bus or S-Bahn leading to destination as well (de:'Zusätzliche Alternativverbindungen', 'Mehrdimensionale Suche', 'Preiswerte Suche').<br>This parameter has an impact on performance and/or response volume, set wisely!",
+            "default": false
+          },
+          "includeTransportModes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransportModeEnum"
+            }
+          },
+          "includeOperatingDays": {
+            "type": "boolean",
+            "description": "`Trip::operatingPeriods` will always be returned if it is a **repeatable planned Trip over the period**. To enforce concrete planned dates in `OperatingPeriod::operatingDays`set `includeOperatingDays=true` (PTRideLeg::serviceJourney::operationPeriods will remain empty, because whole Trip is of interest).<br>This parameter has an impact on performance and/or response volume, set wisely!",
+            "default": false
+          },
+          "includeRouteProjection": {
+            "type": "boolean",
+            "description": "With or without a plottable polyline for each vehicle-journey (if available).<br>This parameter has an impact on performance and/or response volume, set wisely!",
+            "default": false
+          },
+          "includeIntermediateStops": {
+            "type": "string",
+            "description": "Whether the `PTRideLeg's` should include intermediate stops (between the passenger's board and alight in `ServiceJourney::stopPoints`).<br>x-extensible-enum:  [ALL,NONE,BOARDING_ALIGHTING] where ALL is BOARDING_ALIGHTING plus virtual stops.",
+            "default": "ALL",
+            "enum": [
+              "ALL",
+              "BOARDING_ALIGHTING",
+              "NONE"
+            ]
+          }
+        },
+        "description": "Request parameters (POST body)."
+      },
+      "Problem": {
+        "required": [
+          "detail",
+          "status",
+          "title",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "maximum": 600,
+            "exclusiveMaximum": true,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 500
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized).",
+            "example": "Service Unavailable"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem."
+          },
+          "instance": {
+            "type": "string",
+            "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.",
+            "example": "/v3/places/{8507000}"
+          },
+          "type": {
+            "type": "string",
+            "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
+            "default": "https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/Problem-Manual.md"
+          },
+          "traceId": {
+            "type": "string",
+            "description": "The `trace-id` according to the [W3C tracing standard](https://www.w3.org/TR/trace-context/#traceparent-header). (Might be useful for support-cases with the operations teams.)"
+          }
+        },
+        "description": "Zalando like error-object if not HttpStatus 2xx (see [RFC-7807](https://tools.ietf.org/html/rfc7807)). Check for: Content-Type=application/problem+json"
+      },
+      "AccessibilityBoardingAlighting": {
+        "required": [
+          "assistanceService",
+          "corporateIdentityIcon",
+          "description",
+          "limitation",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "limitation": {
+            "type": "string",
+            "description": "The most relevant boarding/alighting accessibility restriction.<br>x-extensible-enum: [NO_HINT,BOARDING_ALIGHTING_SELF,BOARDING_ALIGHTING_BY_CREW,BOARDING_ALIGHTING_BY_NOTIFICATION,BOARDING_ALIGHTING_SHUTTLE_TRANSPORT,BOARDING_ALIGHTING_NOT_POSSIBLE]"
+          },
+          "name": {
+            "type": "string",
+            "description": "Textual value for `limitation`.<br>(Translated according to Accept-Language.)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Further description about `limitation` consequences.<br>(Translated according to Accept-Language.)"
+          },
+          "assistanceService": {
+            "$ref": "#/components/schemas/LinkedText"
+          },
+          "corporateIdentityIcon": {
+            "type": "string",
+            "description": "Icon-identifier to represent the related `limitation`. See [SBB Corporate-Identity catalog (CDN, aka FIGMA Icons)](https://www.figma.com/file/UQBd7cHKav0hr9oXYp7opJ/SBB-Icons?node-id=395%3A2952&t=ad26LgREBbTANSK5-1)"
+          }
+        },
+        "description": "Hint for handicaped people at a StopPlace to board or alight a Vehicle on a PTRideLeg. Relates to `forBoarding` and `forAlighting`."
+      },
+      "AffectedEdge": {
+        "required": [
+          "direction"
+        ],
+        "type": "object",
+        "properties": {
+          "iconPosition": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "spatialProjection": {
+            "$ref": "#/components/schemas/LineString"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Direction a vehicle is going to on the affected edge where `PTSituationMessage` applies, relates to `spatialProjection`.<br>x-extensible-enum: [UNKNOWN,STRAIGHT,OPPOSITE,BIDIRECTIONAL]",
+            "example": "BIDIRECTIONAL"
+          }
+        },
+        "description": "Geometrical polyline related to a `PTSituation::affectedScope`."
+      },
+      "AffectedRegion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id of region (by underlying system HIM)."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of region in underlying system (HIM) terminology, see related `nameFormatted` for a more speaking value, like:<br>- BVI1: CH_WEST\n- BVI2: CH_MID\n- BVI3: CH_TICINO\n- BVI4: CH_ZURICH\n- BVI5: CH_EAST\n- CSTRI1: GERMANY\n- CSTRI2: AUSTRIA\n- CSTRI3: ITALY\n- CSTRI4: FRANCE\n",
+            "example": "BVI2"
+          },
+          "nameFormatted": {
+            "type": "string",
+            "description": "Speaking equivalent value if known for related `name` of the region, like:<br>- CH_WEST: BVI1\n- CH_MID: BVI2\n- CH_TICINO: BVI3\n- CH_ZURICH: BVI4\n- CH_EAST: BVI5\n- GERMANY: CSTRI1\n- AUSTRIA: CSTRI2\n- ITALY: CSTRI3\n- FRANCE: CSTRI4\n",
+            "example": "CH_ZURICH"
+          },
+          "iconPosition": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "spatialProjection": {
+            "$ref": "#/components/schemas/LineString"
+          },
+          "geofence": {
+            "$ref": "#/components/schemas/GeofenceCircle"
+          }
+        },
+        "description": "Region-Information related to a `PTSituation::affectedScope`."
+      },
+      "Audience": {
+        "required": [
+          "type",
+          "urls"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "<br>x-extensible-enum:  see `AudienceEnum`.",
+            "example": "B2C_TEXT"
+          },
+          "urls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AudienceLink"
+            }
+          },
+          "validFromDate": {
+            "type": "string",
+            "description": "Valid-from date, to be combined with time.",
+            "format": "date",
+            "example": "2022-08-30"
+          },
+          "validFromTime": {
+            "type": "string",
+            "description": "Valid-from time, to be combined with date.",
+            "format": "time-local",
+            "example": "08:45"
+          },
+          "validToDate": {
+            "type": "string",
+            "description": "Valid-to date, to be combined with time.",
+            "format": "date",
+            "example": "2022-09-06"
+          },
+          "validToTime": {
+            "type": "string",
+            "description": "Valid-to time, to be combined with date.",
+            "format": "time-local",
+            "example": "17:15"
+          }
+        },
+        "description": "Audience (like enduser channels, operator-employees, ..) to be informed (aka: de:Publikationskanäle)."
+      },
+      "AudienceLink": {
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Text describing the content in the link. ",
+            "example": "Trains replaced by buses"
+          },
+          "url": {
+            "type": "string",
+            "description": "Download link."
+          }
+        },
+        "description": "Named links."
+      },
+      "BoardingPosition": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Non-formal id provided.",
+            "example": "8507000_12_C"
+          },
+          "name": {
+            "type": "string",
+            "description": "Boarding/alighting position which could be a concrete track (boardable/alightable by attached `Quay`), a section name (aka de:Sektor) or both.",
+            "example": "C"
+          }
+        },
+        "description": "A location within a `Quay` from which passengers may directly board, or onto which passengers may directly alight from a vehicle."
+      },
+      "CompoundTrain": {
+        "required": [
+          "legendItems",
+          "operationalOrientation",
+          "trainChanges",
+          "trains"
+        ],
+        "type": "object",
+        "properties": {
+          "operationalOrientation": {
+            "type": "string",
+            "description": "Type of operating direction.<br>x-extensible-enum: [LEFT, RIGHT]",
+            "example": "LEFT"
+          },
+          "trainChanges": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Consists of [0..*] hints about realtime formation-changes if any.",
+              "example": "Dieser Zug verkehrt ohne Familienwagen."
+            }
+          },
+          "trains": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Train"
+            }
+          },
+          "legendItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LegendItem"
+            }
+          },
+          "deckPlanAssumed": {
+            "$ref": "#/components/schemas/DeckPlan"
+          }
+        },
+        "description": "A vehicle-type composed (aka composition/-formation) of a sequence of **one or more vehicle-type `Train`**. A `CompoundTrain` is always self-propelled (even if a Locomotive is not explicitely distinguishable)."
+      },
+      "Connection": {
+        "type": "object",
+        "properties": {
+          "mobilityRestrictedTravellerDuration": {
+            "type": "string",
+            "description": "Minimal transfer [duration](https://www.w3.org/TR/xmlschema11-2/#duration) for a mobility impaired traveller to make transfer. Relates to `includeAccessibility` other than `ALL`. See `mobilityRestrictedTravellerTransferRule` for the rules applied to determine the time needed."
+          },
+          "mobilityRestrictedTravellerTransferCritical": {
+            "type": "boolean",
+            "description": "Hint whether the vehicle transfer is critical for handicaped people, related to `mobilityRestrictedTravellerDuration`."
+          },
+          "mobilityRestrictedTravellerTransferRule": {
+            "type": "string",
+            "description": "Hint for handicaped experts (such as AMO) about which duration rule was applied to determine minimal transfer time.",
+            "example": "Fallback"
+          }
+        },
+        "description": "The physical (spatial) possibility for a passenger to change from one public transport vehicle to another to continue the `Trip`, determined by two `ScheduledStopPoint's`. Different times may be necessary to cover the link between these points, depending on the kind of passenger."
+      },
+      "DeckPlan": {
+        "type": "object",
+        "properties": {
+          "typeTechnical": {
+            "type": "string",
+            "description": "Vehicle-type resp. technical expression of a physical `TrainElement` (car, wagon) within a `CompoundTrain` (aka de:FahrzeugType gemäss Zugbildungsplan (ZBP)), source CERES.(On `TrainElement` always given, but not guaranteed on `CompoundTrain`.)",
+            "example": "RABe533_SBB"
+          },
+          "typeAdvertised": {
+            "type": "string",
+            "description": "Popular train-model like 'Dosto', 'Domino', 'ICN', .. Relates to `typeTechnical`.",
+            "example": "Flirt"
+          },
+          "typeAdvertisedLink": {
+            "type": "string",
+            "description": "Related to `typeAdvertised`. Specialized sub-site of [unsere Züge](https://www.sbb.ch/de/bahnhof-services/waehrend-der-reise/unsere-zuege.html), [über uns - Flotte](https://www.bls.ch/de/unternehmen/ueber-uns/flotte#/), [Fahrzeuge - Flotte](https://www.sob.ch/dienstleistungen/fahrzeuge/flotte).",
+            "example": "https://www.sbb.ch/de/bahnhof-services/waehrend-der-reise/unsere-zuege/flirt.html"
+          },
+          "buildCategory": {
+            "type": "string",
+            "description": "May contain a concrete descrpition of about how many decks (aka floors) a car may provide.",
+            "example": "Regionalverkehrszug, einstöckig"
+          }
+        },
+        "description": "Plan of the build plan of vehicle-type such as a car (data quality might not be guaranted properly for all `TrainElement's`)."
+      },
+      "Direction": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "StopPlace::name or any direction-name.",
+            "example": "Basel SBB"
+          },
+          "routeIndexFrom": {
+            "type": "integer",
+            "description": "From relevant StopPoint::routeIndex (might be given for JourneyDetail::directions).",
+            "format": "int32"
+          },
+          "routeIndexTo": {
+            "type": "integer",
+            "description": "To relevant StopPoint::routeIndex (might be given for JourneyDetail::directions).",
+            "format": "int32"
+          }
+        },
+        "description": "Direction of Vehicle (typically shown on Vehicle-display or Display at Quay)."
+      },
+      "GeofenceCircle": {
+        "type": "object",
+        "properties": {
+          "centroid": {
+            "$ref": "#/components/schemas/Point"
+          },
+          "radius": {
+            "type": "integer",
+            "description": "Maximum radius [m] (de:Umkreis).",
+            "format": "int32"
+          }
+        },
+        "description": "Geofence expressed by a circle."
+      },
+      "Leg": {
+        "required": [
+          "id",
+          "mode",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique Index ordered within Trip (may be casted to Integer for local indexing).",
+            "example": "1"
+          },
+          "duration": {
+            "type": "string",
+            "description": "[duration](https://www.w3.org/TR/xmlschema11-2/#duration)"
+          },
+          "mode": {
+            "type": "string",
+            "description": "Mode of the Leg"
+          },
+          "distance": {
+            "type": "integer",
+            "description": "Total distance for Leg (in meter).",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "description": "**Inheritance discriminator to proper Subclass** (technical field required by [OpenApi 3 Discriminator](https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/)) makes deserialization at consumer side easier."
+          }
+        },
+        "description": "**Abstract Superclass** of concrete inherited sub-classes such as **`PTRideLeg`, `AccessLeg`, `PTConnectionLeg`, `AlternateModeLeg`** (aka OJP TripLeg)**, `PersonalLeg`**.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "LegendItem": {
+        "required": [
+          "id",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Reference to related `LegendItem::text` assigned by aggregated `TrainElement::attributes` for the whole `CompoundTrain`.",
+            "example": "FA"
+          },
+          "text": {
+            "type": "string",
+            "description": "Detailed description of related `id`.<br>(Translated according to Accept-Language.)",
+            "example": "Familienabteil"
+          }
+        },
+        "description": "Provide matching legend-entry related to `TrainElement::attributes`."
+      },
+      "LineString": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type as per GeoJSON, always constant _LineString_.",
+            "readOnly": true,
+            "default": "LineString"
+          },
+          "coordinates": {
+            "minItems": 2,
+            "type": "array",
+            "description": "List of coordinates as [longitude, latitude] resp. easting/northing.",
+            "example": [
+              [
+                7.4385,
+                46.9488
+              ],
+              [
+                7.9363,
+                46.915
+              ],
+              [
+                7.936,
+                46.802
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "double"
+              }
+            }
+          }
+        },
+        "description": "LineString in [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946) format."
+      },
+      "LinkedText": {
+        "required": [
+          "arguments",
+          "template"
+        ],
+        "type": "object",
+        "properties": {
+          "template": {
+            "type": "string",
+            "description": "End-user text.<br>(Translated according to Accept-Language.)<br>If `arguments` are not empty the template must be formatted for end-user readability, by means arguments will be filled in or an UI may make them interactable (for e.g. clickable)."
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "description": "Map(key=linkable types {EMAIL,PHONE,URL}, value=list of corresponding linkable values in `LinkedText::template` in ascending order of occurance).",
+              "items": {
+                "type": "string",
+                "description": "Map(key=linkable types {EMAIL,PHONE,URL}, value=list of corresponding linkable values in `LinkedText::template` in ascending order of occurance)."
+              }
+            },
+            "description": "Map(key=linkable types {EMAIL,PHONE,URL}, value=list of corresponding linkable values in `LinkedText::template` in ascending order of occurance)."
+          }
+        },
+        "description": "Text template with optional formattable parameters. Useful to represent in UIs as clickable features like an e-Mail, phone or URL.<br>Usage see for e.g. [`Notice::text`](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/JSON-Objects.md#linkedtext)."
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "description": "Link to further details."
+          }
+        },
+        "description": "List of links as per [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) principle."
+      },
+      "NavigationPathAssignment": {
+        "type": "object",
+        "properties": {
+          "connectionTo": {
+            "$ref": "#/components/schemas/Connection"
+          }
+        },
+        "description": "The allocation of a **navigation path** to a specific `ScheduledStopPoint` assignment, for example to indicate the path to be taken to make a connection.<br>Currently a **transfer-hint is given for handicaped people** at alighting at `PTRideLeg`s` last/alighting `ScheduledStopPoint` when transfering to next vehicle for boarding."
+      },
+      "Notice": {
+        "required": [
+          "advertised",
+          "name",
+          "priority",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "2 letter key. **Derived from MERITS codes** for e.g. UIC Code 916-1 'reservation system code', though they are specified by SBB Data-Mgmt.<br>Be aware if **`type`=INFO, `advertised`=true** do not display the (rather confusing) `name`: Data resulting out of this MUST NOT be presented to enduser (for e.g. SBB channels), set wisely!",
+            "example": "RM"
+          },
+          "text": {
+            "$ref": "#/components/schemas/LinkedText"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of Notice. <br>x-extensible-enum: [ATTRIBUTE,INFO]",
+            "example": "ATTRIBUTE"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "A lower priority value means a higher importance (default=100).",
+            "format": "int32"
+          },
+          "routeIndexFrom": {
+            "type": "integer",
+            "description": "Relates to `ScheduledStop::routeIndex` where this note is valid from.",
+            "format": "int32"
+          },
+          "routeIndexTo": {
+            "type": "integer",
+            "description": "Relates to `ScheduledStop::routeIndex` where this note is valid to.",
+            "format": "int32"
+          },
+          "advertised": {
+            "type": "boolean",
+            "description": "Hint whether a passenger should see such a `Notice` being advertised (aka Transmodel NOTICE::canBeAdvertised).<br>Be aware if **false**: Data resulting out of this MUST NOT be presented to enduser (for e.g. SBB channels), set wisely!",
+            "default": false
+          }
+        },
+        "description": "Additional information on operating Vehicle. The information may be usable for passenger. Relates to `includeNoticeAttributes`."
+      },
+      "OperatingPeriod": {
+        "required": [
+          "name",
+          "operatingDays"
+        ],
+        "type": "object",
+        "properties": {
+          "daysRegularFormatted": {
+            "type": "string",
+            "description": "Only set in context of a `ServiceJourney::operatingPeriods`. **Regular service-days a `ServiceProduct` operates** by scheduled plan within the same `OperatingPeriod`.<br>(Translated according to Accept-Language.)",
+            "example": "täglich"
+          },
+          "daysIrregularFormatted": {
+            "type": "string",
+            "description": "Only set in context of a `ServiceJourney::operatingPeriods`. **Irregular service-days (or excpetions to regular days) a `ServiceProduct` operates** by scheduled plan within the same `OperatingPeriod`.<br>(Translated according to Accept-Language.)",
+            "example": "nicht 24., 25. Mär, 7., 8. Apr"
+          },
+          "operatingDays": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Concrete operating-days within this yearly `OperatingPeriod` depending on the following use cases:\n- `name=Trip` in the context of `Trip::operatingPeriods`: all service-days of the `Trip`.\n- `name=ServiceJourney` in the context of `ServiceJourney::operatingPeriods`: all service-days of the related `ServiceProduct`.\n- `name=StopPlace` in the context of `ServiceCalendar::operatingPeriods` the planning-interval within this yearly `OperatingPeriod`.",
+              "format": "date"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of attached type having this operating period, like `Trip`, `StopPlace` or `ServiceJourney` (just an informational value).",
+            "example": "Trip"
+          },
+          "routeIndexFrom": {
+            "type": "integer",
+            "description": "In the context of `ServiceJourney` relates to the first `ScheduledStop::routeIndex` where given `operatingDays` are valid, null if unknown.",
+            "format": "int32",
+            "example": 3
+          },
+          "routeIndexTo": {
+            "type": "integer",
+            "description": "In the context of `ServiceJourney` relates to the last `ScheduledStop::routeIndex` where `operatingDays` are valid, null if unknown.",
+            "format": "int32",
+            "example": 7
+          }
+        },
+        "description": "A **continuous interval of time** making up a timetable frame **of 1 year**, typically starting around 2nd Sunday of December."
+      },
+      "Operator": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Atlas/INFO+/Plabe related operator-number (typically Integer for CH managed codes, however some TU's like in foreign countries might return String expressions like '80___'), relates to operatorName.\nNOVA does not accept trimmed numbers!",
+            "example": "000011"
+          },
+          "name": {
+            "type": "string",
+            "description": "Fullname of responsible operator, relates to operatorNumber. This value matches with [OpenTransportData.swiss GoList field 'BEZEICHNUNG_DE'](https://opentransportdata.swiss/de/dataset/goch).<br>(Translated according to Accept-Language.)",
+            "example": "Schweizerische Bundesbahnen SBB"
+          },
+          "shortName": {
+            "type": "string",
+            "description": "Abbreviation of operator, relates to operatorName. This value might differ from OpenTransportData.swiss abbreviation (there are 3 different versions).<br>(Translated according to Accept-Language.)",
+            "example": "SBB"
+          }
+        },
+        "description": "A company providing public transport services (aka Carrier)."
+      },
+      "PTSituation": {
+        "required": [
+          "broadcastMessages"
+        ],
+        "type": "object",
+        "properties": {
+          "cause": {
+            "type": "string",
+            "description": "A classification of what caused the situation, values see `SituationCauseEnum`.<br>x-extensible-enum: ",
+            "example": "DISTURBANCE"
+          },
+          "affectedScope": {
+            "$ref": "#/components/schemas/PTSituationAffectedScope"
+          },
+          "broadcastMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PTSituationMessage"
+            }
+          }
+        },
+        "description": "A disruption (fort e.g. an incident or a deviation (aka de:Störungs-, Ereignismeldung)) affecting planned PT `ServiceProduct's` in certain edges and/or regions."
+      },
+      "PTSituationAffectedScope": {
+        "required": [
+          "edges",
+          "operatingDays",
+          "regions",
+          "vehicleModes"
+        ],
+        "type": "object",
+        "properties": {
+          "vehicleModes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VehicleMode"
+            }
+          },
+          "stopPointFrom": {
+            "$ref": "#/components/schemas/ScheduledStopPoint"
+          },
+          "stopPointTo": {
+            "$ref": "#/components/schemas/ScheduledStopPoint"
+          },
+          "operatingDays": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Service-days where `PTSituation` is relevant, relates to `PTSituationMessage::distributionPeriod`.",
+              "format": "date"
+            }
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AffectedEdge"
+            }
+          },
+          "regions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AffectedRegion"
+            }
+          }
+        },
+        "description": "An extent directly involved in the PT situation such as a set of `ServiceJourney` or `StopPlace`."
+      },
+      "PTSituationMessage": {
+        "required": [
+          "audiences",
+          "detail",
+          "detailShort",
+          "id",
+          "priority",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identity of message (aka HIM ID).",
+            "example": "x944292"
+          },
+          "alternateId": {
+            "type": "string",
+            "description": "Alternate identity of message. This may contain values set by 'Via' service and therefore relate to RCS-ALEA ID useful for Liveticker, if given.",
+            "example": "2195004195693"
+          },
+          "priority": {
+            "type": "integer",
+            "description": "Priority rank.",
+            "format": "int32",
+            "example": 80
+          },
+          "title": {
+            "type": "string",
+            "description": "Heading of message formatted according to SBB business rule (aka HIM head)",
+            "example": "Einschränkungen im Bahnverkehr: Bern"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Complete Footer/text of message formatted according to SBB business rule (HTML tags like BR(eak) are possible). Scoped for browser based UIs (aka HIM text).",
+            "example": "Grund: Ausserordentliche Bauarbeiten.<br>Dauer der Einschränkung: unbestimmt.<br>Die SBB wird so schnell wie möglich weiter informieren."
+          },
+          "detailShort": {
+            "type": "string",
+            "description": "Abbreviated Footer/text of message formatted according to SBB business rule (HTML tags like BR(eak) are possible). Scoped for App UIs.",
+            "example": "Der Bahnverkehr im Bahnhof Bern ist beeinträchtigt."
+          },
+          "distributionPeriod": {
+            "$ref": "#/components/schemas/PublicationWindow"
+          },
+          "audiences": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Audience"
+            }
+          },
+          "links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        },
+        "description": "A public transportation situation broadcast message affecting the planned PT operation (source HIM, aki Siri::PtSituation).<br>Situations might be caused by a disruption (like an incident, construction site, deviation etc) and typically relate to some area (geofence) and passing `ServiceProduct` resp. concrete `ServiceJourney's`."
+      },
+      "PaginationCursor": {
+        "type": "object",
+        "properties": {
+          "previous": {
+            "type": "string",
+            "description": "Previous-context."
+          },
+          "next": {
+            "type": "string",
+            "description": "Next-context."
+          }
+        },
+        "description": "Pagination-cursor for next/previous of the same (by means in a `Trip` context earlier/later)."
+      },
+      "Place": {
+        "required": [
+          "id",
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Unique non-translated name of Place."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique id referable by underlying system(s)."
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "The two uppercase character of ISO 3166 code, mostly similar to lowercase IANA identifier (source: Atlas geographic-based _isoCountryCode_).",
+            "example": "CH"
+          },
+          "type": {
+            "type": "string",
+            "description": "**Inheritance discriminator to proper Subclass** (technical field required by [OpenApi 3 Discriminator](https://swagger.io/docs/specification/data-models/inheritance-and-polymorphism/)) makes deserialization at consumer side easier."
+          },
+          "centroid": {
+            "$ref": "#/components/schemas/Point"
+          }
+        },
+        "description": "**Abstract Superclass** of concrete inherited sub-classes such as **`StopPlace`, `Address`, `PointOfInterest`**.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Point": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type as per GeoJSON, always constant _Point_.",
+            "readOnly": true,
+            "default": "Point"
+          },
+          "coordinates": {
+            "minItems": 2,
+            "type": "array",
+            "description": "Coordinates as [longitude, latitude] resp. easting/northing.",
+            "example": [
+              7.4385,
+              46.9488
+            ],
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        },
+        "description": "Point in [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946) format."
+      },
+      "PublicationWindow": {
+        "type": "object",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "description": "Local start date of situation (related to `startTime`).",
+            "format": "date",
+            "example": "2024-12-22"
+          },
+          "startTime": {
+            "type": "string",
+            "description": "Local start time of situation (related to `startDate`).",
+            "format": "time-local",
+            "example": "14:27"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Local end date of situation (related to `endTime`).",
+            "format": "date"
+          },
+          "endTime": {
+            "type": "string",
+            "description": "Local end time of situation (related to `endDate`).",
+            "format": "time-local"
+          },
+          "dailyStartingAt": {
+            "type": "string",
+            "description": "Situation starting daily at time within this publication window.",
+            "format": "time-local"
+          },
+          "dailyDuration": {
+            "type": "string",
+            "description": "Situation [duration](https://www.w3.org/TR/xmlschema11-2/#duration) within this publication window.",
+            "example": "PT23H59M0S"
+          }
+        },
+        "description": "A period during which the situation should be published."
+      },
+      "Quay": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Non-formal id provided, see `swissLocationId`.",
+            "example": "8507000_12"
+          },
+          "swissLocationId": {
+            "type": "string",
+            "description": "Quay SLOID, if known (within Switzerland), related to `name`.Swiss location id (SLOID) from Atlas. More on [Service Points (DiDok) API](https://developer.sbb.ch/apis/servicepoints/documentation). Depending on the context of the response, it might be an SLOID of the Quay itself or its departure/arrival track or even a section of a track.",
+            "example": "ch:1:sloid:7000:55:49"
+          },
+          "name": {
+            "type": "string",
+            "description": "Quay name as displayed at a `StopPlace`, therefore special case like '12/13' is possible if decided dynamically at arrival or departure of the vehicle.",
+            "example": "12"
+          },
+          "parentId": {
+            "type": "string",
+            "description": "Id of the parent `Quay` (aka Transmodel `ZONE` or `STOP PLACE COMPONENT`), if any, modelling subzone / superzone relation. Useful to determine if 2 quays are on the same physical platform. Use it only for comparison, not for display, and not on long term comparison (may change over time). Only given for `StopPlaceDetailed`.",
+            "example": "8507000_12/13"
+          }
+        },
+        "description": "A `Quay` is the **place to board or alight a concrete vehicle by passengers**, aka **passenger-platform** for **train (de:Gleis)**, or **bus stand (de:Kante)** or **ship pier (de:Steg)**, related to a `ServiceProduct::vehicleMode`.",
+        "example": 13
+      },
+      "ScheduledStopPoint": {
+        "required": [
+          "delayUndefined",
+          "forAlighting",
+          "forBoarding",
+          "occupancyFirstClass",
+          "occupancySecondClass",
+          "place",
+          "requestStop"
+        ],
+        "type": "object",
+        "properties": {
+          "place": {
+            "$ref": "#/components/schemas/StopPlace"
+          },
+          "forBoarding": {
+            "type": "boolean",
+            "description": "Boarding (de:einsteigen) at a StopPlace on a PTRide;. Relates to **`departure`**, `stopStatus` and `accessibilityBoardingAlighting`, see [Routing-Basics](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/business/RoutingBasics.md)."
+          },
+          "forAlighting": {
+            "type": "boolean",
+            "description": "Alighting (de:aussteigen) at a StopPlace on a PTRide. Relates to **`arrival`**, `stopStatus` and `accessibilityBoardingAlighting`, see [Routing-Basics](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/business/RoutingBasics.md)."
+          },
+          "accessibilityBoardingAlighting": {
+            "$ref": "#/components/schemas/AccessibilityBoardingAlighting"
+          },
+          "stopStatus": {
+            "type": "string",
+            "description": "Status at ScheduledStopPlace on a PTRide.This is is useful when iterating from stop to stop getting appropriate state symbols (de:Perlenschnur), see [Routing-Basics](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/business/RoutingBasics.md).<br>x-extensible-enum: [PLANNED,CANCELLED,BEGIN_PARTIAL_CANCELLATION,END_PARTIAL_CANCELLATION,NOT_SERVICED,UNPLANNED]"
+          },
+          "stopStatusFormatted": {
+            "type": "string",
+            "description": "Speakable description about related `stopStatus` enum, if any."
+          },
+          "requestStop": {
+            "type": "boolean",
+            "description": "Passenger needs to call for a vehicle stop (aka OJP `RequestStop`, resp. de:Halt auf Verlangen).",
+            "default": false
+          },
+          "arrival": {
+            "$ref": "#/components/schemas/StopCall"
+          },
+          "departure": {
+            "$ref": "#/components/schemas/StopCall"
+          },
+          "delayUndefined": {
+            "type": "boolean",
+            "description": "true: After a very long delay at either `arrival` or `departure` (also see related `StopCall::delayText`), according to SBB business rules. Typically blocks the whole journey or at least the ending part of a journey (like locomotive break at 3rd stop until the very last stop).",
+            "default": false
+          },
+          "routeIndex": {
+            "type": "integer",
+            "description": "Route index on this `ServiceJourney` (aka OJP order). Usually starting from 0 or 1 and incrementing by 1. However if the route index value jumps:\n - it is most likely that the journey was rerouted\n - or being a virtual Stop",
+            "format": "int32"
+          },
+          "occupancyFirstClass": {
+            "type": "string",
+            "description": "Occupancy in 1st class (average) at StopPlace on a PTRideLeg.<br>x-extensible-enum: [UNKNOWN,LOW,MEDIUM,HIGH]"
+          },
+          "occupancySecondClass": {
+            "type": "string",
+            "description": "Occupancy in 2nd class (average) at StopPlace on a PTRideLeg.<br>x-extensible-enum: [UNKNOWN,LOW,MEDIUM,HIGH]"
+          },
+          "exitSide": {
+            "type": "string",
+            "description": "Exit side at this stop in direction of journey (null if unknown or irrelevant for e.g. in a Bus or on a Bicycle).<br>x-extensible-enum: [LEFT,RIGHT]",
+            "example": "LEFT"
+          },
+          "rank": {
+            "type": "integer",
+            "description": "Rank of importance based on intermediate ScheduledStopPoint priority and distance within a (partial) ServiceJourney. SBB KI rule based on display-info to find relevant intermediate stops to present on a visual stationboard (de:Perronanzeiger).Origin and destination of departure/arrival have always rank=null. Depends on /v3/departures or /v3/arrivals includeRank=true",
+            "format": "int32"
+          }
+        },
+        "description": "Passenger relevant stop-point on a `ServiceJourney`. Some properties may further by distinguished on either `arrival` and/or `departure StopCall` aspects."
+      },
+      "ServiceAlteration": {
+        "required": [
+          "cancelled",
+          "partiallyCancelled",
+          "reachable",
+          "redirected"
+        ],
+        "type": "object",
+        "properties": {
+          "cancelled": {
+            "type": "boolean",
+            "description": "true: Journey is `cancelled` (de:Ausfall), default=false.",
+            "default": false
+          },
+          "cancelledFormatted": {
+            "type": "string",
+            "description": "If `cancelled`, enduser cancellation info.<br>(Translated according to Accept-Language.)",
+            "example": "Ausfall"
+          },
+          "partiallyCancelled": {
+            "type": "boolean",
+            "description": "true: Journey is partially cancelled (de:Teilausfall) at beginning or end, default=false.",
+            "default": false
+          },
+          "partiallyCancelledFormatted": {
+            "type": "string",
+            "description": "If `partiallyCancelled`, enduser info.<br>(Translated according to Accept-Language.)",
+            "example": "Ausfall"
+          },
+          "reachable": {
+            "type": "boolean",
+            "description": "true: vehicle (`ServiceProduct`) change connection from `PTRideLeg` to `PTRideLeg` is possible (de: Anschluss kann gehalten werden, see `Trip::status::valid`); false: de:nicht mehr erreichbare Fahrt",
+            "default": true
+          },
+          "reachableFormatted": {
+            "type": "string",
+            "description": "Transport-product change from Leg to Leg info according to SBB business rules. Relates to reachable.",
+            "example": "Your connecting train will be waiting, please change trains immediately."
+          },
+          "redirected": {
+            "type": "boolean",
+            "description": "true: journey is redirected (aka OJP deviation).",
+            "default": false
+          },
+          "redirectedFormatted": {
+            "type": "string",
+            "description": "Text intended for passengers about a planned stop being skipped, relates to `redirected`.<br>(Translated according to Accept-Language.)",
+            "example": "This vehicle is not stopping at all stations."
+          },
+          "unplannedStopPointsFormatted": {
+            "type": "string",
+            "description": "Text intended for passengers about an additional non-planned stop at a station.<br>(Translated according to Accept-Language.)",
+            "example": "This vehicle is making exceptional stops. This can lead to increased travel time."
+          },
+          "delayFormatted": {
+            "type": "string",
+            "description": "Enduser text, saying whether there is a delay on PTRideLeg (referring to first/last Stop).<br>(Translated according to Accept-Language.)",
+            "example": "Delay"
+          },
+          "quayChangedFormatted": {
+            "type": "string",
+            "description": "Enduser text, saying whether there is a `Quay` change on `ServiceJourney` (typically referring to first and/or last `ScheduledStopPoint` on a `PTRideLeg`), which indicates the passengers to be careful at boarding/alighting.<br>(Translated according to Accept-Language.)",
+            "example": "Gleisänderung"
+          }
+        },
+        "description": "Status (realtime changes) to a `ServiceJourney` and might impact planned routing."
+      },
+      "ServiceJourney": {
+        "required": [
+          "directions",
+          "id",
+          "notices",
+          "operatingDay",
+          "operatingPeriods",
+          "serviceAlteration",
+          "serviceProducts",
+          "situations",
+          "stopPoints"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Underlying system specific unique identifier representing a concrete (partial) route for a specific vehicle and time. Be aware this is just a temporary id and may change daily! Additionally check for `notices` with `Notice::type=INFO`, `text=<SwissJourneyId>` for a more standardized permanent [Swiss Journey-ID (SJYID)](https://transportdatamanagement.ch/content/uploads/2021/05/SwissJourneyID_DE_1_2.pdf) within a planning period.",
+            "example": "ch:1:sjyid:100001:18728-001"
+          },
+          "operatingDay": {
+            "type": "string",
+            "description": "Official operating-day of the related `ServiceJourney`.",
+            "format": "date",
+            "example": "2024-12-22"
+          },
+          "stopPoints": {
+            "minItems": 2,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduledStopPoint"
+            }
+          },
+          "serviceProducts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceProduct"
+            }
+          },
+          "serviceAlteration": {
+            "$ref": "#/components/schemas/ServiceAlteration"
+          },
+          "notices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notice"
+            }
+          },
+          "situations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PTSituation"
+            }
+          },
+          "operatingPeriods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OperatingPeriod"
+            }
+          },
+          "quayTypeName": {
+            "type": "string",
+            "description": "Depending on a train, ship or whatever Vehicle there is a specific terminology for its appropriate quay-name. Since all `stopPoints` are passed by the same Vehicle this translation is usable for all `ScheduledStopPoint::*Quay*` contained by this `ServiceJourney`. See related `quayTypeShortName` for an abbreviated translation.<br>(Translated according to Accept-Language.)",
+            "example": "Gleis"
+          },
+          "quayTypeShortName": {
+            "type": "string",
+            "description": "Abbreviation for related `quayTypeName`.<br>(Translated according to Accept-Language.)",
+            "example": "Gl."
+          },
+          "directions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Direction"
+            }
+          },
+          "spatialProjection": {
+            "$ref": "#/components/schemas/LineString"
+          }
+        },
+        "description": "A passenger carrying vehicle journey for one specified operation day."
+      },
+      "ServiceProduct": {
+        "required": [
+          "name",
+          "nameFormatted",
+          "vehicleMode"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Complete product name and may consist of {`vehicleSubModeShortName`, `line`, `number`}. (Refers to Transmodel `Line::name/::id`.)",
+            "example": "IC 1 753"
+          },
+          "nameFormatted": {
+            "type": "string",
+            "description": "Principally same as related `name` but adapted by SBB Business Rules to display for passengers.",
+            "example": "IC 1 753"
+          },
+          "line": {
+            "type": "string",
+            "description": "Usually referring to a specific commercial PT route (where direction might be either way), shown on vehicle displays. If this value is missing, it is probably a _single-journey (de:Einzelfahrt)_. (Refers to Transmodel `Line::id`.)",
+            "example": "1"
+          },
+          "lineId": {
+            "type": "string",
+            "description": "External line-reference like SLNID (source INFO+) or TU specific value (for e.g. provided by Postauto AG), relates to `line`.",
+            "example": "R_547_000801_0883"
+          },
+          "vehicleMode": {
+            "$ref": "#/components/schemas/VehicleMode"
+          },
+          "number": {
+            "type": "string",
+            "description": "Unique per `OperatingDay` (CH day-change at 04:00 !) and name (where 'IC 1' can run several times per day in either of opposite directions). For passenger display use `numberFormatted` instead! (Aka Transmodel: `TrainNumber`)",
+            "example": "753"
+          },
+          "operator": {
+            "$ref": "#/components/schemas/Operator"
+          },
+          "routeIndexFrom": {
+            "type": "integer",
+            "description": "Defines the first ScheduledStop::routeIndex where this product is valid on a Line, null if unknown.",
+            "format": "int32",
+            "example": 3
+          },
+          "routeIndexTo": {
+            "type": "integer",
+            "description": "Defines the last ScheduledStop::routeIndex where this product is valid on a Line, null if unknown",
+            "format": "int32",
+            "example": 7
+          },
+          "corporateIdentityIcon": {
+            "type": "string",
+            "description": "Icon-identifier to represent the `ServiceProduct` specific submode (for e.g. the symbol for an 'EC 1'). See [SBB Corporate-Identity catalog (CDN, aka FIGMA Icons)](https://www.figma.com/file/UQBd7cHKav0hr9oXYp7opJ/SBB-Icons?node-id=395%3A2952&t=ad26LgREBbTANSK5-1)",
+            "example": "ic-1"
+          }
+        },
+        "description": "A passenger carrying Service (phyisical public transport vehicle) provided and operated by a certain Operator allocated to a concrete ServiceJourney on an `OperatingDay`.<br>See SBB specific transport-modes: [v580 de:Verkehrsmittelkategorien (aka Transmodel or OJP/Siri `VehicleMode`)](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/business/TransportMode.md)."
+      },
+      "StopCall": {
+        "required": [
+          "quayChanged"
+        ],
+        "type": "object",
+        "properties": {
+          "timeAimed": {
+            "type": "string",
+            "description": "Date/time ([ISO-8601](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) UTC with time-numoffset (like '+02:00')) **planned**, relates to `timeRt` (might be null for e.g. in virtual stops).",
+            "format": "date-time",
+            "example": "2024-12-18T14:55:00+01:00"
+          },
+          "timeRt": {
+            "type": "string",
+            "description": "Date/time ([ISO-8601](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) UTC with time-numoffset (like '+02:00')) in **realtime** (oversteers related `timeAimed`!).",
+            "format": "date-time"
+          },
+          "delayText": {
+            "type": "string",
+            "description": "Formatted passenger message about the delay (may also relate to `ScheduledStopPoint::delayUndefined`) in the role of this call according to SBB business rules.",
+            "example": "ca. +5'"
+          },
+          "quayAimed": {
+            "$ref": "#/components/schemas/Quay"
+          },
+          "quayRt": {
+            "$ref": "#/components/schemas/Quay"
+          },
+          "quayChanged": {
+            "type": "boolean",
+            "description": "Related to `quayAimed` and `quayRt`.**false** even if the related `StopCall::quayRt` is set, this is not considered a realtime change (acc. to SBB busines rules); **true** real `*QuayRt` change, also see `ServiceAlteration::quayChangedFormatted`.",
+            "default": false
+          },
+          "quayFormatted": {
+            "type": "string",
+            "description": "Principally same as related `Quay::name` (where rt wins over aimed), but in case of wing-trains (de:Flügelzüge) specified with **direction specific boarding-sections**.<br>(For e.g. 'Bern to Zweisimmen' with a split of train-composition at Spiez where customers might reach the wrong destination if they board the wrong car!)",
+            "example": "12CD"
+          },
+          "trainStopAssignment": {
+            "$ref": "#/components/schemas/TrainStopAssignment"
+          },
+          "navigationPathAssignment": {
+            "$ref": "#/components/schemas/NavigationPathAssignment"
+          }
+        },
+        "description": "Passing a `ScheduledStopPoint` on a `ServiceJourney` may have two 'views': one for arrival and one for departure aspects (aka OJP LegAlight::StopPoint, LegBoard::StopPoint; NeTeX Call (which is a VIEW on a `ScheduledStopPoint`)."
+      },
+      "StopPlace": {
+        "required": [
+          "id",
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "description": "A place (de:Haltestelle) comprising one or more areas where vehicles may stop and where passengers may board or leave vehicles or prepare their trip. The name is given in regional language only.<br>Inherited from `Place`.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Place"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "weighting": {
+                "type": "integer",
+                "description": "The higher the traffic load/importance the higher the value, null if unknown.",
+                "format": "int32",
+                "example": 30170
+              }
+            }
+          }
+        ]
+      },
+      "Train": {
+        "required": [
+          "components"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Direction label, relates to `CompoundTrain::operationalOrientation`, if known. SBB UIs usually suppress the direction if only ONE `Train` is given in `CompoundTrain`.",
+            "example": "Burgdorf"
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TrainComponent"
+            }
+          }
+        },
+        "description": "A vehicle-type composed of physical `TrainElement's` in a certain order, i.e. of wagons (aka car, coach) assembled together. Multiple `Train's` (aka wing-train or de:Flügelzug) may be coupled or decoupled in separate self-propelled units within a `CompoundTrain` on its journey."
+      },
+      "TrainComponent": {
+        "required": [
+          "attributesAdvertised",
+          "closed",
+          "displayNoPassageIcon",
+          "element",
+          "nextPassage",
+          "occupancy",
+          "previousPassage"
+        ],
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "Label on the `TrainElement`, typically a number visible by passenger close to the boarding door.",
+            "example": "7"
+          },
+          "occupancy": {
+            "type": "string",
+            "description": "Occupancy prognosed on a daily basis (not a realtime fact, overall 1st and/or 2nd class).<br>x-extensible-enum: [LOW,MEDIUM,HIGH,UNKNOWN]",
+            "example": "MEDIUM",
+            "default": "UNKNOWN"
+          },
+          "previousPassage": {
+            "type": "boolean",
+            "description": "Determines if a passenger may pass (de: Durchgang) to the previous car within formation."
+          },
+          "nextPassage": {
+            "type": "boolean",
+            "description": "Determines if a passenger may pass (de: Durchgang) to the next car within the formation."
+          },
+          "displayNoPassageIcon": {
+            "type": "boolean",
+            "description": "true: icon for no passage should be displayed between this car and the next one (from left to right)."
+          },
+          "closed": {
+            "type": "boolean",
+            "description": "true: For unknown reasons the car is not usable for passengers: false: Open or unknown."
+          },
+          "restaurantAttended": {
+            "type": "boolean",
+            "description": "true: the restaurant is attended, false: the restaurant is not attended, null: no restaurant on this car"
+          },
+          "element": {
+            "$ref": "#/components/schemas/TrainElement"
+          },
+          "boardingPosition": {
+            "$ref": "#/components/schemas/BoardingPosition"
+          },
+          "attributesAdvertised": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Attributes advertised on this particular `TrainComponent`.",
+              "example": "[RESERVED_BY_GROUP]"
+            }
+          }
+        },
+        "description": "An elementary component of a `Train` as an instance of a correspondent `TrainElement` on a concrete `ServiceJourney`, where specific values at each `ScheduledStopPoint` for this unique formation on an operation-day, may have its dynamic state (like section or exitSide)."
+      },
+      "TrainElement": {
+        "required": [
+          "attributes"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Aka car-UIC, which is potentially mapped to beacons installed. `/v3/vehicles/by-vehicle/{vehicleId}` may detect a `Train` composing a `TrainElement` (mainly for SBB operated `VehicleMode` TRAIN) is on its way within a certain `ServiceJourney` (null means not present).",
+            "example": "938525010246"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of car (where a 'CAR' may be self-propelled in case of a combined passenger-car/locomotive (de:Triebwagen)): <br>x-extensible-enum:  ['FA','WR','CC','WL','CAR','LOC','UNKNOWN']"
+          },
+          "passengerClass": {
+            "type": "string",
+            "description": "Passenger-class ('1' or '2') of the car, if known.<br>x-extensible-enum: "
+          },
+          "attributes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Attributes of the car (see `LegendItemV3` for description).",
+              "example": "[BZ]"
+            }
+          },
+          "deckPlan": {
+            "$ref": "#/components/schemas/DeckPlan"
+          }
+        },
+        "description": "An elementary component of a `Train` (for e.g. a wagon/car/locomotive or in general 'carriage') with rather permanent properties, see `TrainComponent` for its instance on a concrete journey."
+      },
+      "TrainStopAssignment": {
+        "required": [
+          "compoundTrain"
+        ],
+        "type": "object",
+        "properties": {
+          "compoundTrain": {
+            "$ref": "#/components/schemas/CompoundTrain"
+          }
+        },
+        "description": "The association of a `TrainComponent` at a `ScheduledStopPoint` with a specific `StopPlace` and also possibly a `Quay` and `BoardingPosition`."
+      },
+      "Trip": {
+        "required": [
+          "fastTransfer",
+          "id",
+          "legs",
+          "operatingPeriods",
+          "status",
+          "transfers"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "TripContext to reconstruct this Trip."
+          },
+          "legs": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Leg"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/TripStatus"
+          },
+          "fastTransfer": {
+            "type": "boolean",
+            "description": "Relates to `TripMobilityFilter::walkSpeed`, if transfers below 100% were enforced, such Trip's are marked as `fastTransfer` by means passenger needs to hurry to get next vehicle because transfer time is lower than recommended at a StopPlace."
+          },
+          "transfers": {
+            "type": "integer",
+            "description": "Number of interchanges (de:Umstiege) [greater or equal 0].",
+            "format": "int32"
+          },
+          "duration": {
+            "type": "string",
+            "description": "The [duration](https://www.w3.org/TR/xmlschema11-2/#duration) of the whole trip. The value may be null, if `Trip` is not rideable (for e.g. cancelled).",
+            "example": "P1DT2H4M"
+          },
+          "pagingChecksum": {
+            "type": "string",
+            "description": "Checksum of the trip to filter same results on client side after scroll requests. Relates to `TripResponse::paginationCursor`.",
+            "example": "fa02b99f_3"
+          },
+          "searchHint": {
+            "type": "string",
+            "description": "A hint/explanation is given if Trip was not found by a direct (first) search. In such a case origin/destination might not match exactly to request parameters.<br>(Translated according to Accept-Language.)",
+            "example": "Unfortunately, a connection for the desired origin and/or destination could not be found. We recommend the following alternative connections (please note origin/destination)."
+          },
+          "operatingPeriods": {
+            "type": "array",
+            "description": "Operating days of 'same journey' within planned yearly operating-period though multiple entries are possible (for e.g. `Operator` change or different daysRegular/daysIrregular). Given for `Trip's` containing `PTRideLeg's`. Set includeOperatingDays for concrete `OperatingPeriod::operatingDays` if needed.",
+            "items": {
+              "$ref": "#/components/schemas/OperatingPeriod"
+            }
+          },
+          "summary": {
+            "$ref": "#/components/schemas/TripSummary"
+          }
+        },
+        "description": "A customer journey describing the movement of a passenger from one Place of any sort to another. A Trip may consist of one or more consecutive Leg's having some common characteristics."
+      },
+      "TripResponse": {
+        "required": [
+          "trips"
+        ],
+        "type": "object",
+        "properties": {
+          "trips": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trip"
+            }
+          },
+          "paginationCursor": {
+            "$ref": "#/components/schemas/PaginationCursor"
+          }
+        },
+        "description": "Contains a list of Trip's matching the search-criteria."
+      },
+      "TripStatus": {
+        "required": [
+          "alternative",
+          "cancelled",
+          "delayed",
+          "delayedUnknown",
+          "notServicedStopPoints",
+          "partiallyCancelled",
+          "quayChanged",
+          "reachable",
+          "unplannedStopPoints",
+          "valid"
+        ],
+        "type": "object",
+        "properties": {
+          "alternative": {
+            "type": "boolean",
+            "description": "false: Planned connection; true: Realtime alternative",
+            "default": false
+          },
+          "alternativeFormatted": {
+            "type": "string",
+            "description": "Text intended for passengers about an alternative Trip, relates to `alternative`.<br>(Translated according to Accept-Language.)",
+            "example": "Alternative Verbindung aufgrund der aktuellen Betriebslage. Bitte prüfen Sie diese kurz vor Reisebeginn nochmals auf Änderungen."
+          },
+          "valid": {
+            "type": "boolean",
+            "description": "true: Trip is possible to ride based on the current realtime situation (related to `Trip::serviceCalendar`, `PTRideLeg::reachable`, etc); false: **Fatal resp. not rideable as a 'whole' Trip' anymore** (aka OJP infeasible, OSDM invalid). Important: if this valid toggles from true to false, the passenger might not be able to perform his Trip, by means individual re-planning might be necessary.",
+            "default": true
+          },
+          "cancelled": {
+            "type": "boolean",
+            "description": "`PTRideLeg` cancelled (de:Ausfall), relates to `cancelledFormatted`.",
+            "default": false
+          },
+          "cancelledFormatted": {
+            "type": "string",
+            "description": "If `cancelled` or `partiallyCancelled` is true, enduser info about `Trip`.<br>(Translated according to Accept-Language.)",
+            "example": "Diese Verbindung fällt aus."
+          },
+          "partiallyCancelled": {
+            "type": "boolean",
+            "description": "`PTRideLeg` partially cancelled (de:Teilausfall), relates to `cancelledFormatted`.",
+            "default": false
+          },
+          "quayChanged": {
+            "type": "boolean",
+            "description": "Contains at least one platform change (de:Gleis-/Kante-/Steg-Änderung) on any `PTRideLeg`.",
+            "default": false
+          },
+          "delayed": {
+            "type": "boolean",
+            "description": "Contains at least one delay (de:Verspätung) on any `PTRideLeg`.",
+            "default": false
+          },
+          "delayedUnknown": {
+            "type": "boolean",
+            "description": "Contains at least one unknown delay (de:Unbestimmte Verspätung) on any `PTRideLeg`.",
+            "default": false
+          },
+          "reachable": {
+            "type": "boolean",
+            "description": "If not true, changing `PTRideLeg's` is not guaranteed (de:Anschluss gehalten).",
+            "default": true
+          },
+          "notServicedStopPoints": {
+            "type": "boolean",
+            "description": "Contains at least one `StopPlace` which is not serviced (de:ausserordentliche Durchfahrt) on any `PTRideLeg`. Releates to `ScheduledStopPoint::stopStatus==NOT_SERVICED`.",
+            "default": false
+          },
+          "unplannedStopPoints": {
+            "type": "boolean",
+            "description": "true: contains additional `StopPlace` resp. `ScheduledStopPoint` (de:ausserordentlicher Halt). Releates to `ScheduledStopPoint::stopStatus==UNPLANNED` and `ServiceAlteration::unplannedStopPointsFormatted` (aka OJP Unplanned).",
+            "default": false
+          },
+          "mobilityRestrictedTransferCritical": {
+            "type": "boolean",
+            "description": "Hint whether at least one vehicle transfer is critical for passengers with a handicap, related to `includeAccessibility` other than `ALL` and `PTRideLeg::navigationPathAssignment` (otherwise null)."
+          }
+        },
+        "description": "Realtime overall status of a `Trip` (depends on `PTRideLeg::serviceJourney` status)."
+      },
+      "TripSummary": {
+        "required": [
+          "serviceProducts"
+        ],
+        "type": "object",
+        "properties": {
+          "firstStopPlace": {
+            "$ref": "#/components/schemas/ScheduledStopPoint"
+          },
+          "lastStopPlace": {
+            "$ref": "#/components/schemas/ScheduledStopPoint"
+          },
+          "occupancyFirstClassMax": {
+            "type": "string",
+            "description": "Highest occupancyAverage on any PTRideLeg::origin in 1st class.<br>x-extensible-enum: [UNKNOWN,LOW,MEDIUM,HIGH]"
+          },
+          "occupancySecondClassMax": {
+            "type": "string",
+            "description": "Highest occupancy on any PTRideLeg::origin in 2nd class.<br>x-extensible-enum: [UNKNOWN,LOW,MEDIUM,HIGH]"
+          },
+          "accessibilityBoardingAlighting": {
+            "$ref": "#/components/schemas/AccessibilityBoardingAlighting"
+          },
+          "serviceProducts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "`ServiceProduct::name's` as displayable strings.",
+              "example": "[IC 1 756]"
+            }
+          }
+        },
+        "description": "Summary of most relevant aspects of the given Trip and its PTRideLeg's. (Aka OJP TripSummaryStructure.)"
+      },
+      "VehicleMode": {
+        "required": [
+          "corporateIdentityIcon",
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Mode of public transportation according to **v580 TransportMode** (see [de:Verkehrsmittelkategorie](https://www.allianceswisspass.ch/de/tarife-vorschriften/uebersicht/V580/Produkte-der-V580-FIScommun-1)) given  by [opentransportdata.swiss Transportmodes (de:Verkehrsmittel)](https://opentransportdata.swiss/de/dataset/vm-liste) column `EN` as uppercase.<br>x-extensible-enum: values see `VehicleModeEnum`.",
+            "example": "TRAIN"
+          },
+          "name": {
+            "type": "string",
+            "description": "Translation of related `id` (according to Accept-Language and [opentransportdata.swiss Transportmodes (de:Verkehrsmittel)](https://opentransportdata.swiss/de/dataset/vm-liste) language column).<br>(Translated according to Accept-Language.)",
+            "example": "Zug"
+          },
+          "corporateIdentityIcon": {
+            "type": "string",
+            "description": "Icon-identifier to represent the related `id` (rough main mode like TRAIN, BUS, ..). See [SBB Corporate-Identity catalog (CDN, aka FIGMA Icons)](https://www.figma.com/file/UQBd7cHKav0hr9oXYp7opJ/SBB-Icons?node-id=395%3A2952&t=ad26LgREBbTANSK5-1)",
+            "example": "SBB_oev_b_t02"
+          },
+          "vehicleSubModeName": {
+            "type": "string",
+            "description": "Long, displayable submode (aka de:Gattung) related to (main) mode `id`. See [v580 de:Verkehrsmittelkategorien (aka Transmodel or OJP/Siri `VehicleMode`)](https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/business/TransportMode.md)",
+            "example": "InterCity"
+          },
+          "vehicleSubModeShortName": {
+            "type": "string",
+            "description": "Short version of related `vehicleSubModeName`.",
+            "example": "IC"
+          }
+        },
+        "description": "A characterisation of the public transport operation according to the means of transport (aka OJP PtMode; Siri::VehicleMode; v580 TransportMode or de:Verkehrsmittelkategorie). Whether only `id` is given or submode as well depends on available data."
+      },
+      "DatedVehicleJourney": {
+        "required": [
+          "serviceJourney"
+        ],
+        "type": "object",
+        "properties": {
+          "serviceJourney": {
+            "$ref": "#/components/schemas/ServiceJourney"
+          }
+        },
+        "description": "A particular journey of a vehicle on a particular operatingday including all modifications possibly decided by the control staff. Complete route of public transport service (de:Zuglauf)."
+      },
+      "Departure": {
+        "required": [
+          "serviceJourney"
+        ],
+        "type": "object",
+        "properties": {
+          "serviceJourney": {
+            "$ref": "#/components/schemas/ServiceJourney"
+          }
+        },
+        "description": "Departure view of a kind of partial `DatedVehicleJourney` from a specific stop-point towards its final destination or direction."
+      },
+      "DepartureResponse": {
+        "required": [
+          "departures"
+        ],
+        "type": "object",
+        "properties": {
+          "departures": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Departure"
+            }
+          }
+        },
+        "description": "Contains a list of `Departure's` matching the search-criterias."
+      },
+      "Arrival": {
+        "required": [
+          "serviceJourney"
+        ],
+        "type": "object",
+        "properties": {
+          "serviceJourney": {
+            "$ref": "#/components/schemas/ServiceJourney"
+          }
+        },
+        "description": "Arrival view of a kind of partial `DatedVehicleJourney` from a specific stop (typically very origin) towards the desired arrival stop-point."
+      },
+      "ArrivalResponse": {
+        "required": [
+          "arrivals"
+        ],
+        "type": "object",
+        "properties": {
+          "arrivals": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Arrival"
+            }
+          }
+        },
+        "description": "Contains a list of `Arrival's` matching the search-criterias."
+      },
+      "PlaceResponse": {
+        "required": [
+          "places"
+        ],
+        "type": "object",
+        "properties": {
+          "places": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Place"
+            }
+          }
+        },
+        "description": "Response container of a Place-request."
+      }
+    }
+  }
+}

@@ -15,9 +15,9 @@
  */
 package swiss.opentransportdata.ojp.adapter;
 
-import de.vdv.ojp.model.ServiceDelivery;
 import lombok.Getter;
 import lombok.NonNull;
+import uk.org.siri.siri.ServiceDelivery;
 
 /**
  * OJP-Adapter Exception if any OJP Backend fault happens or OJP returned an ErrorCondition.
@@ -50,6 +50,6 @@ public class OJPException extends RuntimeException {
      */
     public OJPException(@NonNull ServiceDelivery serviceDelivery) {
         super("ServiceDelivery::errorCondition=" + serviceDelivery.getErrorCondition().toString());
-        this.serviceDelivery = serviceDelivery;
+        this.serviceDelivery = null;
     }
 }

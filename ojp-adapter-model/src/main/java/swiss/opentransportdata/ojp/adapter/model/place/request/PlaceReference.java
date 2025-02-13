@@ -29,8 +29,6 @@ import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 
 /**
  * Generic AbstractPlace reference as a result of String parsing. Actually not a JsonObject at all.
- * <p/>
- * Precise instantiation can be done through journey-service-b2c, see PlaceReferenceHelper.
  *
  * @see <a href="https://github.com/SchweizerischeBundesbahnen/journey-service/blob/master/v3/JSON-Objects.md#placereference">Corresponds to developer manual for PlaceReference as
  *     Request-Parameter</a>
@@ -48,8 +46,9 @@ public class PlaceReference implements InheritanceDiscriminable {
      */
     public static final String TYPE_ADDRESS_POI = "ADDRESS_POI";
 
-    @Schema(description = "`AbstractPlace` concrete sub-type.", allowableValues = {"StopPlace", "PointOfInterest", "Address",
-        TYPE_COORDINATES /*TODO TYPE_ADDRESS_POI is non-documented for J-S internal use*/}, defaultValue = "StopPlace", example = "StopPlace")
+    @Schema(description = "`AbstractPlace` concrete sub-type.",
+        allowableValues = {"StopPlace", "PointOfInterest", "Address", TYPE_COORDINATES},
+        defaultValue = "StopPlace", example = "StopPlace")
 
     private final String type;
 

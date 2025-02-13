@@ -16,24 +16,24 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.CallAtNearStopStructure;
-import de.vdv.ojp.CallAtStopStructure;
-import de.vdv.ojp.GeneralAttributeStructure;
-import de.vdv.ojp.InternationalTextStructure;
-import de.vdv.ojp.ModeStructure;
-import de.vdv.ojp.OJPStopEventDeliveryStructure;
-import de.vdv.ojp.SituationsStructure;
-import de.vdv.ojp.StopEventResultStructure;
-import de.vdv.ojp.StopEventStructure;
-import de.vdv.ojp.model.OJP;
-import de.vdv.ojp.model.StopPointRefStructure;
+import de.vdv.ojp.v2.model.CallAtNearStopStructure;
+import de.vdv.ojp.v2.model.CallAtStopStructure;
+import de.vdv.ojp.v2.model.DatedJourneyStructure;
+import de.vdv.ojp.v2.model.GeneralAttributeStructure;
+import de.vdv.ojp.v2.model.InternationalTextStructure;
+import de.vdv.ojp.v2.model.ModeStructure;
+import de.vdv.ojp.v2.model.OJP;
+import de.vdv.ojp.v2.model.OJPStopEventDeliveryStructure;
+import de.vdv.ojp.v2.model.SituationFullRefStructure;
+import de.vdv.ojp.v2.model.SituationRefList;
+import de.vdv.ojp.v2.model.StopEventResultStructure;
+import de.vdv.ojp.v2.model.StopEventStructure;
+import jakarta.xml.bind.JAXBElement;
 import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
@@ -43,7 +43,9 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.place.response.StopPlace;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Direction;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.LinkedText;
@@ -62,16 +64,15 @@ import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
 import swiss.opentransportdata.ojp.adapter.service.converter.AbstractConverter;
 import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
 import swiss.opentransportdata.ojp.adapter.service.opentransportdata.transportmode.TransportModeData;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.converter.JAXBElementContentContainer;
 import uk.org.ifopt.ifopt.Extensions;
+import uk.org.siri.siri.StopPointRefStructure;
 
 /**
  * @author Peter Hirzel
  */
 @Slf4j
 @Component("OJPDepartureConverter")
-class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney>> {
+class ServiceJourneyConverter implements AbstractConverter<OJP, List<ServiceJourney>> {
 
     @Override
     public List<ServiceJourney> convertToDTO(OJP ojpResponseWithStopEvent) {
@@ -85,9 +86,14 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
         final OJPStopEventDeliveryStructure ojpStopEventDeliveryStructure = OJPAdapter.mapToFirstOJPStopEventDeliveryStructure(ojpResponse);
 
         final List<ServiceJourney> serviceJourneys = new ArrayList<>();
-        for (StopEventResultStructure stopEventResultStructure : ojpStopEventDeliveryStructure.getStopEventResult()) {
+        for (JAXBElement<?> rest : ojpStopEventDeliveryStructure.getRest()) {
+            if (rest.getDeclaredType() != StopEventResultStructure.class) {
+                log.debug("skip non-StopEventResultStructure: {}", rest.getDeclaredType());
+                continue;
+            }
+
+            final StopEventStructure stopEventStructure = ((StopEventResultStructure) rest.getValue()).getStopEvent();
             final List<ScheduledStopPoint> scheduledStopPoints = new ArrayList<>();
-            final StopEventStructure stopEventStructure = stopEventResultStructure.getStopEvent();
             // StopPoint's before requested StopPlace::id (case arrival)
             for (CallAtNearStopStructure callAtNearStopStructure : stopEventStructure.getPreviousCall()) {
                 scheduledStopPoints.add(mapToScheduledStopPoint(callAtNearStopStructure.getCallAtStop()));
@@ -100,33 +106,26 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                 scheduledStopPoints.add(mapToScheduledStopPoint(callAtNearStopStructure.getCallAtStop()));
             }
 
-            final JAXBElementContentContainer serviceContentContainer = new JAXBElementContentContainer(stopEventStructure.getService().getContent());
-            final ModeOJP mode = mapToMode(serviceContentContainer.getModes());
-            serviceJourneys.add(OJPFacade.createServiceJourney(
-                serviceContentContainer.getJourneyRefs(),
+            serviceJourneys.add(OJPFacade.createServiceJourney(stopEventStructure.getService(),
                 scheduledStopPoints,
-                mapToServiceProducts(serviceContentContainer, mode, (Element) stopEventStructure.getExtension()),
-                mapToDirections(serviceContentContainer),
-                mapToNotices(serviceContentContainer),
-                mapToSituations(null /*TODO seems not contained*/),
-                mapToServiceAlteration(serviceContentContainer),
-                Collections.emptyList() /*TODO operatingDays*/));
+                (Element) stopEventStructure.getExtension()));
         }
 
         return serviceJourneys;
     }
 
+    // TODO CallAtStopStructure::departureFormationAssignment
     static ScheduledStopPoint mapToScheduledStopPoint(CallAtStopStructure callAtStopStructure) {
         return createScheduledStopPoint(callAtStopStructure.getStopPointName(), callAtStopStructure.getStopPointRef(),
-            //TODO OJP seems not to distinguish between departure/arrival quay
+            //TODO OJP 2.0 seems not to distinguish between departure/arrival quay
             callAtStopStructure.getPlannedQuay(), callAtStopStructure.getEstimatedQuay(), callAtStopStructure.getPlannedQuay(), callAtStopStructure.getEstimatedQuay(),
-            // TODO not foreseen yet: callAtStopStructure.getServiceDeparture/Arrival().getEstimatedTimeHigh/Low()
+            // TODO callAtStopStructure.getServiceDeparture/Arrival().getEstimatedTimeHigh/Low() -> what is it for?
             callAtStopStructure.getServiceDeparture() == null ? null : callAtStopStructure.getServiceDeparture().getTimetabledTime(),
             callAtStopStructure.getServiceDeparture() == null ? null : callAtStopStructure.getServiceDeparture().getEstimatedTime(),
             callAtStopStructure.getServiceArrival() == null ? null : callAtStopStructure.getServiceArrival().getTimetabledTime(),
             callAtStopStructure.getServiceArrival() == null ? null : callAtStopStructure.getServiceArrival().getEstimatedTime(),
             callAtStopStructure.getOrder(),
-            // TODO seems not given -> correct? also map Quay::swissLocationId
+            // TODO OJP 2.0 seems not given -> correct? also map Quay::swissLocationId
             callAtStopStructure.getServiceDeparture() != null,
             callAtStopStructure.getServiceArrival() != null,
             callAtStopStructure.isRequestStop(), callAtStopStructure.isUnplannedStop(), callAtStopStructure.isNotServicedStop());
@@ -157,19 +156,19 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
             stopStatus = StopStatus.NOT_SERVICED;
         }
 
-        // TODO if times are estimated there is further attributes in OJP
+        // TODO OJP 2.0 if times are estimated there are further attributes
         final String uic = stopPointRef.getValue();
         final Quay arrivalQuayAimed = mapToQuay(uic, arrivalPlannedQuay);
         final Quay arrivalQuayRt = mapToQuay(uic, arrivalEstimatedQuay);
         final StopCall arrival = ScheduledStopPointConverter.createStopCall(toOffsetDateTime(arrivalTimeAimed), toDateTimeRt(arrivalTimeAimed, arrivalTimeRt),
-            /*TODO DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
+            /*TODO OJP 2.0 DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
             arrivalQuayAimed, arrivalQuayRt,
             StopPlaceHelper.hasPlatformChanged(arrivalQuayAimed == null ? null : arrivalQuayAimed.getName(), arrivalQuayRt == null ? null : arrivalQuayRt.getName()),
             null, null);
         final Quay departureQuayAimed = mapToQuay(uic, departurePlannedQuay);
         final Quay departureQuayRt = mapToQuay(uic, departureEstimatedQuay);
         final StopCall departure = ScheduledStopPointConverter.createStopCall(toOffsetDateTime(departureTimeAimed), toDateTimeRt(departureTimeAimed, departureTimeRt),
-            /*TODO DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
+            /*TODO OJP 2.0 DelayHelper.displayableDelayToText(boolean effectively, @NonNull JourneySegment segment, int stopIndex, boolean arrival, Locale locale)*/ null,
             departureQuayAimed, departureQuayRt,
             StopPlaceHelper.hasPlatformChanged(departureQuayAimed == null ? null : departureQuayAimed.getName(), departureQuayRt == null ? null : departureQuayRt.getName()),
             null, null);
@@ -177,8 +176,8 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
             .place(StopPlace.builder()
                 .id(uic)
                 .name(OJPAdapter.getText(stopPointName))
-                //.province(stopV2.getCantonCH())
-                //.centroid(GeoJsonConverter.toPoint(stopV2))
+                //.province(stop.getCantonCH())
+                //.centroid(GeoJsonConverter.toPoint(stop))
                 //.tariffBorder(false)
                 //.distanceToSearchPosition(null)
                 //.weighting(null)
@@ -212,9 +211,9 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
         return subModeShortName + " " + (line == null ? StringUtils.EMPTY : line);
     }
 
-    static List<Notice> mapToNotices(JAXBElementContentContainer contentContainer) {
-        final List<Notice> notices = new ArrayList<>(contentContainer.getGeneralAttributes().size());
-        for (GeneralAttributeStructure attributeStructure : contentContainer.getGeneralAttributes()) {
+    static List<Notice> mapToNotices(DatedJourneyStructure datedJourneyStructure) {
+        final List<Notice> notices = new ArrayList<>(datedJourneyStructure.getAttribute().size());
+        for (GeneralAttributeStructure attributeStructure : datedJourneyStructure.getAttribute()) {
             if (attributeStructure.getCode().startsWith(OJPAdapter.NOTICE_ATTRIBUTE_PREFIX)) {
                 String key = attributeStructure.getCode().substring(OJPAdapter.NOTICE_ATTRIBUTE_PREFIX.length());
                 if (key.startsWith("_")) {
@@ -225,7 +224,7 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                     .type(NoticeType.ATTRIBUTE)
                     .name(key)
                     .text(LinkedText.builder()
-                        .template(OJPAdapter.getText(attributeStructure.getText()))
+                        .template(OJPAdapter.getText(attributeStructure.getUserText()))
                         .arguments(new LinkedTextMap())
                         .build())
                     .priority(Notice.DEFAULT_PRIORITY)
@@ -233,8 +232,8 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
                     //.routeIndexTo()
                     .build());
             } else if (attributeStructure.getCode().contains("InfoCall")) {
-                if (attributeStructure.getText().getText().getValue().contains("Aussteigeseite")) {
-                /*TODO set on each ScheduledStopPoint::exitSide:
+                if (attributeStructure.getUserText().getText().getFirst().getValue().contains("Aussteigeseite")) {
+                /*TODO OJP 2.0 set on each ScheduledStopPoint::exitSide:
                    "[code=ojp91006HR_InfoCall450_106514_1,text=[text=[lang=de,value=Aussteigeseite: Rechts]]]"
                    "[code=ojp91006HR_InfoCall450_111055_1,text=[text=[lang=de,value=Aussteigeseite: Links]]]"
                  */
@@ -253,10 +252,10 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
         if (translation == null) {
             return null;
         }
-        return QuayConverter.mapToQuay(stopPlaceId, translation, null /*TODO swissLocationId*/);
+        return QuayConverter.mapToQuay(stopPlaceId, translation, null /*TODO OJP 2.0 swissLocationId*/);
     }
 
-    static List<ServiceProduct> mapToServiceProducts(JAXBElementContentContainer serviceContentContainer, ModeOJP mode, Element extension) {
+    static List<ServiceProduct> mapToServiceProducts(DatedJourneyStructure datedJourneyStructure, ModeOJP mode, Element extension) {
         String transportTypeName = null;
         String publishedJourneyNumber = null;
         String operatorName = null;
@@ -269,34 +268,34 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
         }
 
         final List<ServiceProduct> serviceProducts = new ArrayList<>();
-        for (int i = 0; i < serviceContentContainer.getOperators().size(); i++) {
-            final String line = OJPAdapter.removeOjpPrefix(serviceContentContainer.getLines().get(i).getValue());
-            final String name = mode.getShortName()/* BR: ignore serviceContentContainer.getPublishedLineNames() like "IC61", because has not spaces*/ + " " + line +
-                (publishedJourneyNumber == null ? "" : " " + publishedJourneyNumber);
-            final String nameFormatted = adaptServiceProductNameFormatted(mode.getShortName(), line);
-            serviceProducts.add(ServiceProduct.builder()
-                // TODO test handling multi products
-                .name(name)
-                .nameFormatted(nameFormatted)
-                .line(line)
-                //.lineId(?)
-                .number(publishedJourneyNumber)
-                .operator(Operator.builder()
-                    .id(OperatorHelper.padLeadingZerosIfNumeric(OJPAdapter.removeOjpPrefix(serviceContentContainer.getOperators().get(i).getValue())))
-                    .name(operatorName)
-                    .build())
-                .vehicleMode(VehicleMode.builder()
-                    .id(mode.getMode())
-                    .name(mode.getNameTranslated())
-                    .corporateIdentityIcon(mode.getCorporateIdentityIcon())
-                    .vehicleSubModeName(transportTypeName)
-                    .vehicleSubModeShortName(mode.getShortName())
-                    .build())
-                //.routeIndexFrom(?)
-                //.routeIndexTo(?)
-                .corporateIdentityIcon(toSubModeIcon(nameFormatted))
-                .build());
-        }
+
+        final String line = OJPAdapter.removeOjpPrefix(datedJourneyStructure.getLineRef().getValue());
+        final String name = mode.getShortName()/* BR: ignore serviceContentContainer.getPublishedLineNames() like "IC61", because has not spaces*/ + " " + line +
+            (publishedJourneyNumber == null ? "" : " " + publishedJourneyNumber);
+        final String nameFormatted = adaptServiceProductNameFormatted(mode.getShortName(), line);
+        serviceProducts.add(ServiceProduct.builder()
+            // TODO test handling multi products
+            .name(name)
+            .nameFormatted(nameFormatted)
+            .line(line)
+            //.lineId(?)
+            .number(publishedJourneyNumber)
+            .operator(Operator.builder()
+                .id(OperatorHelper.padLeadingZerosIfNumeric(OJPAdapter.removeOjpPrefix(datedJourneyStructure.getOperatorRef().getValue())))
+                .name(operatorName)
+                .build())
+            .vehicleMode(VehicleMode.builder()
+                .id(mode.getMode())
+                .name(mode.getNameTranslated())
+                .corporateIdentityIcon(mode.getCorporateIdentityIcon())
+                .vehicleSubModeName(transportTypeName)
+                .vehicleSubModeShortName(mode.getShortName())
+                .build())
+            //.routeIndexFrom(?)
+            //.routeIndexTo(?)
+            .corporateIdentityIcon(toSubModeIcon(nameFormatted))
+            .build());
+
         return serviceProducts;
     }
 
@@ -326,45 +325,39 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
      *
      * @see de.vdv.ojp.model.DirectionRefStructure
      */
-    static List<Direction> mapToDirections(JAXBElementContentContainer serviceContentContainer) {
-        return serviceContentContainer.getDestinationTexts().stream()
-            .map(directionText -> Direction.builder()
-                .name(directionText)
-                //.routeIndexFrom()
-                //.routeIndexTo()
-                .build())
-            .collect(Collectors.toList());
-
-        /* TODO ? data makes no sense yet ?
-        final List<Direction> directions = new ArrayList<>();
-        for (DirectionRefStructure directionRefStructure : serviceContentContainer.getDirections()) {
-            directions.add(Direction.builder()
-            .name(directionRefStructure.getValue())
-                //.routeIndexFrom()
-                //.routeIndexTo()
-            .build());
+    static List<Direction> mapToDirections(DatedJourneyStructure datedJourneyStructure) {
+        if (datedJourneyStructure.getDestinationText() == null) {
+            throw new OJPException("Unexpected DatedJourneyStructure::destinationText empty: " + datedJourneyStructure);
         }
-        return directions;
-         */
+        return List.of(Direction.builder()
+            .name(OJPAdapter.getText(datedJourneyStructure.getDestinationText()))
+            //.routeIndexFrom()
+            //.routeIndexTo()
+            .build());
     }
 
-    static ServiceAlteration mapToServiceAlteration(JAXBElementContentContainer serviceContentContainer) {
+    static ServiceAlteration mapToServiceAlteration(DatedJourneyStructure datedJourneyStructure) {
         return ServiceAlteration.builder()
-            .redirected(Boolean.TRUE.equals(serviceContentContainer.getDeviation()))
-            //TODO others
+            .cancelled(Boolean.TRUE.equals(datedJourneyStructure.isCancelled()))
+            .redirected(Boolean.TRUE.equals(datedJourneyStructure.isDeviation()))
+            .delayFormatted(Boolean.TRUE.equals(datedJourneyStructure.isUndefinedDelay()) ? "Undefined delay" : null)
+            .unplannedStopPointsFormatted(Boolean.TRUE.equals(datedJourneyStructure.isUnplanned()) ? ModelDoc.UNPLANNED_STOPS_FORMATTED_SAMPLE : null)
+            //TODO OJP 2.0 others ::partiallyCancelled ::isRestricted,..
             .build();
     }
 
-    static List<PTSituation> mapToSituations(SituationsStructure situations) {
-        if (situations != null) {
-            //TODO OJP might not have something like HIM
-            log.info("not mapped yet: PTSituation's: {}", situations);
+    static List<PTSituation> mapToSituations(SituationRefList situationRefList) {
+        if (situationRefList != null) {
+            for (SituationFullRefStructure situationFullRefStructure : situationRefList.getSituationFullRef()) {
+                //TODO OJP 2.0, see TripConverter::mapToTripResponse
+                log.info("not mapped yet: PTSituation's: {}", situationFullRefStructure);
+            }
         }
         return new ArrayList<>();
     }
 
     private static String extractExtensionTextContext(Extensions extensions, String localTagName) {
-        final NodeList nodes = extensions.getAny().get(0).getElementsByTagName(OJPAdapter.OJP_NAMESPACE + localTagName);
+        final NodeList nodes = extensions.getAny().getFirst().getElementsByTagName(OJPAdapter.OJP_NAMESPACE + localTagName);
         if (nodes.getLength() == 0) {
             return null;
         }
@@ -405,20 +398,13 @@ class ServiceJourneyConverter extends AbstractConverter<OJP, List<ServiceJourney
         return zonedDateTime == null ? null : zonedDateTime.toOffsetDateTime();
     }
 
-    static ModeOJP mapToMode(List<ModeStructure> modesNeTex) {
-        if (modesNeTex.isEmpty()) {
-            throw new DeveloperException("Unexpected no NeTex MODE");
-        } else if (modesNeTex.size() > 1) {
-            log.info("NeTex modes::size > 1");
-        }
-        //modesNeTex.get(0).get*Submode();
-
-        final String ptMode = TransportModeData.mapToTransportMode(modesNeTex.get(0).getPtMode().name());
+    static ModeOJP mapToMode(ModeStructure modeNeTex) {
+        final String mode = TransportModeData.mapToTransportMode(modeNeTex.getPtMode().name());
         return ModeOJP.builder()
-            .mode(ptMode)
-            .subMode(TransportModeData.NETEX_VEHICLE_MODE_RAIL.equals(ptMode) ? modesNeTex.get(0).getRailSubmode().name() : "TODO")
-            .shortName(OJPAdapter.getText(modesNeTex.get(0).getShortName()))
-            .nameTranslated(OJPAdapter.getText(modesNeTex.get(0).getName()))
+            .mode(mode)
+            .subMode(TransportModeData.NETEX_VEHICLE_MODE_RAIL.equals(mode) ? modeNeTex.getRailSubmode().name() : "TODO")
+            .shortName(OJPAdapter.getText(modeNeTex.getShortName()))
+            .nameTranslated(OJPAdapter.getText(modeNeTex.getName()))
             .corporateIdentityIcon(/*TODO hardcoded*/ "SBB_oev_b_t02")
             .build();
     }

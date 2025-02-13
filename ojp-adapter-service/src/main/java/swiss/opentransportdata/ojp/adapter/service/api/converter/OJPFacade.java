@@ -16,13 +16,12 @@
 
 package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
-import de.vdv.ojp.JourneyRefStructure;
-import de.vdv.ojp.PlaceRefStructure;
-import de.vdv.ojp.PlaceTypeEnumeration;
-import de.vdv.ojp.PtModeFilterStructure;
-import de.vdv.ojp.TripViaStructure;
-import de.vdv.ojp.model.OJP;
-import de.vdv.ojp.model.VehicleModesOfTransportEnumeration;
+import de.vdv.ojp.v2.model.DatedJourneyStructure;
+import de.vdv.ojp.v2.model.ModeFilterStructure;
+import de.vdv.ojp.v2.model.OJP;
+import de.vdv.ojp.v2.model.PlaceRefStructure;
+import de.vdv.ojp.v2.model.PlaceTypeEnumeration;
+import de.vdv.ojp.v2.model.TripViaStructure;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import jdk.jfr.Experimental;
@@ -40,35 +40,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.w3c.dom.Element;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter;
+import swiss.opentransportdata.ojp.adapter.StopEventRequestFilter;
+import swiss.opentransportdata.ojp.adapter.TripLegRequestFilter;
+import swiss.opentransportdata.ojp.adapter.TripRequestFilter;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
+import swiss.opentransportdata.ojp.adapter.converter.OJPFactory;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.model.place.request.PlaceTypeEnum;
 import swiss.opentransportdata.ojp.adapter.model.place.response.PlaceResponse;
-import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.datedvehiclejourney.response.DatedVehicleJourney;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Direction;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.Notice;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ScheduledStopPoint;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceAlteration;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceJourney;
-import swiss.opentransportdata.ojp.adapter.model.servicejourney.response.ServiceProduct;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.Arrival;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.ArrivalResponse;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.Departure;
 import swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response.DepartureResponse;
-import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.PTViaReference;
 import swiss.opentransportdata.ojp.adapter.model.trip.request.TransportModeEnum;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripResponse;
 import swiss.opentransportdata.ojp.adapter.model.trip.response.TripStatus;
-import swiss.opentransportdata.ojp.adapter.service.error.DeveloperException;
+import swiss.opentransportdata.ojp.adapter.service.api.converter.ServiceJourneyConverter.ModeOJP;
 import swiss.opentransportdata.ojp.adapter.service.utils.DateTimeUtils;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.StopEventRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.TripLegRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.converter.OJPFactory;
+import uk.org.siri.siri.AbstractServiceDeliveryStructure;
+import uk.org.siri.siri.VehicleModesOfTransportEnumeration;
 
 /**
  * Facade to interact with OJP using J-S v3 Transmodel (TRM6) like models, therefore this is a kind of OJP overlay by J-S POJOs.
@@ -174,13 +172,15 @@ public class OJPFacade {
     @NonNull
     public DepartureResponse requestDepartures(@NonNull OJPAccessor ojpAccessor, @NonNull StopEventRequestFilter filter) throws OJPException {
         final OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, filter);
+        final AbstractServiceDeliveryStructure deliveryStructure = OJPAdapter.extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         return DepartureResponse.builder()
             .departures(serviceJourneyConverter.convertToDTO(ojpResponse).stream()
                 .map(serviceJourney -> Departure.builder()
                     .serviceJourney(serviceJourney)
                     .build())
-                .collect(Collectors.toList()))
+                .toList())
+            .responseTranslation(Translation.mapToLocale(deliveryStructure.getDefaultLanguage()))
             .build();
     }
 
@@ -193,64 +193,71 @@ public class OJPFacade {
     @NonNull
     public ArrivalResponse requestArrivals(@NonNull OJPAccessor ojpAccessor, @NonNull StopEventRequestFilter filter) throws OJPException {
         final OJP ojpResponse = ojpAdapter.requestStopEvent(ojpAccessor, filter);
+        final AbstractServiceDeliveryStructure deliveryStructure = OJPAdapter.extractFirstDeliveryStructure(ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery());
 
         return ArrivalResponse.builder()
             .arrivals(serviceJourneyConverter.convertToDTO(ojpResponse).stream()
                 .map(serviceJourney -> Arrival.builder()
                     .serviceJourney(serviceJourney)
                     .build())
-                .collect(Collectors.toList()))
+                .toList())
+            .responseTranslation(Translation.mapToLocale(deliveryStructure.getDefaultLanguage()))
             .build();
     }
 
-    // TODO refactor to stricter Builder usage (current goal: just make sure all OJP "XML structures of the same" result into same data)
-    static ServiceJourney createServiceJourney(@NonNull List<JourneyRefStructure> journeyRefStructures, @NonNull List<ScheduledStopPoint> scheduledStopPoints,
-        @NonNull List<ServiceProduct> serviceProducts,
-        @NonNull List<Direction> directions, @NonNull List<Notice> notices, @NonNull List<PTSituation> situations, @NonNull ServiceAlteration serviceAlteration,
-        List<OperatingPeriod> operatingPeriods) {
-
-        if (journeyRefStructures.isEmpty()) {
-            throw new DeveloperException("OJP PTRideLeg has no journeyReference");
-        } else if (journeyRefStructures.size() > 1) {
-            log.info("unexpected > 1 PTRideLeg::id -> {}", journeyRefStructures);
-        }
+    static ServiceJourney createServiceJourney(DatedJourneyStructure datedJourneyStructure, List<ScheduledStopPoint> scheduledStopPoints, Element extension) {
+        final ModeOJP mode = ServiceJourneyConverter.mapToMode(datedJourneyStructure.getMode());
         return ServiceJourney.builder()
-            .id(journeyRefStructures.get(0).getValue())
-            // TODO might not be the exact operatingDay!
-            .operatingDay(scheduledStopPoints.get(0).getDeparture().getTimeAimed().toLocalDate())
+            .id(datedJourneyStructure.getJourneyRef().getValue())
+            .operatingDay(OJPFactory.parseOperatingDayRef(datedJourneyStructure.getOperatingDayRef()))
             .stopPoints(scheduledStopPoints)
-            .serviceProducts(serviceProducts)
-            .directions(directions)
-            .notices(notices)
+            .serviceProducts(ServiceJourneyConverter.mapToServiceProducts(datedJourneyStructure, mode, extension))
+            .directions(ServiceJourneyConverter.mapToDirections(datedJourneyStructure))
+            .notices(ServiceJourneyConverter.mapToNotices(datedJourneyStructure))
             //.checkConstraints()
-            .situations(situations)
-            .serviceAlteration(serviceAlteration)
-            .operatingPeriods(operatingPeriods == null ? Collections.emptyList() : operatingPeriods)
-            //TODO J-A ProductCategory::getTranslation(locale)
+            .situations(ServiceJourneyConverter.mapToSituations(datedJourneyStructure.getSituationFullRefs()))
+            .serviceAlteration(ServiceJourneyConverter.mapToServiceAlteration(datedJourneyStructure))
+            .operatingPeriods(Collections.emptyList() /*irrelevant for PTRideLeg*/)
+            //TODO ProductCategory::getTranslation(locale)
             .quayTypeName("Gleis")
             .quayTypeShortName("GL.")
-            // TODO .spatialProjection(GeoJsonConverter.toLineString(polylineFormatted))
+            // TODO OJP 2.0 .spatialProjection(GeoJsonConverter.toLineString(polylineFormatted))
             .build();
     }
 
-    static TripStatus createTripStatus() {
+    static TripStatus createTripStatus(int numberOfServiceJourneys, int numberOfCancelledSubset) {
+        //TODO verify simple approach
+        boolean cancelled = false;
+        boolean partiallyCancelled = false;
+        if (numberOfCancelledSubset > 0) {
+            if (numberOfCancelledSubset == numberOfServiceJourneys) {
+                cancelled = true;
+            } else {
+                partiallyCancelled = true;
+            }
+        }
+
         return TripStatus.builder()
-            /*TODO .valid()
-            .cancelled()
-            .partiallyCancelled()
-            ...
+            .valid(!cancelled)
+            .cancelled(cancelled)
+            .partiallyCancelled(partiallyCancelled)
+            /*TODO OJP 2.0
+            .delayed
+            .alternative
+            ..
              */
             .build();
     }
 
-    static List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences) {
+    List<TripViaStructure> mapToViaStops(List<PTViaReference> ptViaReferences, Locale preferredLanguage) {
         if (CollectionUtils.isEmpty(ptViaReferences)) {
             return null;
         }
         return ptViaReferences.stream()
             .map(ptViaReference -> {
-                final TripViaStructure tripViaStructure = new TripViaStructure();
-                final PlaceRefStructure placeRefStructure = OJPFactory.createPlaceReferenceStructure(ptViaReference.getStopPlaceId());
+                final PlaceRefStructure placeRefStructure = ojpAdapter.getOjpFactory().createPlaceReferenceStructure(ptViaReference.getStopPlaceId(), preferredLanguage);
+
+                final TripViaStructure tripViaStructure = ojpAdapter.getOjpFactory().createTripViaStructure();
                 tripViaStructure.setViaPoint(placeRefStructure);
                 tripViaStructure.setDwellTime(ptViaReference.getWaittime() == null ? null : Duration.ofMinutes(ptViaReference.getWaittime()));
                 if ((ptViaReference.getStatus() != null) && (!PTViaReference.STATUS_BOARDING_ALIGHTING_NECESSARY.equals(ptViaReference.getStatus())) ||
@@ -271,7 +278,7 @@ public class OJPFacade {
      * @param transportModes
      * @return including enforced
      */
-    static PtModeFilterStructure mapToPtModeFilterStructure(Set<TransportModeEnum> transportModes) {
+    ModeFilterStructure mapToPtModeFilterStructure(Set<TransportModeEnum> transportModes) {
         if (CollectionUtils.isEmpty(transportModes)) {
             // EnumSet.of(VehicleModesOfTransportEnumeration.ALL, VehicleModesOfTransportEnumeration.ALL_SERVICES);
             return null;
@@ -279,7 +286,7 @@ public class OJPFacade {
 
         final EnumSet<VehicleModesOfTransportEnumeration> vehicleModesOfTransportEnumerations = EnumSet.noneOf(VehicleModesOfTransportEnumeration.class);
         for (TransportModeEnum transportModeEnum : transportModes) {
-            // TODO mapping needs to be reviewed with Matthias Günter and Andreas Glauser
+            // TODO OJP 2.0 mapping needs to be reviewed with Matthias Günter and Andreas Glauser
             switch (transportModeEnum) {
                 case REGIO -> {
                     vehicleModesOfTransportEnumerations.add(VehicleModesOfTransportEnumeration.URBAN_RAIL);
@@ -329,7 +336,7 @@ public class OJPFacade {
             }
         }
 
-        final PtModeFilterStructure ptModeFilterStructure = new PtModeFilterStructure();
+        final ModeFilterStructure ptModeFilterStructure = ojpAdapter.getOjpFactory().createModeFilterStructure();
         ptModeFilterStructure.withPtMode(vehicleModesOfTransportEnumerations);
         ptModeFilterStructure.setExclude(false);
         return ptModeFilterStructure;

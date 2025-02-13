@@ -16,14 +16,17 @@
 
 package swiss.opentransportdata.ojp.adapter.model.servicejourney.stationboard.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
+import java.util.Locale;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.stopeventquery.StopEventDelivery;
 
 /**
@@ -32,10 +35,13 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
 @Schema(description = "Contains a list of `Departure's` matching the search-criterias.")
 @Builder
 @Value
-public class DepartureResponse implements JsonResponse, StopEventDelivery {
+public class DepartureResponse implements JsonResponse, Translation, StopEventDelivery {
 
     @ArraySchema(minItems = 1, schema = @Schema(requiredMode = RequiredMode.REQUIRED,
         description = "Various `Departure` options [1..*]."))
     @NonNull
     List<Departure> departures;
+
+    @JsonIgnore
+    Locale responseTranslation;
 }

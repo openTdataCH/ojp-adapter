@@ -49,7 +49,7 @@ public class ModelDoc {
      */
     public static final String HINT_ENUM_EXTENSIBLE = "<br>x-extensible-enum: ";
     /**
-     * TODO SBB specific yet
+     * TODO values SBB specific yet
      *
      * @see TransportModeEnum
      */
@@ -167,6 +167,9 @@ public class ModelDoc {
     public static final String OCCUPANCY_ENUM_LIST = "[UNKNOWN,LOW,MEDIUM,HIGH]";
     public static final String JOURNEY_SINGLE_RIDE = "If this value is missing, it is probably a _single-journey (de:Einzelfahrt)_.";
 
+    public static final String PARAM_REALTIME_MODE = ModelDoc.HINT_ENUM_EXTENSIBLE
+        + "\n- `REALTIME` potentially planned and RT **including non-rideable** (like cancelled)"
+        + "\n- `OFF` **planned only**";
     public static final String TRIP_POLYLINE = "With or without a plottable polyline for each vehicle-journey (if available)." + HINT_PERFORMANCE;
     public static final String PARAM_INCLUDE_ROUTE_PROJECTION = "includeRouteProjection";
     public static final String PARAM_INCLUDE_OPERATING_DAYS = "includeOperatingDays";
@@ -199,7 +202,7 @@ public class ModelDoc {
 
     public static final String SAMPLE_WEIGHT = "30170";
 
-    public static final String SAMPLE_SJYID = "ch:1:sjyid:100001:702-001";
+    public static final String SAMPLE_SJYID = "ch:1:sjyid:100001:18728-001";
     // see DURATION
     public static final String SAMPLE_DURATION = "P1DT2H4M";
     /**
@@ -207,7 +210,7 @@ public class ModelDoc {
      *
      * @see #ISO8601
      */
-    public static final String SAMPLE_OFFSETDATETIME = "2024-04-18T14:55:00+01:00";
-    public static final String SAMPLE_DATE = "2024-04-18";
+    public static final String SAMPLE_OFFSETDATETIME = "2024-12-18T14:55:00+01:00";
+    public static final String SAMPLE_DATE = "2024-12-22";
     public static final String SAMPLE_TIME = "13:07";
 }

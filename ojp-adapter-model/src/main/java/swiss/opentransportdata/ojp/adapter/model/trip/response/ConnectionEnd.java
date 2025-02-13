@@ -40,7 +40,6 @@ public class ConnectionEnd implements swiss.opentransportdata.ojp.adapter.trm.v6
     StopPlace place;
 
     @Schema(description = "Date/time (" + ModelDoc.ISO8601 + ") planned, relates to `AccessLeg::start/::end` whether departure or arrival time.",
-        requiredMode = RequiredMode.REQUIRED, example = ModelDoc.SAMPLE_OFFSETDATETIME)
-    @NonNull
+        example = ModelDoc.SAMPLE_OFFSETDATETIME)
     OffsetDateTime timeAimed;
 }

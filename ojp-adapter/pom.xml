@@ -6,7 +6,7 @@
     <parent>
         <groupId>swiss.opentransportdata.ojp</groupId>
         <artifactId>ojp-adapter-parent</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -35,17 +35,15 @@
         </dependency>
 
         <dependency>
-            <!-- open-source provided by https://github.com/bliksemlabs/ojp-java-model (containing POJO for https://github.com/VDVde/OJP) -->
-            <!-- https://central.sonatype.com/artifact/de.vdv/ojp-java-model/1.0.3.1 -->
-            <groupId>de.vdv</groupId>
+            <groupId>swiss.opentransportdata.ojp</groupId>
             <artifactId>ojp-java-model</artifactId>
-            <version>1.0.3.1</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>swiss.opentransportdata.ojp</groupId>
             <artifactId>ojp-adapter-transmodel</artifactId>
-            <version>0.9.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <!-- "test" -->

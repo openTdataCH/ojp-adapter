@@ -18,6 +18,7 @@ package swiss.opentransportdata.ojp.adapter.service.api.converter;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import de.vdv.ojp.v2.model.UseRealtimeDataEnumeration;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.headers.Header;
@@ -50,7 +51,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import swiss.opentransportdata.ojp.adapter.OJPAdapter;
 import swiss.opentransportdata.ojp.adapter.OJPException;
+import swiss.opentransportdata.ojp.adapter.PlaceRequestFilter;
+import swiss.opentransportdata.ojp.adapter.StopEventRequestFilter;
+import swiss.opentransportdata.ojp.adapter.TripLegRequestFilter;
 import swiss.opentransportdata.ojp.adapter.configuration.OJPAccessor;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.PublicLinks;
@@ -87,10 +92,6 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.functionalrequests.tripquery.TripRequestFilter;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationPlaceFilter;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationRequest;
-import swiss.opentransportdata.ojp.adapter.v1.OJPAdapter;
-import swiss.opentransportdata.ojp.adapter.v1.PlaceRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.StopEventRequestFilter;
-import swiss.opentransportdata.ojp.adapter.v1.TripLegRequestFilter;
 
 /**
  * Transmodel oriented APIs against the underlying router OJP.
@@ -111,7 +112,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
     private static final String PATH_SEGMENT_TRIPS = "/trips";
 
     static final String PATH = ApiDocumentation.VERSION_URI_V0 + PATH_SEGMENT_OJP;
-    private static final String OJP_PLACES = PATH + PATH_SEGMENT_PLACES;
+    private static final String API_PLACES = PATH + PATH_SEGMENT_PLACES;
     //private static final String OJP_PLACES_COORDINATES_LAT_LON = PATH + PATH_SEGMENT_PLACES + "/by-coordinates";
     private static final String PLACES_PARAM_NAMEMATCH = "nameMatch";
     private static final int PLACES_DEFAULT_LIMIT = PlaceRequestFilter.LIMIT_DEFAULT;
@@ -140,7 +141,16 @@ public class OJPController extends BaseController implements LocationPlaceFilter
     private final OJPConfiguration ojpConfiguration;
     private final OJPFacade ojpFacade;
 
-    @GetMapping(value = {OJP_PLACES})
+    private static Locale detectTranslation(Locale byResponse, Locale byRequest) {
+        if (byResponse == null) {
+            log.info("OJP did not set a response defaultLanguage -> fallback to ACCEPT-LANGUAGE");
+            return byRequest;
+        }
+
+        return byResponse;
+    }
+
+    @GetMapping(value = {API_PLACES})
     @Operation(summary = "Get places of type " + PlaceTypeEnum.TYPE_STOPPLACE + ", " + PlaceTypeEnum.TYPE_ADDRESS + "," + PlaceTypeEnum.TYPE_POINTOFINTEREST + " by its name.",
         description = "The response is a flat (non-inherited) structure of concrete places.")
     @ApiResponse(
@@ -166,7 +176,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             example = "Bern")
         @RequestParam(value = PLACES_PARAM_NAMEMATCH, required = false) String nameMatch,
         @Parameter(description = "Place type to be searched for.", array = @ArraySchema(schema = @Schema(allowableValues = {PlaceTypeEnum.TYPE_ALL, PlaceTypeEnum.TYPE_STOPPLACE,
-            // OJP supports COORD and TOPOGRAPHIC_PLACE as well
+            // OJP supports COORD(v1)/Location(v2) and TOPOGRAPHIC_PLACE as well
             PlaceTypeEnum.TYPE_ADDRESS,
             PlaceTypeEnum.TYPE_POINTOFINTEREST}, defaultValue = PlaceTypeEnum.TYPE_ALL)))
         @RequestParam(value = "type", required = false) Set<PlaceTypeEnum> types,
@@ -180,7 +190,7 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = "Radius [m] around the related `center`, if given.", schema = @Schema(type = "integer", defaultValue = "" + PLACES_DEFAULT_RADIUS))
         @RequestParam(value = "radius", required = false) Integer radius
     ) {
-        monitorRequest(OJP_PLACES);
+        monitorRequest(API_PLACES);
 
         if (StringUtils.isBlank(nameMatch) && StringUtils.isBlank(centerAsGeoJsonString)) {
             return responseFactory.createBadParamResponse(null, PLACES_PARAM_NAMEMATCH + "/center", "At least one of these must not be empty.");
@@ -227,8 +237,8 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             if (placeResponse.getPlaces().isEmpty()) {
                 return responseFactory.createNotFoundResponse();
             }
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(placeResponse, placeRequestFilter.getPreferredLanguage() /*TODO verify with OJP response*/);
+
+            return responseFactory.createOkResponse(placeResponse, detectTranslation(placeResponse.getResponseTranslation(), placeRequestFilter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -252,11 +262,14 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         @Parameter(description = DESCRIPTION_OJP_TOKEN, schema = @Schema(type = "string"))
         @RequestHeader(value = HEADER_OJP_TOKEN, required = false) String ojpToken,
 
-        @Parameter(description = "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.", schema = @Schema(type = "string"))
+        @Parameter(description = "Any `ServiceJourney::id` given by PTRideLeg or any other Vehicle-Journey response.", schema = @Schema(type = "string", example = ModelDoc.SAMPLE_SJYID))
         @PathVariable("id") String id,
 
         @Parameter(description = "Day of operation (null defaults to TODAY).", example = ModelDoc.SAMPLE_DATE) @DateTimeFormat(iso = ISO.DATE)
         @RequestParam(value = "date", required = false) LocalDate date,
+
+        @Parameter(description = ModelDoc.PARAM_REALTIME_MODE, schema = @Schema(defaultValue = RealtimeModeEnum.REALTIME_AS_STRING))
+        @RequestParam(value = "realtimeMode", required = false) RealtimeModeEnum realtimeMode,
         /*
         @Parameter(description = "Set true to get `ServiceJourney::operatingPeriods`.", schema = @Schema(defaultValue = "false", type = "boolean"))
         @RequestParam(value = ApiDocumentation.PARAM_INCLUDE_OPERATING_DAYS, required = false) Boolean includeOperatingDays,
@@ -287,14 +300,14 @@ public class OJPController extends BaseController implements LocationPlaceFilter
             final TripLegRequestFilter filter = TripLegRequestFilter.builder()
                 .preferredLanguage(getPreferredLanguage())
                 .journeyReference(id)
+                .realtimeMode(mapToUseRealtimeDataEnumeration(realtimeMode))
                 .operatingDay(date == null ? DateTimeUtils.createSwissDate() : date)
-                .projection(Boolean.TRUE.equals(includeRouteProjection))
+                //.vehicleReference()
+                .includeProjection(Boolean.TRUE.equals(includeRouteProjection))
                 .build();
 
             final DatedVehicleJourney datedVehicleJourney = ojpFacade.requestDatedVehicleJourneyByServiceJourneyId(createOJPAccessor(), filter);
-
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(datedVehicleJourney, filter.getPreferredLanguage());
+            return responseFactory.createOkResponse(datedVehicleJourney, detectTranslation(datedVehicleJourney.getResponseTranslation(), filter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -378,12 +391,11 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .stopPlaceReference(startPlaceRef.getPlaceId())
                 .departureArrivalDateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(date, time)))
                 .limit(limit == null ? STATIONBOARD_DEFAULT_LIMIT : limit)
-                .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(includeTransportModes))
+                .modeFilterStructure(ojpFacade.mapToPtModeFilterStructure(includeTransportModes))
                 .build();
 
             final DepartureResponse departureResponse = ojpFacade.requestDepartures(createOJPAccessor(), filter);
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(departureResponse, filter.getPreferredLanguage() /*TODO*/);
+            return responseFactory.createOkResponse(departureResponse, detectTranslation(departureResponse.getResponseTranslation(), filter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -468,12 +480,11 @@ public class OJPController extends BaseController implements LocationPlaceFilter
                 .stopPlaceReference(endPlaceRef.getPlaceId())
                 .departureArrivalDateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(date, time)))
                 .limit(limit == null ? STATIONBOARD_DEFAULT_LIMIT : limit)
-                .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(includeTransportModes))
+                .modeFilterStructure(ojpFacade.mapToPtModeFilterStructure(includeTransportModes))
                 .build();
 
             final ArrivalResponse arrivalResponse = ojpFacade.requestArrivals(createOJPAccessor(), filter);
-            // TODO CONTENT-Language must be extracted from OJP::ojpResponse.getOJPResponse().getServiceDelivery().getAbstractFunctionalServiceDelivery().get() -> defaultLanguage
-            return responseFactory.createOkResponse(arrivalResponse, filter.getPreferredLanguage() /*TODO if translated by OJP*/);
+            return responseFactory.createOkResponse(arrivalResponse, detectTranslation(arrivalResponse.getResponseTranslation(), filter.getPreferredLanguage()));
         } catch (OJPException ex) {
             return handle(ex);
         } catch (Exception ex) {
@@ -600,26 +611,26 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         //        }
 
         final AccessibilityEnum accessibilityEnum = ObjectUtils.defaultIfNull(body.getIncludeAccessibility(), TripsByOriginAndDestinationRequestBody.DEFAULT_INCLUDE_ACCESSIBILITY);
-        if (!(accessibilityEnum == AccessibilityEnum.NONE || accessibilityEnum == AccessibilityEnum.ALL)) {
+        if (!((accessibilityEnum == AccessibilityEnum.NONE) || (accessibilityEnum == AccessibilityEnum.ALL))) {
             return responseFactory.createBadParamResponse(null, "includeAccessibility",
                 "only '" + AccessibilityEnum.ALL_AS_STRING + "' or '" + AccessibilityEnum.NONE_AS_STRING + "' supported by OJP yet");
         }
 
-        swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter.TripRequestFilterBuilder tripRequestFilterBuilder = swiss.opentransportdata.ojp.adapter.v1.TripRequestFilter.builder()
+        swiss.opentransportdata.ojp.adapter.TripRequestFilter.TripRequestFilterBuilder tripRequestFilterBuilder = swiss.opentransportdata.ojp.adapter.TripRequestFilter.builder()
             .preferredLanguage(getRequestContext().getAcceptLocale())
             .searchForArrival(ObjectUtils.defaultIfNull(body.getForArrival(), TripsByOriginAndDestinationRequestBody.DEFAULT_FOR_ARRIVAL))
             .origin(startPlaceReference.getPlaceId())
             .destination(endPlaceRef.getPlaceId())
             .dateTime(OJPFacade.mapToSwissDateTime(TripConverter.determineLocalDateTimeOrNow(body.getDate(), body.getTime())))
-            .vias(OJPFacade.mapToViaStops(body.getVias()))
+            .vias(ojpFacade.mapToViaStops(body.getVias(), getRequestContext().getAcceptLocale()))
             //.limit(limit)
             .includeAccessibility(accessibilityEnum == AccessibilityEnum.ALL)
             .includeIntermediateStops(body.getIncludeIntermediateStops() == null || body.getIncludeIntermediateStops() == IntermediateStopsEnum.ALL)
             .includeOperatingDays(Boolean.TRUE.equals(body.getIncludeOperatingDays()))
-            .ptModeFilterStructure(OJPFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))
+            .modeFilterStructure(ojpFacade.mapToPtModeFilterStructure(body.getIncludeTransportModes()))
             .includeSituationsContext(true /*TODO make configurable*/)
-            .includeLegProjection(Boolean.TRUE.equals(body.getIncludeRouteProjection()))
-            .excludeRealtime(body.getRealtimeMode() == RealtimeModeEnum.OFF);
+            .includeProjection(Boolean.TRUE.equals(body.getIncludeRouteProjection()))
+            .realtimeMode(mapToUseRealtimeDataEnumeration(body.getRealtimeMode()));
 
         if (body.getMobilityFilter() == null) {
             tripRequestFilterBuilder.transferLimit(TripMobilityFilter.DEFAULT_MAX_TRANSFERS)
@@ -656,6 +667,15 @@ public class OJPController extends BaseController implements LocationPlaceFilter
         } catch (Exception ex) {
             return responseFactory.createUnexpectedProblemResponse("OJP /trips", ex);
         }
+    }
+
+    private UseRealtimeDataEnumeration mapToUseRealtimeDataEnumeration(RealtimeModeEnum realtimeModeEnum) {
+        if (realtimeModeEnum == RealtimeModeEnum.OFF) {
+            return UseRealtimeDataEnumeration.NONE;
+        }
+
+        // Be aware OJP knows UseRealtimeDataEnumeration#FULL as well, but EXPLANATORY is probably better.
+        return UseRealtimeDataEnumeration.EXPLANATORY;
     }
 
     /**

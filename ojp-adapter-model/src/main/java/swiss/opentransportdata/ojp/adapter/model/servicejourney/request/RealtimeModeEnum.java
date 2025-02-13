@@ -21,16 +21,27 @@ import swiss.opentransportdata.ojp.adapter.model.common.response.JsonExtensibleE
 
 /**
  * Planned versus realtime impacted journeys.
+ *
+ * Aka OJP UseRealtimeDataEnumeration
  */
 @JsonExtensibleEnum
 @Schema(enumAsRef = true)
 public enum RealtimeModeEnum {
     /**
      * Realtime impacted if any.
+     *
+     * Might be router-specific, for e.g.:
+     * <ul>
+     *     <li>Hafas knows REALTIME_RIDEABLE (Rt without cancelled).</li>
+     *     <li>OJP distinguishes between FULL and EXPLANATORY.</li>
+     * </ul>
      */
     REALTIME,
+
     /**
-     * Planned.
+     * Planned without realtime.
+     *
+     * Aka OJP UseRealtimeDataEnumeration#NONE
      */
     OFF;
 

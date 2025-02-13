@@ -16,14 +16,17 @@
 
 package swiss.opentransportdata.ojp.adapter.model.place.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.util.List;
+import java.util.Locale;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.common.response.JsonResponse;
+import swiss.opentransportdata.ojp.adapter.model.common.response.Translation;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.locationquery.LocationDelivery;
 
 /**
@@ -32,10 +35,13 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.loc
 @Schema(description = "Response container of a Place-request.")
 @Builder
 @Value
-public class PlaceResponse implements JsonResponse, LocationDelivery {
+public class PlaceResponse implements JsonResponse, Translation, LocationDelivery {
 
     @ArraySchema(minItems = 1, schema = @Schema(/*allOf = {StopPlace.class, Address.class, PointOfInterest.class, but not StopPlaceDetailed},*/
         description = "Found places.", requiredMode = RequiredMode.REQUIRED))
     @NonNull
     List<Place> places;
+
+    @JsonIgnore
+    Locale responseTranslation;
 }
