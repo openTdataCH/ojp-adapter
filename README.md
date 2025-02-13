@@ -85,6 +85,8 @@ Remark:
 
 See [OJP-Adapter v0.9.0-beta](https://github.com/openTdataCH/ojp-adapter/releases/tag/v0.9.0-beta)
 
+* Checkout if you need to acces SKI+ OJP active instance, which supports only OJP v1.*
+
 * **Currently, OJPAdapter deals with one SINGLE Journey-Planner request at a time**, though MULTIPLE requests could be performed at once.
 * Complete OJP set of request-filters (currently the most relevant filters are adapted).
 * Complete OJP response mapping (currently the most relevant properties are implemented).
