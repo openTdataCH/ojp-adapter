@@ -17,7 +17,7 @@
 package swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.responsibility.genericorganisation;
 
 import java.util.List;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportorganisations.OperationalContext;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusableplaceandorganisation.transportorganisations.OperationalContext;
 
 /**
  * An ORGANIZATION PART specific to a purpose and/or organisational structure.

@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.model.common.response.InheritanceDiscriminable;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.topographicplace.AddressablePlace;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusableplaceandorganisation.topographicplace.AddressablePlace;
 
 /**
  * @author Peter Hirzel

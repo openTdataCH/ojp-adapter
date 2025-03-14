@@ -16,7 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter.trm.v6.additionalcommonconcepts.reusablecomponents.message;
 
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.notice.Notice;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablemessage.notice.Notice;
 
 /**
  * A partial or complete information adapted for a specific type of usage and type of media.

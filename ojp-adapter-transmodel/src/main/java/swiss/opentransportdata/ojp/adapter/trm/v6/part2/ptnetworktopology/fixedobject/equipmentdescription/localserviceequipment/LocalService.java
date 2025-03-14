@@ -16,7 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.equipmentdescription.localserviceequipment;
 
-import swiss.opentransportdata.ojp.adapter.trm.v6.part10.alternativemodes.reusablecomponents.genericequipment.Equipment;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusableequipment.generalequipment.Equipment;
 
 /**
  * A named service relating to the use of the SITE or transport services at a particular location, for example porterage, assistance for disabled users, booking offices etc. The service may have a

@@ -37,7 +37,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehi
     + "Whether only `id` is given or submode as well depends on available data.")
 @Builder
 @Value
-public class VehicleMode implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.VehicleMode, CorporateIdentity {
+public class VehicleMode implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablemode.transportmode.VehicleMode, CorporateIdentity {
 
     public static final String VEHICLEMODEENUM_TRAIN = "TRAIN";
 

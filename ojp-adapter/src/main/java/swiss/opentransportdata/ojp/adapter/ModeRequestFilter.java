@@ -17,6 +17,7 @@
 package swiss.opentransportdata.ojp.adapter;
 
 import de.vdv.ojp.v2.model.ModeFilterStructure;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablemode.transportmode.Mode;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.querymodel.commonquery.PIRequestFilter;
 
 /**
@@ -26,7 +27,7 @@ public interface ModeRequestFilter extends PIRequestFilter {
 
     /**
      * Included or excluded public-transport modes.
-     * @see swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.Mode
+     * @see Mode
      */
     ModeFilterStructure getModeFilterStructure();
 
