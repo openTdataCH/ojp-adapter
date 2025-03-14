@@ -17,6 +17,7 @@
 package swiss.opentransportdata.ojp.adapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 import de.vdv.ojp.v2.model.AddressStructure;
 import de.vdv.ojp.v2.model.DatedJourneyStructure;
@@ -48,7 +49,6 @@ import java.util.Locale;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +77,8 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_PlaceType_ALL() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         final Locale language = Locale.GERMAN;
         final Set<PlaceTypeEnumeration> types = Set.of(PlaceTypeEnumeration.STOP, PlaceTypeEnumeration.POI,
             PlaceTypeEnumeration.ADDRESS);
@@ -96,12 +98,16 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_StopPlace() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         requestStopPlaces(configuration.ojpAccessPassive(), "Bern");
     }
 
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_StopPlace() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         requestStopPlaces(configuration.ojpAccessActive(), "Zürich HB");
     }
 
@@ -122,12 +128,16 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_PointOfInterest() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         requestPointOfInterests(configuration.ojpAccessPassive(), "Museum");
     }
 
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_PointOfInterest() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         requestPointOfInterests(configuration.ojpAccessActive(), "Musée");
     }
 
@@ -149,12 +159,16 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_Address() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         requestAddresses(configuration.ojpAccessPassive(), "Wylerringstrasse");
     }
 
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_Address() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         requestAddresses(configuration.ojpAccessActive(), "Schwarztorstrasse");
     }
 
@@ -176,12 +190,16 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_StopPlace_name_coordinates() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         requestStopPlacesByNameAndCoordinate(configuration.ojpAccessPassive());
     }
 
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_StopPlace_name_coordinates() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         requestStopPlacesByNameAndCoordinate(configuration.ojpAccessActive());
     }
 
@@ -205,12 +223,16 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestPlaces_passive_StopPlace_coordinates_radius() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         requestStopPlacesByCoordinatesAndRadius(configuration.ojpAccessPassive());
     }
 
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestPlaces_active_StopPlace_coordinates_radius() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         requestStopPlacesByCoordinatesAndRadius(configuration.ojpAccessActive());
     }
 
@@ -236,6 +258,8 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestTrips_passive() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         // passive OJP allows classic UIC's
         requestTrips(configuration.ojpAccessPassive(), "8503308", "8503424");
     }
@@ -243,6 +267,8 @@ class OJPAdapterAccessTest {
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestTrips_active() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         // active OJP needs qualified OJP-Stop-References (due to cascading OJP instances)
         requestTrips(configuration.ojpAccessActive(), "OJP:STOP:SBB:8503308|Kloten", "OJP:STOP:SBB:8503424|Schaffhausen");
     }
@@ -291,7 +317,7 @@ class OJPAdapterAccessTest {
                     }
                 });
             } else if (rest.getDeclaredType() == TripResultStructure.class) {
-                Assumptions.assumeThat(ojpAccessor.getEndpoint().endsWith("ojp-la-aktiv")).as("OJP(active): TripLeg refresh not supported").isFalse();
+                assumeThat(ojpAccessor.getEndpoint().endsWith("ojp-la-aktiv")).as("OJP(active): TripLeg refresh not supported").isFalse();
                 // check Trip and its Leg's
                 tripResults.add((TripResultStructure) rest.getValue());
             } else {
@@ -379,6 +405,8 @@ class OJPAdapterAccessTest {
 
     @Test
     void requestStopEventRequest_passive_departure() throws OJPException {
+        assumeThat(configuration.ojpAccessPassive().getToken()).as("needs config property").isNotEmpty();
+
         // passive can deal with classic UIC or SLOID
         requestDepartures(configuration.ojpAccessPassive(), "8503424" /*Schaffhausen*/);
         requestDepartures(configuration.ojpAccessPassive(), "ch:1:sloid:3424:3:4");
@@ -387,6 +415,8 @@ class OJPAdapterAccessTest {
     @Disabled // active instance does only support OJP 1.0
     @Test
     void requestStopEventRequest_active_departure() throws OJPException {
+        assumeThat(configuration.ojpAccessActive().getToken()).as("needs config property").isNotEmpty();
+
         requestDepartures(configuration.ojpAccessActive(), "OJP:STOP:SBB:8503424|Schaffhausen");
         // FAILS with SBOID: requestDepartures(configuration.ojpAccessActive(), "ch:1:sloid:3424:3:4");
     }
