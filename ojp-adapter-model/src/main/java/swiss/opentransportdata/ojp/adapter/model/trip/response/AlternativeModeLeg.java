@@ -32,7 +32,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Builder
 @Value
 public class AlternativeModeLeg implements Leg,
-    swiss.opentransportdata.ojp.adapter.trm.v6.part10.alternativemodes.reusablecomponents.transportmode.AlternativeModeLeg {
+    swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.alternativemodetrip.AlternativeModeLeg {
 
     @Schema(type = "string", requiredMode = RequiredMode.REQUIRED,
         description = ModelDoc.DESCRIPTION_INHERITANCEDISCRIMINATOR_TYPE, defaultValue = "AlternativeModeLeg")

@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:53611",
+      "url": "http://localhost:58134",
       "description": "Generated server url"
     }
   ],
@@ -64,6 +64,32 @@
           "required": true
         },
         "responses": {
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
@@ -112,32 +138,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TripResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -242,32 +242,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
@@ -316,6 +290,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DatedVehicleJourney"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -434,8 +434,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -486,8 +486,8 @@
               }
             }
           },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
               "Content-Language": {
                 "description": "Language of translatable properties.",
@@ -626,32 +626,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
@@ -700,6 +674,32 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ArrivalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -825,6 +825,32 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
+            "headers": {
+              "Content-Language": {
+                "description": "Language of translatable properties.",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "Request-ID": {
+                "description": "Your 'Request-ID' value",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Any 4xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
             "headers": {
@@ -873,32 +899,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PlaceResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Any 5xx according to standard (like [httpstatuses.com](https://www.webfx.com/web-development/glossary/http-status-codes/)).",
-            "headers": {
-              "Content-Language": {
-                "description": "Language of translatable properties.",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "Request-ID": {
-                "description": "Your 'Request-ID' value",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -1447,14 +1447,14 @@
             "type": "string",
             "description": "[duration](https://www.w3.org/TR/xmlschema11-2/#duration)"
           },
-          "mode": {
-            "type": "string",
-            "description": "Mode of the Leg"
-          },
           "distance": {
             "type": "integer",
             "description": "Total distance for Leg (in meter).",
             "format": "int32"
+          },
+          "mode": {
+            "type": "string",
+            "description": "Mode of the Leg"
           },
           "type": {
             "type": "string",

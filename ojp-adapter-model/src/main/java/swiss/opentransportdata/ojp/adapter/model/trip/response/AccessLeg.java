@@ -22,7 +22,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.AccessMode;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablemode.transportmode.AccessMode;
 
 /**
  * An AccessLeg represents typically a footpath (dependencies to ROKAS routing).

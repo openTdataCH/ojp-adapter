@@ -24,7 +24,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingDay;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusabletimeelements.servicecalendar.OperatingDay;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.PassengerStopAssignment;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.tacticalplanningcomponents.stopassignment.StopAssignment;
 import swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.passingtime.TimetabledPassingTime;

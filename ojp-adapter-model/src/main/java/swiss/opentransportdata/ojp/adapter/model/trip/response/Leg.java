@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.NonNull;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.common.response.InheritanceDiscriminable;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.transportmode.Mode;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablemode.transportmode.Mode;
 
 /**
  * @author Peter Hirzel

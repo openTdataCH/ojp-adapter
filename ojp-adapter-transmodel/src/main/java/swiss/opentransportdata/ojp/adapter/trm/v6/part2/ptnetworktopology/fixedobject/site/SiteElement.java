@@ -16,7 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter.trm.v6.part2.ptnetworktopology.fixedobject.site;
 
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.topographicplace.AddressablePlace;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusableplaceandorganisation.topographicplace.AddressablePlace;
 
 public interface SiteElement extends AddressablePlace {
 

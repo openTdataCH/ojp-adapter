@@ -27,7 +27,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Schema(description = "Additional information on operating Vehicle. The information may be usable for passenger. Relates to `includeNoticeAttributes`.")
 @Builder
 @Value
-public class Notice implements RouteIndexInterval, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.notice.Notice {
+public class Notice implements RouteIndexInterval, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablemessage.notice.Notice {
 
     public static final Integer DEFAULT_PRIORITY = 100;
 

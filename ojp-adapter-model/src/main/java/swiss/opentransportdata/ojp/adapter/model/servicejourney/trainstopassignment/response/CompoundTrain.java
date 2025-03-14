@@ -26,7 +26,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.train.TrainInCompoundTrain;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablevehicletype.traintype.TrainInCompoundTrain;
 
 /**
  * OJP 1.0 hat keine Formationen.
@@ -40,7 +40,7 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablec
 @Schema(description = "A vehicle-type composed (aka composition/-formation) of a sequence of **one or more vehicle-type `Train`**. A `CompoundTrain` is always self-propelled (even if a Locomotive is not explicitely distinguishable).")
 @Builder
 @Value
-public class CompoundTrain implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.train.CompoundTrain {
+public class CompoundTrain implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablevehicletype.traintype.CompoundTrain {
 
     private static final String OPERATIONAL_DIRECTION_LEFT = "LEFT";
 
