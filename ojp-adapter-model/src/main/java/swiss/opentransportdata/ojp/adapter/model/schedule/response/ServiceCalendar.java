@@ -35,7 +35,8 @@ import swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.fun
 @Schema(description = "Available planned journey calendar to span the whole time range covered by underlying systems for various Journey-Planner data.")
 @Builder
 @Value
-public class ServiceCalendar implements JsonResponse, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.ServiceCalendar, ScheduleDelivery {
+public class ServiceCalendar implements JsonResponse, swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusabletimeelements.servicecalendar.ServiceCalendar,
+    ScheduleDelivery {
 
     @Schema(description = "Informational reference name." + ModelDoc.TRANSLATED_TEXT,
         requiredMode = RequiredMode.REQUIRED,

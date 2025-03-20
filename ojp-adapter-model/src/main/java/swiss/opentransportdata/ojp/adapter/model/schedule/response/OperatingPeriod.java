@@ -33,7 +33,7 @@ import swiss.opentransportdata.ojp.adapter.model.trip.response.Trip;
 @Schema(description = "A **continuous interval of time** making up a timetable frame **of 1 year**, typically starting around 2nd Sunday of December.")
 @Builder
 @Value
-public class OperatingPeriod implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingPeriod {
+public class OperatingPeriod implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusabletimeelements.servicecalendar.OperatingPeriod {
 
     /**
      * Periods where a Trip is ridable, given at each /trips request.

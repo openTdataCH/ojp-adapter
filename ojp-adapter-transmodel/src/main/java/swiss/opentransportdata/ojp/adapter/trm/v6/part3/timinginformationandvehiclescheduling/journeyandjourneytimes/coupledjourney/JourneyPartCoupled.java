@@ -16,7 +16,7 @@
 
 package swiss.opentransportdata.ojp.adapter.trm.v6.part3.timinginformationandvehiclescheduling.journeyandjourneytimes.coupledjourney;
 
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.train.Train;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablevehicletype.traintype.Train;
 
 /**
  * Two JOURNEY PARTs of different VEHICLE JOURNEYs served simultaneously by a train set up by coupling their single vehicles.

@@ -29,7 +29,7 @@ import lombok.Value;
     "Multiple `Train's` (aka wing-train or de:Flügelzug) may be coupled or decoupled in separate self-propelled units within a `CompoundTrain` on its journey.")
 @Builder
 @Value
-public class Train implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.train.Train {
+public class Train implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablevehicletype.traintype.Train {
 
     /**
      * In v3 always return destination if given (v2.Car::destination suppressed direction for non-wing-trains)

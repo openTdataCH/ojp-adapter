@@ -29,7 +29,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 import swiss.opentransportdata.ojp.adapter.model.geojson.response.LineString;
 import swiss.opentransportdata.ojp.adapter.model.schedule.response.OperatingPeriod;
 import swiss.opentransportdata.ojp.adapter.model.situation.response.PTSituation;
-import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.servicecalendar.OperatingDay;
+import swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusabletimeelements.servicecalendar.OperatingDay;
 
 /**
  * Transmodel:

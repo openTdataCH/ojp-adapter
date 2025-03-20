@@ -17,10 +17,7 @@
 package swiss.opentransportdata.ojp.adapter.trm.v6.part6.passengerinformation.tripdescription.passengertrip;
 
 /**
- * A part of a TRIP PATTERN corresponding to the movement of a user from one PLACE to another, where the TRIP is made entirely by personal means, and neither of the endpoints is a SCHEDULED STOP POINT
- * or VEHICLE MEETING POINT.
- * <p>
- * (Introduced after TRM v6+March2022 in TRM Meeting on 11.10.2023.)
+ * A part of a TRIP PATTERN corresponding to the movement of a user from one PLACE to another, where the TRIP is made entirely by personal means, and neither of the endpoints is a SCHEDULED STOP POINT or VEHICLE MEETING POINT.
  */
 public interface PersonalLeg extends Leg {
 

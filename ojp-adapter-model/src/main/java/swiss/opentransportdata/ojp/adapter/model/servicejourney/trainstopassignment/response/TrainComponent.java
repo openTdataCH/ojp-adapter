@@ -29,7 +29,7 @@ import swiss.opentransportdata.ojp.adapter.model.ModelDoc;
 @Schema(description = "An elementary component of a `Train` as an instance of a correspondent `TrainElement` on a concrete `ServiceJourney`, where specific values at each `ScheduledStopPoint` for this unique formation on an operation-day, may have its dynamic state (like section or exitSide).")
 @Builder
 @Value
-public class TrainComponent implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.train.TrainComponent {
+public class TrainComponent implements swiss.opentransportdata.ojp.adapter.trm.v6.part1.commonconcepts.reusablecomponents.reusablevehicletype.traintype.TrainComponent {
 
     /**
      * Agreed on by Andreas Schlappbach and ÖBB.
